@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Working Glass Header</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  body {
+    margin: 0;
+    font-family: sans-serif;
+    background: url('https://i.imgur.com/s65O3gR.jpg') no-repeat center center/cover;
+    height: 100vh;
+  }
+
+  header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    backdrop-filter: blur(12px);
+    background: rgba(25,25,25,0.3);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    z-index: 1000;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    background-color: #e50914;
+    border-radius: 8px;
+  }
+
+  .title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    transition: opacity 0.3s;
+  }
+
+  .title.hidden { opacity: 0; }
+
+  .icons {
+    display: flex;
+    gap: 20px;
+    position: relative;
+    z-index: 1001;
+  }
+
+  .icons i {
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .icons i:hover { color: #e50914; }
+
+  .search-box {
+    display: none;
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    z-index: 1002;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 7px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.5);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    font-size: 15px;
+  }
+
+  .search-box input:focus { outline: none; }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"></div>
+  <div class="title" id="title">My App</div>
+
+  <div class="search-box" id="searchBox">
+    <input type="text" placeholder="Search...">
+  </div>
+
+  <div class="icons">
+    <i id="searchIcon" class="fas fa-search"></i>
+    <i class="fas fa-bell"></i>
+  </div>
+</header>
+
+<script>
+  const searchIcon = document.getElementById('searchIcon');
+  const title = document.getElementById('title');
+  const searchBox = document.getElementById('searchBox');
+  const searchInput = searchBox.querySelector('input');
+
+  let active = false;
+
+  searchIcon.addEventListener('click', () => {
+    active = !active;
+    if(active){
+      title.classList.add('hidden');
+      searchBox.style.display = 'block';
+      searchInput.focus();
+    } else {
+      title.classList.remove('hidden');
+      searchBox.style.display = 'none';
+    }
+  });
+
+  searchInput.addEventListener('blur', () => {
+    title.classList.remove('hidden');
+    searchBox.style.display = 'none';
+    active = false;
+  });
+</script>
+
+</body>
+</html>
