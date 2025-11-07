@@ -9,7 +9,8 @@
   body {
     margin: 0;
     font-family: sans-serif;
-    background: url('https://i.imgur.com/s65O3gR.jpg') no-repeat center center/cover;
+    /* एक बेहतर बैकग्राउंड इमेज का इस्तेमाल किया गया है */
+    background: url('https://images.unsplash.com/photo-1554141311-6a4a279339e5?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
     height: 100vh;
   }
 
@@ -21,11 +22,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
-    backdrop-filter: blur(12px);
-    background: rgba(25,25,25,0.3);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 0 25px; /* थोड़ा पैडिंग बढ़ाया गया */
+    backdrop-filter: blur(15px); /* ब्लर इफेक्ट थोड़ा बढ़ाया गया */
+    background: rgba(25, 25, 25, 0.4); /* थोड़ा गहरा बैकग्राउंड */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 1000;
+    box-sizing: border-box; /* पैडिंग को चौड़ाई में शामिल करने के लिए */
   }
 
   .logo {
@@ -42,47 +44,60 @@
     color: white;
     font-size: 22px;
     font-weight: bold;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s ease; /* स्मूथ ट्रांज़िशन */
   }
 
-  .title.hidden { opacity: 0; }
+  .title.hidden {
+    opacity: 0;
+  }
 
   .icons {
     display: flex;
     gap: 20px;
-    position: relative;
-    z-index: 1001;
+    align-items: center; /* आइकन्स और सर्च बॉक्स को सेंटर में रखने के लिए */
   }
 
   .icons i {
     font-size: 24px;
     color: white;
     cursor: pointer;
+    transition: color 0.3s ease; /* होवर इफेक्ट के लिए ट्रांज़िशन */
   }
 
-  .icons i:hover { color: #e50914; }
+  .icons i:hover {
+    color: #e50914;
+  }
 
   .search-box {
-    display: none;
-    position: absolute;
-    right: 60px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 200px;
-    z-index: 1002;
+    /* शुरुआत में छिपा हुआ */
+    opacity: 0;
+    visibility: hidden;
+    width: 0; /* चौड़ाई 0 से शुरू होगी */
+    transition: all 0.4s ease; /* सभी प्रॉपर्टीज पर स्मूथ ट्रांज़िशन */
+  }
+
+  .search-box.active {
+    /* एक्टिव होने पर दिखेगा */
+    opacity: 1;
+    visibility: visible;
+    width: 200px; /* चौड़ाई बढ़ जाएगी */
+    margin-right: 15px; /* आइकन से थोड़ी दूरी */
   }
 
   .search-box input {
     width: 100%;
-    padding: 7px 12px;
+    padding: 7px 15px;
     border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.5);
-    background: rgba(0,0,0,0.7);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     color: white;
     font-size: 15px;
   }
 
-  .search-box input:focus { outline: none; }
+  .search-box input:focus {
+    outline: none;
+    border-color: #e50914; /* फोकस होने पर बॉर्डर कलर */
+  }
 
 </style>
 </head>
@@ -92,11 +107,11 @@
   <div class="logo"></div>
   <div class="title" id="title">My App</div>
 
-  <div class="search-box" id="searchBox">
-    <input type="text" placeholder="Search...">
-  </div>
-
   <div class="icons">
+    <!-- सर्च बॉक्स को आइकन्स के अंदर रखा गया है बेहतर अलाइनमेंट के लिए -->
+    <div class="search-box" id="searchBox">
+      <input type="text" placeholder="Search...">
+    </div>
     <i id="searchIcon" class="fas fa-search"></i>
     <i class="fas fa-bell"></i>
   </div>
@@ -108,24 +123,26 @@
   const searchBox = document.getElementById('searchBox');
   const searchInput = searchBox.querySelector('input');
 
-  let active = false;
-
+  // जब सर्च आइकन पर क्लिक हो
   searchIcon.addEventListener('click', () => {
-    active = !active;
-    if(active){
-      title.classList.add('hidden');
-      searchBox.style.display = 'block';
+    // searchBox पर 'active' क्लास को टॉगल करें (अगर है तो हटा दें, नहीं है तो जोड़ दें)
+    const isNowActive = searchBox.classList.toggle('active');
+    
+    // title को छिपाएं या दिखाएं, यह इस पर निर्भर करता है कि searchBox एक्टिव है या नहीं
+    title.classList.toggle('hidden', isNowActive);
+
+    // अगर सर्च बॉक्स अभी एक्टिव हुआ है, तो इनपुट फील्ड पर फोकस करें
+    if (isNowActive) {
       searchInput.focus();
-    } else {
-      title.classList.remove('hidden');
-      searchBox.style.display = 'none';
     }
   });
 
+  // जब यूजर सर्च इनपुट से बाहर क्लिक करे (blur)
   searchInput.addEventListener('blur', () => {
+    // searchBox से 'active' क्लास हटा दें
+    searchBox.classList.remove('active');
+    // title से 'hidden' क्लास हटा दें
     title.classList.remove('hidden');
-    searchBox.style.display = 'none';
-    active = false;
   });
 </script>
 
