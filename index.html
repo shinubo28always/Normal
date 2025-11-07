@@ -71,24 +71,29 @@
   }
 
   .search-box {
-    /* शुरुआत में छिपा हुआ */
+    position: absolute;
+    top: 50%;
+    right: 70px; /* search icon se gap */
+    transform: translateY(-50%);
     opacity: 0;
     visibility: hidden;
-    width: 0; /* चौड़ाई 0 से शुरू होगी */
-    transition: all 0.4s ease; /* सभी प्रॉपर्टीज पर स्मूथ ट्रांज़िशन */
-  }
+    width: 0;
+    transition: all 0.4s ease;
+    z-index: 1002; /* logo ke upar aa sake */
+}
+
 
   .search-box.active {
     /* एक्टिव होने पर दिखेगा */
     opacity: 1;
     visibility: visible;
     width: 200px; /* चौड़ाई बढ़ जाएगी */
-    margin-right: 13px; /* आइकन से थोड़ी दूरी */
+    margin-right: 15px; /* आइकन से थोड़ी दूरी */
   }
 
   .search-box input {
     width: 100%;
-    padding: 7px 13px;
+    padding: 7px 15px;
     border-radius: 20px;
     border: 2px solid rgba(255, 255, 255, 0.5);
     background: rgba(0, 0, 0, 0.7);
