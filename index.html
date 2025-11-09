@@ -1,159 +1,93 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Header</title>
+<title>Bottom Navigation</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
   body {
     margin: 0;
-    font-family: sans-serif;
-    /* एक बेहतर बैकग्राउंड इमेज का इस्तेमाल किया गया है */
-    background: url('https://images.unsplash.com/photo-1554141311-6a4a279339e5?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    background: white;
     height: 100vh;
   }
 
-  header {
+  .bottom-nav {
     position: fixed;
-    top: 0;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    height: 70px;
+    height: 65px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    padding: 0 25px; /* थोड़ा पैडिंग बढ़ाया गया */
-    backdrop-filter: blur(15px); /* ब्लर इफेक्ट थोड़ा बढ़ाया गया */
-    background: rgba(25, 25, 25, 0.4); /* थोड़ा गहरा बैकग्राउंड */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 1000;
-    box-sizing: border-box; /* पैडिंग को चौड़ाई में शामिल करने के लिए */
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.6);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    z-index: 999;
   }
 
-  .logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background-image: url('https://i.postimg.cc/Wp8LSdxD/Picsart-25-11-08-01-08-30-721.png');
-  background-size: cover;
-  background-position: center;
-}
-
-  .title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    font-size: 22px;
-    font-weight: bold;
-    transition: opacity 0.3s ease; /* स्मूथ ट्रांज़िशन */
-  }
-
-  .title.hidden {
-    opacity: 0;
-  }
-
-  .icons {
+  .nav-item {
     display: flex;
-    gap: 20px;
-    align-items: center; /* आइकन्स और सर्च बॉक्स को सेंटर में रखने के लिए */
+    flex-direction: column;
+    align-items: center;
+    color: #666;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.3s ease;
   }
 
-  .icons i {
-    font-size: 24px;
-    color: white;
-    cursor: pointer;
-    transition: color 0.3s ease; /* होवर इफेक्ट के लिए ट्रांज़िशन */
+  .nav-item i {
+    font-size: 22px;
+    margin-bottom: 4px;
+    transition: color 0.3s ease;
   }
 
-  .icons i:hover {
+  .nav-item.active i,
+  .nav-item.active {
     color: #e50914;
   }
 
-  .search-box {
-    position: absolute;
-    top: 50%;
-    right: 115px; /* search icon se gap */
-    transform: translateY(-50%);
-    opacity: 0;
-    visibility: hidden;
-    width: 0;
-    transition: all 0.4s ease;
-    z-index: 1002; /* logo ke upar aa sake */
-}
-
-
-  .search-box.active {
-    /* एक्टिव होने पर दिखेगा */
-    opacity: 1;
-    visibility: visible;
-    width: 180px; /* चौड़ाई बढ़ जाएगी */
-    margin-right: 15px; /* आइकन से थोड़ी दूरी */
+  .nav-item:hover {
+    color: #e50914;
   }
-
-  .search-box input {
-    width: 100%;
-    padding: 7px 15px;
-    border-radius: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    font-size: 15px;
-  }
-
-  .search-box input:focus {
-    outline: none;
-    border-color: #e50914; /* फोकस होने पर बॉर्डर कलर */
-  }
-
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo"></div>
-  <div class="title" id="title">
-  <img src="https://i.postimg.cc/wxsbP7tH/Picsart-25-11-08-00-42-14-226.png" 
-       alt="AniReal Logo" 
-       style="height:60px; object-fit:contain;">
+<div style="height:90vh; display:flex; justify-content:center; align-items:center; font-size:20px;">
+  <p>Page Content Area</p>
 </div>
 
-  <div class="icons">
-    <!-- सर्च बॉक्स को आइकन्स के अंदर रखा गया है बेहतर अलाइनमेंट के लिए -->
-    <div class="search-box" id="searchBox">
-      <input type="text" placeholder="Search...">
-    </div>
-    <i id="searchIcon" class="fas fa-search"></i>
-    <i class="fas fa-bell"></i>
-  </div>
-</header>
+<div class="bottom-nav">
+  <a href="#" class="nav-item active">
+    <i class="fas fa-home"></i>
+    <span>Home</span>
+  </a>
+  <a href="#" class="nav-item">
+    <i class="fas fa-calendar-alt"></i>
+    <span>Schedule</span>
+  </a>
+  <a href="#" class="nav-item">
+    <i class="fas fa-bookmark"></i>
+    <span>Watchlist</span>
+  </a>
+  <a href="#" class="nav-item">
+    <i class="fas fa-user"></i>
+    <span>You</span>
+  </a>
+</div>
 
 <script>
-  const searchIcon = document.getElementById('searchIcon');
-  const title = document.getElementById('title');
-  const searchBox = document.getElementById('searchBox');
-  const searchInput = searchBox.querySelector('input');
-
-  // जब सर्च आइकन पर क्लिक हो
-  searchIcon.addEventListener('click', () => {
-    // searchBox पर 'active' क्लास को टॉगल करें (अगर है तो हटा दें, नहीं है तो जोड़ दें)
-    const isNowActive = searchBox.classList.toggle('active');
-    
-    // title को छिपाएं या दिखाएं, यह इस पर निर्भर करता है कि searchBox एक्टिव है या नहीं
-    title.classList.toggle('hidden', isNowActive);
-
-    // अगर सर्च बॉक्स अभी एक्टिव हुआ है, तो इनपुट फील्ड पर फोकस करें
-    if (isNowActive) {
-      searchInput.focus();
-    }
-  });
-
-  // जब यूजर सर्च इनपुट से बाहर क्लिक करे (blur)
-  searchInput.addEventListener('blur', () => {
-    // searchBox से 'active' क्लास हटा दें
-    searchBox.classList.remove('active');
-    // title से 'hidden' क्लास हटा दें
-    title.classList.remove('hidden');
+  const items = document.querySelectorAll('.nav-item');
+  items.forEach(item => {
+    item.addEventListener('click', () => {
+      items.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
   });
 </script>
 
