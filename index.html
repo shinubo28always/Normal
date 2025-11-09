@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bottom Navigation - Modern UI</title>
+<title>Bottom Navigation - Animated Icons</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
@@ -38,7 +38,6 @@
   }
 
   .nav-item {
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -49,14 +48,21 @@
   }
 
   .nav-item i {
-    font-size: 22px;
-    margin-bottom: 5px;
-    transition: all 0.3s ease;
+    font-size: 24px;
+    margin-bottom: 4px;
+    color: #aaa;
+    transition: all 0.3s ease; /* animation for scaling/color */
   }
 
   .nav-item.active i {
     color: #ff004c;
-    transform: scale(1.25);
+    transform: scale(1.3); /* active icon grow */
+  }
+
+  .nav-item span {
+    color: rgba(255,255,255,0.7);
+    font-weight: 400;
+    transition: all 0.3s ease;
   }
 
   .nav-item.active span {
@@ -64,26 +70,10 @@
     font-weight: 500;
   }
 
-  .nav-item::before {
-    content: "";
-    position: absolute;
-    bottom: -5px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #ff004c;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  .nav-item:hover i,
+  .nav-item:hover span {
+    color: #ff004c;
   }
-
-  .nav-item.active::before {
-    opacity: 1;
-  }
-
-  .nav-item:hover {
-    color: white;
-  }
-
 </style>
 </head>
 <body>
@@ -92,11 +82,11 @@
 
 <div class="bottom-nav">
   <a href="#" class="nav-item active">
-    <i class="fas fa-home"></i>
+    <i class="fas fa-house"></i>
     <span>Home</span>
   </a>
   <a href="#" class="nav-item">
-    <i class="fas fa-calendar-days"></i>
+    <i class="fas fa-calendar-check"></i>
     <span>Schedule</span>
   </a>
   <a href="#" class="nav-item">
@@ -104,7 +94,7 @@
     <span>Watchlist</span>
   </a>
   <a href="#" class="nav-item">
-    <i class="fas fa-user"></i>
+    <i class="fas fa-user-circle"></i>
     <span>You</span>
   </a>
 </div>
