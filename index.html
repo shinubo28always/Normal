@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bottom Navigation</title>
+<title>Bottom Navigation - Modern UI</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
@@ -11,56 +11,84 @@
     margin: 0;
     padding: 0;
     font-family: "Poppins", sans-serif;
-    background: white;
+    background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+    color: white;
     height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .bottom-nav {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 65px;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 420px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    backdrop-filter: blur(12px);
-    background: rgba(255, 255, 255, 0.6);
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    z-index: 999;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   .nav-item {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #666;
-    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
+    font-size: 13px;
     transition: all 0.3s ease;
   }
 
   .nav-item i {
     font-size: 22px;
-    margin-bottom: 4px;
-    transition: color 0.3s ease;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
   }
 
-  .nav-item.active i,
-  .nav-item.active {
-    color: #e50914;
+  .nav-item.active i {
+    color: #ff004c;
+    transform: scale(1.25);
+  }
+
+  .nav-item.active span {
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .nav-item::before {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ff004c;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-item.active::before {
+    opacity: 1;
   }
 
   .nav-item:hover {
-    color: #e50914;
+    color: white;
   }
+
 </style>
 </head>
 <body>
 
-<div style="height:90vh; display:flex; justify-content:center; align-items:center; font-size:20px;">
-  <p>Page Content Area</p>
-</div>
+<div style="text-align:center; font-size:20px;">Main Content Area</div>
 
 <div class="bottom-nav">
   <a href="#" class="nav-item active">
@@ -68,7 +96,7 @@
     <span>Home</span>
   </a>
   <a href="#" class="nav-item">
-    <i class="fas fa-calendar-alt"></i>
+    <i class="fas fa-calendar-days"></i>
     <span>Schedule</span>
   </a>
   <a href="#" class="nav-item">
