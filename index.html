@@ -3,187 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full-Fit Slider with Anime Card</title>
-    <!-- SwiperJS की CSS फ़ाइल -->
+    <title>Slider with Pill Shape Buttons</title>
+    <!-- SwiperJS CSS File -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <style>
-        /* पूरी बॉडी से डिफ़ॉल्ट मार्जिन और पैडिंग हटाना */
+        /* --- Basic Setup --- */
         body, html {
             margin: 0;
             padding: 0;
             font-family: sans-serif;
             background-color: #fff;
         }
-
-        /* स्लाइडर का मुख्य कंटेनर */
-        .swiper-container {
-            width: 100%;
-            height: 50vh; /* आप इसे अपनी ज़रूरत के हिसाब से बदल सकते हैं */
-        }
-
-        /* हर एक स्लाइड */
+        .swiper-container { width: 100%; height: 50vh; }
         .swiper-slide {
-            position: relative;
-            color: #333;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            overflow: hidden; /* ज़रूरी है ताकि कार्ड बाहर न दिखे */
+            position: relative; color: #333; display: flex;
+            align-items: flex-end; justify-content: center; overflow: hidden;
         }
-
-        /* स्लाइड की बैकग्राउंड इमेज */
-        .swiper-slide > img { /* डायरेक्ट चाइल्ड इमेज को टारगेट किया */
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
+        .swiper-slide > img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -1;
         }
-
-        /* इमेज के ऊपर का कंटेंट */
         .slide-content {
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
+            width: 100%; padding: 20px; box-sizing: border-box;
             background: linear-gradient(to top, rgba(255,255,255,0.95) 10%, rgba(255,255,255,0) 100%);
-            z-index: 2; /* कंटेंट को कार्ड के ऊपर रखना */
+            z-index: 2;
         }
+        .slide-title { font-size: 1.5em; font-weight: bold; margin: 0 0 5px 0; }
+        .slide-genres { font-size: 0.9em; margin: 0 0 15px 0; color: #555; }
+        .swiper-pagination-bullet { background: #888; opacity: 0.5; }
+        .swiper-pagination-bullet-active { background: #000; opacity: 1; }
 
-        .slide-title {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin: 0 0 5px 0;
+        /* --- Animations (Content and Card) --- */
+        @keyframes contentFadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .slide-genres {
-            font-size: 0.9em;
-            margin: 0 0 15px 0;
-            color: #555;
+        .swiper-slide .slide-content > * { opacity: 0; }
+        .swiper-slide-active .slide-content .slide-title { animation: contentFadeInUp 0.6s ease-out 0.3s forwards; }
+        .swiper-slide-active .slide-content .slide-genres { animation: contentFadeInUp 0.6s ease-out 0.5s forwards; }
+        .swiper-slide-active .slide-content .slide-buttons { animation: contentFadeInUp 0.6s ease-out 0.7s forwards; }
+        .anime-card {
+            position: absolute; right: 5%; bottom: 25%; width: 150px; z-index: 1;
+            opacity: 0; transform: translateX(150%);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            border-radius: 8px; overflow: hidden;
         }
+        .anime-card img { width: 100%; height: 220px; object-fit: cover; display: block; }
+        .anime-card-info {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px;
+            box-sizing: border-box; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+        }
+        .anime-card-title, .anime-card-episode { margin: 0; color: #fff; }
+        .anime-card-title { font-size: 0.9em; font-weight: bold; }
+        .anime-card-episode { font-size: 0.8em; font-weight: normal; opacity: 0.9; }
+        @keyframes slideInFromRight {
+            from { opacity: 0; transform: translateX(150%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .swiper-slide-active .anime-card { animation: slideInFromRight 0.8s ease-out 0.6s forwards; }
 
+        /*
+        =========================================================
+        === FINAL PILL SHAPE BUTTON STYLES ===
+        =========================================================
+        */
+        
         .slide-buttons button {
-            padding: 10px 20px;
+            /* Common styles for the pill shape buttons */
             border: none;
-            border-radius: 5px;
             cursor: pointer;
             font-size: 1em;
             font-weight: bold;
             margin-right: 10px;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+            padding: 12px 24px;
+            border-radius: 50px; /* This creates the pill shape! */
         }
 
+        .slide-buttons button:hover {
+            transform: scale(1.05); /* Modern hover effect */
+        }
+        
         .play-button {
             background-color: #E50914;
             color: white;
         }
 
         .my-list-button {
+            position: relative;
             background-color: rgba(50, 50, 50, 0.7);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.7);
-        }
-
-        .swiper-pagination-bullet {
-            background: #888;
-            opacity: 0.5;
-        }
-        .swiper-pagination-bullet-active {
-            background: #000;
-            opacity: 1;
-        }
-
-        /* --- कंटेंट का एनिमेशन --- */
-        @keyframes contentFadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .swiper-slide .slide-content > * {
-            opacity: 0;
+            width: 130px; /* Fixed width */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            overflow: hidden;
         }
         
-        .swiper-slide-active .slide-content .slide-title {
-            animation: contentFadeInUp 0.6s ease-out 0.3s forwards;
+        /* --- Styles for 'My List' Button Animation --- */
+        .my-list-button .icon {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            opacity: 0; transition: transform 0.5s ease, opacity 0.5s ease;
         }
-        .swiper-slide-active .slide-content .slide-genres {
-            animation: contentFadeInUp 0.6s ease-out 0.5s forwards;
-        }
-        .swiper-slide-active .slide-content .slide-buttons {
-            animation: contentFadeInUp 0.6s ease-out 0.7s forwards;
-        }
+        .my-list-button .text { transition: opacity 0.3s ease; }
 
-        /* --- नया: एनीमे कार्ड स्टाइल (बदलाव के साथ) --- */
-        .anime-card {
-            position: absolute;
-            right: 5%;
-            bottom: 25%;
-            width: 150px;
-            z-index: 1;
-            opacity: 0;
-            transform: translateX(150%);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-            border-radius: 8px; /* कंटेनर पर रेडियस */
-            overflow: hidden; /* यह सुनिश्चित करेगा कि अंदर का कंटेंट बाहर न जाए */
+        .my-list-button.added {
+            background-color: #28a745;
+            border-color: #28a745;
         }
-
-        .anime-card img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block; /* इमेज के नीचे की अतिरिक्त जगह को हटाता है */
+        .my-list-button.added .icon {
+            opacity: 1; animation: moveIcon 0.5s forwards;
         }
-        
-        /* टेक्स्ट के लिए कंटेनर */
-        .anime-card-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); /* ग्रेडिएंट */
+        @keyframes moveIcon {
+            to { left: 15px; transform: translateX(0); }
         }
-
-        .anime-card-title, .anime-card-episode {
-            margin: 0;
-            color: #fff;
+        .my-list-button.added .text {
+            animation: fadeInText 0.5s 0.2s forwards; opacity: 0;
         }
-
-        .anime-card-title {
-            font-size: 0.9em;
-            font-weight: bold;
-        }
-
-        .anime-card-episode {
-            font-size: 0.8em;
-            font-weight: normal;
-            opacity: 0.9;
-        }
-
-
-        /* --- नया: कार्ड के लिए एनिमेशन --- */
-        @keyframes slideInFromRight {
-            from {
-                opacity: 0;
-                transform: translateX(150%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* सिर्फ़ एक्टिव स्लाइड के कार्ड पर एनिमेशन लागू करना */
-        .swiper-slide-active .anime-card {
-             animation: slideInFromRight 0.8s ease-out 0.6s forwards;
-        }
+        @keyframes fadeInText { to { opacity: 1; } }
 
     </style>
 </head>
@@ -191,7 +130,7 @@
 
     <div class="swiper-container main-slider">
         <div class="swiper-wrapper">
-            <!-- स्लाइड 1 -->
+            <!-- Slide 1 -->
             <div class="swiper-slide">
                 <img src="https://photo.chelpbot.me/AgACAgUAAxkBVgXzAWiTo2OBfoM53p1R4AowRhGXhtzrAAJtxDEb50FZVxms-Vz1k5nsAQADAgADeQADNgQ/photo.jpg" alt="Banner 1">
                 <div class="slide-content">
@@ -199,10 +138,12 @@
                     <p class="slide-genres">Action, Adventure, Fantasy, Isekai</p>
                     <div class="slide-buttons">
                         <button class="play-button">► Play</button>
-                        <button class="my-list-button">+ My List</button>
+                        <button class="my-list-button">
+                            <span class="icon">✔</span>
+                            <span class="text">+ My List</span>
+                        </button>
                     </div>
                 </div>
-                <!-- नया: एनीमे कार्ड (बदलाव के साथ) -->
                 <div class="anime-card">
                     <img src="https://www.crunchyroll.com/imgsrv/display/thumbnail/480x720/catalog/crunchyroll/355037d4f4f33772271a4f0051390352.jpe" alt="Anime Card 1">
                     <div class="anime-card-info">
@@ -212,7 +153,7 @@
                 </div>
             </div>
 
-            <!-- स्लाइड 2 -->
+            <!-- Slide 2 -->
             <div class="swiper-slide">
                 <img src="https://photo.chelpbot.me/AgACAgUAAxkBXQtq02kCvXb0bOTI9XR77HjUy_d7F8mRAAIIDmsbju7IVzz2_rKVGCNDAQADAgADeQADNgQ/photo.jpg" alt="Banner 2">
                 <div class="slide-content">
@@ -220,10 +161,12 @@
                     <p class="slide-genres">Action, Demons, Supernatural</p>
                     <div class="slide-buttons">
                         <button class="play-button">► Play</button>
-                        <button class="my-list-button">+ My List</button>
+                        <button class="my-list-button">
+                            <span class="icon">✔</span>
+                            <span class="text">+ My List</span>
+                        </button>
                     </div>
                 </div>
-                <!-- नया: एनीमे कार्ड (बदलाव के साथ) -->
                 <div class="anime-card">
                     <img src="https://cdn.myanimelist.net/images/anime/1171/109222.jpg" alt="Anime Card 2">
                     <div class="anime-card-info">
@@ -233,7 +176,7 @@
                 </div>
             </div>
 
-            <!-- स्लाइड 3 -->
+            <!-- Slide 3 -->
             <div class="swiper-slide">
                 <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Banner 3">
                 <div class="slide-content">
@@ -241,12 +184,14 @@
                     <p class="slide-genres">Action, Drama, Fantasy, Mystery</p>
                     <div class="slide-buttons">
                         <button class="play-button">► Play</button>
-                        <button class="my-list-button">+ My List</button>
+                        <button class="my-list-button">
+                            <span class="icon">✔</span>
+                            <span class="text">+ My List</span>
+                        </button>
                     </div>
                 </div>
-                <!-- नया: एनीमे कार्ड (बदलाव के साथ) -->
                 <div class="anime-card">
-                    <img src="https://cdn.myanimelist.net/images/anime/10/47347.jpg" alt="Anime Card 3">
+                    <img src="https://cdn.myanimelist.net/images/anime/10/47t347.jpg" alt="Anime Card 3">
                     <div class="anime-card-info">
                         <p class="anime-card-title">Attack on Titan</p>
                         <p class="anime-card-episode">Final Season</p>
@@ -259,22 +204,30 @@
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
+        // Initialize the Swiper slider
         var swiper = new Swiper('.main-slider', {
             effect: 'fade',
-            fadeEffect: {
-                crossFade: true
-            },
+            fadeEffect: { crossFade: true },
             speed: 1000,
             slidesPerView: 1,
             loop: true,
-            autoplay: {
-                delay: 4000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
+            autoplay: { delay: 4000, disableOnInteraction: false },
+            pagination: { el: '.swiper-pagination', clickable: true },
+        });
+
+        // 'My List' Button Animation Logic
+        const myListButtons = document.querySelectorAll('.my-list-button');
+        myListButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const textSpan = button.querySelector('.text');
+                if (button.classList.contains('added')) {
+                    button.classList.remove('added');
+                    textSpan.textContent = '+ My List';
+                } else {
+                    button.classList.add('added');
+                    textSpan.textContent = 'Added';
+                }
+            });
         });
     </script>
 
