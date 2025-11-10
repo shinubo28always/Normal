@@ -146,7 +146,12 @@
             width: 100%;
             padding: 20px;
             box-sizing: border-box;
-            background: linear-gradient(to top, rgba(255, 255, 255, 0.4) 10%, rgba(255, 255, 255, 0) 100%);
+            background: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0) 0%,      /* completely transparent top */
+        rgba(255, 255, 255, 0.2) 30%,   /* soft fade */
+        rgba(255, 255, 255, 1) 100%      /* hard white bottom */
+    );
             z-index: 2;
             color: #fff; /* Modified for better text visibility */
         }
