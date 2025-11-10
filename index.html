@@ -645,12 +645,33 @@ const allContentSections = document.querySelectorAll('.content-section > h2, .co
             }
         });
 
-        searchInput.addEventListener('blur', () => {
-            if (searchInput.value === '') {
-                searchBox.classList.remove('active');
-                title.classList.remove('hidden');
-            }
-        });
+        // Search input par type karne se kya hoga
+searchInput.addEventListener('input', () => {
+    const query = searchInput.value;
+    showSuggestions(query);
+    if(query.length === 0){
+        performSearch(''); // Khali search se sab reset ho jayega
+    }
+});
+
+// Enter dabane par search karega
+searchInput.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') {
+        performSearch(searchInput.value);
+        searchResultsContainer.style.display = 'none';
+    }
+});
+
+// Search box ke bahar click karne par suggestions band ho jayenge
+document.addEventListener('click', (e) => {
+    if (!searchBox.contains(e.target)) {
+        searchResultsContainer.style.display = 'none';
+        if (searchInput.value === '') {
+            searchBox.classList.remove('active');
+            title.classList.remove('hidden');
+        }
+    }
+});
 
         // --- Bottom Navigation Script from Code #1 ---
         const navItems = document.querySelectorAll('.nav-item');
