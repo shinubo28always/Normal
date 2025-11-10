@@ -1,233 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anime App UI</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-    body {
-        background-color: #ffffff;
-        font-family: 'Poppins', sans-serif;
-        margin: 0;
-        padding: 20px;
-        color: #000;
-    }
-
-    h2 {
-        font-weight: 700;
-        margin-bottom: 20px;
-        font-size: 1.8em;
-        border-left: 4px solid #1e90ff;
-        padding-left: 10px;
-    }
-
-    /* === New Releases Style 1 === */
-    .new-release-container {
-        display: flex;
-        gap: 20px;
-        overflow-x: auto;
-        padding: 10px 0;
-        scrollbar-width: thin;
-        scrollbar-color: #888 #ddd;
-    }
-
-    .new-release-container::-webkit-scrollbar {
-        height: 8px;
-    }
-    .new-release-container::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
-    .new-release-container::-webkit-scrollbar-track { background: #ddd; border-radius: 10px; }
-
-    .new-release-card {
-        flex: 0 0 250px;
-        background-color: #f0f0f0;
-        border-radius: 12px;
-        overflow: hidden;
-        position: relative;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-    }
-
-    .new-release-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 8px 20px rgba(30,144,255,0.3);
-    }
-
-    .new-release-card img {
-        width: 250px;
-        height: 140px;
-        object-fit: cover;
-        display: block;
-        transition: transform 0.3s ease;
-    }
-
-    .new-release-card:hover img { transform: scale(1.1); }
-
-    .new-release-card-content {
-        padding: 10px;
-    }
-
-    .new-release-card-title { font-weight: 600; margin: 0 0 5px 0; }
-    .new-release-card-genres { font-size: 0.85em; color: #555; }
-
-    .rating-tag {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        background-color: #1e90ff;
-        color: white;
-        padding: 3px 8px;
-        border-radius: 5px;
-        font-size: 0.8em;
-        font-weight: 600;
-    }
-
-    /* === Top Hits / Most Favourite / Most Popular Style 2 === */
-    .anime-row {
-        display: flex;
-        gap: 15px;
-        overflow-x: auto;
-        padding: 10px 0;
-        scroll-behavior: smooth;
-    }
-
-    .anime-row::-webkit-scrollbar { display: none; }
-
-    .anime-card {
-        flex: 0 0 180px;
-        height: 270px;
-        border-radius: 12px;
-        overflow: hidden;
-        background-color: #f0f0f0;
-        position: relative;
-        display: block;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-    }
-
-    .anime-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 8px 20px rgba(30,144,255,0.3);
-    }
-
-    .anime-card img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-
-    .anime-card:hover img { transform: scale(1.05); }
-
-    .info-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 8px;
-        background: rgba(255,255,255,0.85);
-        color: black;
-    }
-
-    .info-overlay .title { font-weight: 600; font-size: 0.95em; margin: 0; }
-    .info-overlay .episodes { font-size: 0.8em; margin: 2px 0 0 0; }
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime App UI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Aapka CSS code yahan hai (koi badlav nahi) */
+        body { background-color: #ffffff; font-family: 'Poppins', sans-serif; margin: 0; padding: 20px; color: #000; }
+        h2 { font-weight: 700; margin-bottom: 20px; font-size: 1.8em; border-left: 4px solid #1e90ff; padding-left: 10px; }
+        .new-release-container { display: flex; gap: 20px; overflow-x: auto; padding: 10px 0; scrollbar-width: thin; scrollbar-color: #888 #ddd; }
+        .new-release-container::-webkit-scrollbar { height: 8px; }
+        .new-release-container::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+        .new-release-container::-webkit-scrollbar-track { background: #ddd; border-radius: 10px; }
+        .new-release-card { flex: 0 0 250px; background-color: #f0f0f0; border-radius: 12px; overflow: hidden; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+        .new-release-card:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(30,144,255,0.3); }
+        .new-release-card img { width: 250px; height: 140px; object-fit: cover; display: block; }
+        .new-release-card-content { padding: 10px; }
+        .new-release-card-title { font-weight: 600; margin: 0 0 5px 0; }
+        .new-release-card-genres { font-size: 0.85em; color: #555; }
+        .rating-tag { position: absolute; top: 8px; right: 8px; background-color: #1e90ff; color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.8em; font-weight: 600; }
+        .anime-row { display: flex; gap: 15px; overflow-x: auto; padding: 10px 0; scroll-behavior: smooth; }
+        .anime-row::-webkit-scrollbar { display: none; }
+        .anime-card { flex: 0 0 180px; height: 270px; border-radius: 12px; overflow: hidden; background-color: #f0f0f0; position: relative; display: block; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+        .anime-card:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(30,144,255,0.3); }
+        .anime-card img { width: 100%; height: 100%; object-fit: cover; }
+        .info-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: rgba(255,255,255,0.85); color: black; }
+        .info-overlay .title { font-weight: 600; font-size: 0.95em; margin: 0; }
+        .info-overlay .episodes { font-size: 0.8em; margin: 2px 0 0 0; }
+        
+        /* View More Button Style */
+        .view-more-container { text-align: center; margin: 40px 0; }
+        .view-more-btn {
+            background-color: #1e90ff;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .view-more-btn:hover {
+            background-color: #0073e6;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
 
 <!-- New Releases -->
 <h2>✨ New Releases</h2>
-<div class="new-release-container">
-    <div class="new-release-card">
-        <div class="rating-tag">8.5</div>
-        <img src="https://photo.chelpbot.me/AgACAgUAAxkBXQtq02kCvXb0bOTI9XR77HjUy_d7F8mRAAIIDmsbju7IVzz2_rKVGCNDAQADAgADeQADNgQ/photo.jpg" alt="Anime 1">
-        <div class="new-release-card-content">
-            <h3 class="new-release-card-title">Anime Title 1</h3>
-            <div class="new-release-card-genres"><span>Action</span></div>
-        </div>
-    </div>
-
-    <div class="new-release-card">
-        <div class="rating-tag">9.2</div>
-        <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Anime 2">
-        <div class="new-release-card-content">
-            <h3 class="new-release-card-title">Anime Title 2</h3>
-            <div class="new-release-card-genres"><span>Fantasy</span></div>
-        </div>
-    </div>
-
-    <div class="new-release-card">
-        <div class="rating-tag">8.8</div>
-        <img src="https://photo.chelpbot.me/AgACAgUAAxkBVgXzAWiTo2OBfoM53p1R4AowRhGXhtzrAAJtxDEb50FZVxms-Vz1k5nsAQADAgADeQADNgQ/photo.jpg" alt="Anime 3">
-        <div class="new-release-card-content">
-            <h3 class="new-release-card-title">Anime Title 3</h3>
-            <div class="new-release-card-genres"><span>Adventure</span></div>
-        </div>
-    </div>
+<div class="new-release-container" id="new-releases-container">
+    <!-- Animes yahan JavaScript se add honge -->
 </div>
 
 <!-- Top Hits -->
 <h2>🔥 Top Hits Anime</h2>
-<div class="anime-row">
-    <div class="anime-card">
-        <img src="https://photo.chelpbot.me/AgACAgUAAxkBXQtq02kCvXb0bOTI9XR77HjUy_d7F8mRAAIIDmsbju7IVzz2_rKVGCNDAQADAgADeQADNgQ/photo.jpg" alt="Top 1">
-        <div class="info-overlay">
-            <h3 class="title">Top Anime 1</h3>
-            <p class="episodes">Episodes: --</p>
-        </div>
-    </div>
-
-    <div class="anime-card">
-        <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Top 2">
-        <div class="info-overlay">
-            <h3 class="title">Top Anime 2</h3>
-            <p class="episodes">Episodes: --</p>
-        </div>
-    </div>
+<div class="anime-row" id="top-hits-container">
+    <!-- Animes yahan JavaScript se add honge -->
 </div>
 
 <!-- Most Favourite -->
 <h2>💖 Most Favourite</h2>
-<div class="anime-row">
-    <div class="anime-card">
-        <img src="https://i.imgur.com/8YlQk6l.jpg" alt="Fav 1">
-        <div class="info-overlay">
-            <h3 class="title">Fav Anime 1</h3>
-            <p class="episodes">Episodes: 12</p>
-        </div>
-    </div>
-
-    <div class="anime-card">
-        <img src="https://i.imgur.com/p1s4pD4.jpg" alt="Fav 2">
-        <div class="info-overlay">
-            <h3 class="title">Fav Anime 2</h3>
-            <p class="episodes">Episodes: 8</p>
-        </div>
-    </div>
+<div class="anime-row" id="most-favourite-container">
+    <!-- Animes yahan JavaScript se add honge -->
 </div>
 
 <!-- Most Popular -->
 <h2>🔥 Most Popular</h2>
-<div class="anime-row">
-    <div class="anime-card">
-        <img src="https://i.imgur.com/YwN9qC5.jpg" alt="Pop 1">
-        <div class="info-overlay">
-            <h3 class="title">Popular Anime 1</h3>
-            <p class="episodes">Episodes: 13</p>
-        </div>
-    </div>
-
-    <div class="anime-card">
-        <img src="https://i.imgur.com/mOQyHqg.jpg" alt="Pop 2">
-        <div class="info-overlay">
-            <h3 class="title">Popular Anime 2</h3>
-            <p class="episodes">Episodes: 10</p>
-        </div>
-    </div>
+<div class="anime-row" id="most-popular-container">
+    <!-- Animes yahan JavaScript se add honge -->
 </div>
 
+<!-- View More Button -->
+<div class="view-more-container">
+    <a href="all-anime.html" class="view-more-btn">View All Animes</a>
+</div>
+
+<script>
+    // Ye hamara DUMMY DATA hai. Jab aap Firebase connect karenge,
+    // to ye data Firebase se aayega.
+    const allAnimes = [
+        {
+            id: 1, title: 'Jujutsu Kaisen', genre: 'Action', rating: 8.7, imageUrl: 'https://m.media-amazon.com/images/M/MV5BNGY4MTg3NzgtMmFkZi00NTg5LWExMmEtMWI3YzI1ODdmMWQ1XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_FMjpg_UX1000_.jpg', episodes: 24, tags: ['new', 'tophit', 'popular']
+        },
+        {
+            id: 2, title: 'Demon Slayer', genre: 'Fantasy', rating: 9.2, imageUrl: 'https://m.media-amazon.com/images/M/MV5BZjZjNzI5MDctY2Y4YS00ZmM4LTg0YzgtYzdhNTA4YmM5OQxXkEyXkFqcGdeQXVyNTM4OTY4ODg@._V1_FMjpg_UX1000_.jpg', episodes: 26, tags: ['tophit', 'popular', 'favourite']
+        },
+        {
+            id: 3, title: 'Spy x Family', genre: 'Comedy', rating: 8.8, imageUrl: 'https://m.media-amazon.com/images/M/MV5BZWFTYjU1NGItMjA3My00YjFiLWFlODUtN2FhYWQ1NGI2OTRjXkEyXkFqcGdeQXVyMzgxODM4NjM@._V1_FMjpg_UX1000_.jpg', episodes: 12, tags: ['new', 'favourite']
+        },
+        {
+            id: 4, title: 'Attack on Titan', genre: 'Dark Fantasy', rating: 9.0, imageUrl: 'https://m.media-amazon.com/images/M/MV5BNDFjYTIxMjctYTQ2ZC00OGQwLThjcjMtMjc1NjRmZGMwOWU4XkEyXkFqcGdeQXVyNzI3NjY3NjQ@._V1_FMjpg_UX1000_.jpg', episodes: 75, tags: ['tophit', 'popular']
+        },
+        {
+            id: 5, title: 'One Punch Man', genre: 'Action, Comedy', rating: 8.7, imageUrl: 'https://m.media-amazon.com/images/M/MV5BMzE5MDM2NDY0OF5BMl5BanBnXkFtZTgwNjM3NDQxNzE@._V1_.jpg', episodes: 12, tags: ['favourite', 'popular']
+        },
+        {
+            id: 6, title: 'My Hero Academia', genre: 'Adventure', rating: 8.4, imageUrl: 'https://m.media-amazon.com/images/M/MV5BOGZmYjdjN2UtNjAwZi00YmEyLWFhNTEtNjA1NjgxMGEzY2I5XkEyXkFqcGdeQXVyMzgxODM4NjM@._V1_FMjpg_UX1000_.jpg', episodes: 113, tags: ['popular', 'favourite']
+        }
+    ];
+
+    // Containers ko select karna
+    const newReleasesContainer = document.getElementById('new-releases-container');
+    const topHitsContainer = document.getElementById('top-hits-container');
+    const mostFavouriteContainer = document.getElementById('most-favourite-container');
+    const mostPopularContainer = document.getElementById('most-popular-container');
+
+    // Page load hone par animes ko display karna
+    window.onload = function() {
+        allAnimes.forEach(anime => {
+            // Check karein ki anime kis category ka hai
+            if (anime.tags.includes('new')) {
+                const card = createNewReleaseCard(anime);
+                newReleasesContainer.innerHTML += card;
+            }
+            if (anime.tags.includes('tophit')) {
+                const card = createAnimeCard(anime);
+                topHitsContainer.innerHTML += card;
+            }
+            if (anime.tags.includes('favourite')) {
+                const card = createAnimeCard(anime);
+                mostFavouriteContainer.innerHTML += card;
+            }
+            if (anime.tags.includes('popular')) {
+                const card = createAnimeCard(anime);
+                mostPopularContainer.innerHTML += card;
+            }
+        });
+    };
+    
+    // Function: New Release style card banane ke liye
+    function createNewReleaseCard(anime) {
+        return `
+            <div class="new-release-card">
+                <div class="rating-tag">${anime.rating}</div>
+                <img src="${anime.imageUrl}" alt="${anime.title}">
+                <div class="new-release-card-content">
+                    <h3 class="new-release-card-title">${anime.title}</h3>
+                    <div class="new-release-card-genres"><span>${anime.genre}</span></div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Function: Baaki sabhi style ka card banane ke liye
+    function createAnimeCard(anime) {
+        return `
+            <div class="anime-card">
+                <img src="${anime.imageUrl}" alt="${anime.title}">
+                <div class="info-overlay">
+                    <h3 class="title">${anime.title}</h3>
+                    <p class="episodes">Episodes: ${anime.episodes}</p>
+                </div>
+            </div>
+        `;
+    }
+
+</script>
+
 </body>
-</html>
+    </html>
