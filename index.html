@@ -707,7 +707,65 @@ const allContentSections = document.querySelectorAll('.content-section > h2, .co
                 }
             });
         });
-        
+        // --- 'My List' Button Animation Script ke baad yeh daalein ---
+
+function showSuggestions(query) {
+    searchResultsContainer.innerHTML = '';
+    if (query.length === 0) {
+        searchResultsContainer.style.display = 'none';
+        return;
+    }
+    const filteredAnimes = allAnimes.filter(anime =>
+        anime.title.toLowerCase().startsWith(query.toLowerCase())
+    );
+    if (filteredAnimes.length > 0) {
+        filteredAnimes.forEach(anime => {
+            const item = document.createElement('div');
+            item.classList.add('suggestion-item');
+            item.textContent = anime.title;
+            item.addEventListener('click', () => {
+                searchInput.value = anime.title;
+                searchResultsContainer.style.display = 'none';
+                performSearch(anime.title);
+            });
+            searchResultsContainer.appendChild(item);
+        });
+        searchResultsContainer.style.display = 'block';
+    } else {
+        searchResultsContainer.style.display = 'none';
+    }
+}
+
+function performSearch(query) {
+    const lowerCaseQuery = query.toLowerCase();
+    let dynamicResultsContainer = document.querySelector('.search-dynamic-results');
+    
+    if (query.length === 0) {
+        allContentSections.forEach(el => el.style.display = '');
+        if (dynamicResultsContainer) dynamicResultsContainer.innerHTML = '';
+        return;
+    }
+    
+    allContentSections.forEach(el => el.style.display = 'none');
+    let resultsHTML = `<h2>Search Results for "${query}"</h2><div class="anime-row">`;
+    const searchResults = allAnimes.filter(anime =>
+        anime.title.toLowerCase().startsWith(lowerCaseQuery)
+    );
+    if (searchResults.length > 0) {
+        searchResults.forEach(anime => {
+            resultsHTML += anime.tags.includes('new') ? createNewReleaseCard(anime) : createAnimeCard(anime);
+        });
+    } else {
+        resultsHTML = `<h2>No results found for "${query}"</h2>`;
+    }
+    resultsHTML += `</div>`;
+    if (!dynamicResultsContainer) {
+        dynamicResultsContainer = document.createElement('div');
+        dynamicResultsContainer.className = 'content-section search-dynamic-results';
+        document.querySelector('.main-slider').after(dynamicResultsContainer);
+    }
+    dynamicResultsContainer.innerHTML = resultsHTML;
+}
         // --- SCRIPT FROM CODE #2 STARTS HERE ---
         const allAnimes = [
             {
