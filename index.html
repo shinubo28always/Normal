@@ -19,7 +19,7 @@
     overflow: hidden;
   }
 
-  /* White fade – always bottom layer */
+  /* सफ़ेद फेड - इमेज के ऊपर, कंटेंट के नीचे */
   .slider-container::after {
     content: '';
     position: absolute;
@@ -28,7 +28,7 @@
     right: 0;
     height: 150px;
     background: linear-gradient(to top, rgba(255,255,255,1) 60%, rgba(255,255,255,0));
-    z-index: 1; /* bottom */
+    z-index: 2;
     pointer-events: none;
   }
 
@@ -45,7 +45,7 @@
 
   .slide.active {
     opacity: 1;
-    z-index: 2;
+    z-index: 1;
   }
 
   .slide img {
@@ -59,9 +59,10 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 80px 20px 40px;
+    /* पैडिंग कम कर दी है ताकि बटन्स ऊपर आ जाएं */
+    padding: 20px 20px 30px; /* बदलाव यहाँ किया गया है */
     color: white;
-    z-index: 999;
+    z-index: 3;
   }
 
   .slide-content h2 {
@@ -74,7 +75,8 @@
   }
 
   .slide-content p {
-    margin: 5px 0 20px 14px;
+    /* नीचे का मार्जिन कम कर दिया है */
+    margin: 5px 0 15px 14px; /* बदलाव यहाँ किया गया है */
     font-size: 14px;
     opacity: 0.9;
   }
@@ -84,7 +86,6 @@
     gap: 10px;
     align-items: center;
     margin-left: 14px;
-    z-index: 1000;
   }
 
   .play-button, .list-button {
@@ -123,7 +124,7 @@
 <body>
 
 <div class="slider-container">
-  
+
   <div class="slide active">
     <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Slide 1">
     <div class="slide-content">
@@ -205,4 +206,4 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 </body>
-    </html>
+</html>
