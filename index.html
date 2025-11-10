@@ -3,30 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header, Slider, and Content</title>
+    <title>Anime App UI</title>
 
     <!-- External CSS Files -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-
     <style>
-        /* --- General Styles --- */
+        /* --- Styles from File 1 --- */
         body {
             margin: 0;
-            font-family: 'Poppins', sans-serif; /* Poppins font applied */
+            font-family: sans-serif;
             background: url('https://images.unsplash.com/photo-1554141311-6a4a279339e5?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
             min-height: 100vh;
             padding-bottom: 90px;
             box-sizing: border-box;
         }
 
-        /* --- Header Styles --- */
         header {
             position: fixed;
             top: 0;
@@ -120,13 +116,12 @@
             border-color: #e50914;
         }
 
-        /* --- Slider Styles --- */
         .swiper-container {
             width: 100%;
             height: 450px;
-            margin-top: 70px; /* Header er niche theke suru hobe */
+            margin-top: 0; 
             position: relative;
-            z-index: 0;
+            z-index: 0; 
         }
 
         .swiper-slide {
@@ -152,9 +147,9 @@
             width: 100%;
             padding: 20px;
             box-sizing: border-box;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0) 100%);
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.97) 10%, rgba(255, 255, 255, 0) 100%);
             z-index: 2;
-            color: #fff;
+            color: #000;
         }
 
         .slide-title {
@@ -183,13 +178,11 @@
         .swiper-slide-active .slide-content .slide-genres { animation: contentFadeInUp 0.6s ease-out 0.5s forwards; }
         .swiper-slide-active .slide-content .slide-buttons { animation: contentFadeInUp 0.6s ease-out 0.7s forwards; }
 
-        /* Specific style for the anime card INSIDE the slider */
-        .swiper-slide .anime-card {
+        .anime-card { /* This class exists in both files and will have conflicting styles */
             position: absolute;
             right: 5%;
             bottom: 25%;
             width: 150px;
-            height: auto; /* Adjusted */
             z-index: 1;
             opacity: 0;
             transform: translateX(150%);
@@ -198,13 +191,13 @@
             overflow: hidden;
         }
 
-        .swiper-slide .anime-card img {
+        .anime-card img {
             width: 100%;
             height: 220px;
             object-fit: cover;
             display: block;
         }
-        
+
         .anime-card-info {
             position: absolute;
             bottom: 0;
@@ -214,7 +207,7 @@
             box-sizing: border-box;
             background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
         }
-        
+
         .anime-card-title, .anime-card-episode { margin: 0; color: #fff; }
         .anime-card-title { font-size: 0.9em; font-weight: bold; }
         .anime-card-episode { font-size: 0.8em; font-weight: normal; opacity: 0.9; }
@@ -273,128 +266,6 @@
 
         @keyframes fadeInText { to { opacity: 1; } }
 
-
-        /* --- NEWLY ADDED CONTENT STYLES --- */
-        .main-content {
-            margin: 20px;
-            padding: 25px;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            color: #000;
-        }
-        
-        .main-content h2 {
-            font-weight: 700;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            border-left: 4px solid #1e90ff;
-            padding-left: 10px;
-        }
-
-        .new-release-container {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            padding: 10px 0;
-            scrollbar-width: thin;
-            scrollbar-color: #888 #ddd;
-        }
-
-        .new-release-container::-webkit-scrollbar { height: 8px; }
-        .new-release-container::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
-        .new-release-container::-webkit-scrollbar-track { background: #ddd; border-radius: 10px; }
-
-        .new-release-card {
-            flex: 0 0 250px;
-            background-color: #f0f0f0;
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-
-        .new-release-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(30, 144, 255, 0.3);
-        }
-
-        .new-release-card img {
-            width: 250px;
-            height: 140px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .new-release-card-content { padding: 10px; }
-        .new-release-card-title { font-weight: 600; margin: 0 0 5px 0; }
-        .new-release-card-genres { font-size: 0.85em; color: #555; }
-        .rating-tag { position: absolute; top: 8px; right: 8px; background-color: #1e90ff; color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.8em; font-weight: 600; }
-
-        .anime-row {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding: 10px 0;
-            scroll-behavior: smooth;
-        }
-
-        .anime-row::-webkit-scrollbar { display: none; }
-        
-        /* Style for anime card in the CONTENT ROWS */
-        .anime-row .anime-card {
-            flex: 0 0 180px;
-            height: 270px;
-            border-radius: 12px;
-            overflow: hidden;
-            background-color: #f0f0f0;
-            position: relative;
-            display: block;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-
-        .anime-row .anime-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(30, 144, 255, 0.3);
-        }
-
-        .anime-row .anime-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .info-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 8px;
-            background: rgba(255, 255, 255, 0.85);
-            color: black;
-        }
-
-        .info-overlay .title { font-weight: 600; font-size: 0.95em; margin: 0; }
-        .info-overlay .episodes { font-size: 0.8em; margin: 2px 0 0 0; }
-
-        .view-more-container { text-align: center; margin: 40px 0; }
-        .view-more-btn {
-            background-color: #1e90ff;
-            color: white;
-            padding: 12px 30px;
-            text-decoration: none;
-            font-size: 1.1em;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        .view-more-btn:hover {
-            background-color: #0073e6;
-            transform: scale(1.05);
-        }
-
-        /* --- Bottom Navigation Styles --- */
         .bottom-nav {
             position: fixed;
             bottom: 20px;
@@ -411,7 +282,6 @@
             align-items: center;
             box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            z-index: 1000;
         }
 
         .nav-item {
@@ -432,9 +302,58 @@
         }
 
         .nav-item.active i { color: #ff004c; transform: scale(1.3); }
-        .nav-item span { color: #ddd; font-weight: 400; transition: all 0.3s ease; }
+        .nav-item span { color: black; font-weight: 400; transition: all 0.3s ease; }
         .nav-item.active span { color: #fff; font-weight: 500; }
         .nav-item:hover i, .nav-item:hover span { color: #ff004c; }
+        
+        /* --- Styles from File 2 --- */
+        body { background-color: #ffffff; font-family: 'Poppins', sans-serif; margin: 0; padding: 20px; color: #000; }
+        h2 { font-weight: 700; margin-bottom: 20px; font-size: 1.8em; border-left: 4px solid #1e90ff; padding-left: 10px; }
+        .new-release-container { display: flex; gap: 20px; overflow-x: auto; padding: 10px 0; scrollbar-width: thin; scrollbar-color: #888 #ddd; }
+        .new-release-container::-webkit-scrollbar { height: 8px; }
+        .new-release-container::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+        .new-release-container::-webkit-scrollbar-track { background: #ddd; border-radius: 10px; }
+        .new-release-card { flex: 0 0 250px; background-color: #f0f0f0; border-radius: 12px; overflow: hidden; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+        .new-release-card:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(30,144,255,0.3); }
+        .new-release-card img { width: 250px; height: 140px; object-fit: cover; display: block; }
+        .new-release-card-content { padding: 10px; }
+        .new-release-card-title { font-weight: 600; margin: 0 0 5px 0; }
+        .new-release-card-genres { font-size: 0.85em; color: #555; }
+        .rating-tag { position: absolute; top: 8px; right: 8px; background-color: #1e90ff; color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.8em; font-weight: 600; }
+        .anime-row { display: flex; gap: 15px; overflow-x: auto; padding: 10px 0; scroll-behavior: smooth; }
+        .anime-row::-webkit-scrollbar { display: none; }
+        .anime-card { /* This class exists in both files and will have conflicting styles */
+            flex: 0 0 180px; 
+            height: 270px; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            background-color: #f0f0f0; 
+            position: relative; 
+            display: block; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+            cursor: pointer; 
+        }
+        .anime-card:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(30,144,255,0.3); }
+        .anime-card img { width: 100%; height: 100%; object-fit: cover; }
+        .info-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: rgba(255,255,255,0.85); color: black; }
+        .info-overlay .title { font-weight: 600; font-size: 0.95em; margin: 0; }
+        .info-overlay .episodes { font-size: 0.8em; margin: 2px 0 0 0; }
+        
+        .view-more-container { text-align: center; margin: 40px 0; }
+        .view-more-btn {
+            background-color: #1e90ff;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .view-more-btn:hover {
+            background-color: #0073e6;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -527,38 +446,35 @@
         <div class="swiper-pagination"></div>
     </div>
 
-    <!-- ===== NEWLY ADDED CONTENT SECTION ===== -->
-    <div class="main-content">
-        <!-- New Releases -->
-        <h2>✨ New Releases</h2>
-        <div class="new-release-container" id="new-releases-container">
-            <!-- Animes will be added here by JavaScript -->
-        </div>
-
-        <!-- Top Hits -->
-        <h2>🔥 Top Hits Anime</h2>
-        <div class="anime-row" id="top-hits-container">
-            <!-- Animes will be added here by JavaScript -->
-        </div>
-
-        <!-- Most Favourite -->
-        <h2>💖 Most Favourite</h2>
-        <div class="anime-row" id="most-favourite-container">
-            <!-- Animes will be added here by JavaScript -->
-        </div>
-
-        <!-- Most Popular -->
-        <h2>🔥 Most Popular</h2>
-        <div class="anime-row" id="most-popular-container">
-            <!-- Animes will be added here by JavaScript -->
-        </div>
-
-        <!-- View More Button -->
-        <div class="view-more-container">
-            <a href="all-anime.html" class="view-more-btn">View All Animes</a>
-        </div>
+    <!-- Content from File 2 -->
+    <!-- New Releases -->
+    <h2>✨ New Releases</h2>
+    <div class="new-release-container" id="new-releases-container">
+        <!-- Animes yahan JavaScript se add honge -->
     </div>
-    <!-- ===== END OF NEWLY ADDED CONTENT ===== -->
+
+    <!-- Top Hits -->
+    <h2>🔥 Top Hits Anime</h2>
+    <div class="anime-row" id="top-hits-container">
+        <!-- Animes yahan JavaScript se add honge -->
+    </div>
+
+    <!-- Most Favourite -->
+    <h2>💖 Most Favourite</h2>
+    <div class="anime-row" id="most-favourite-container">
+        <!-- Animes yahan JavaScript se add honge -->
+    </div>
+
+    <!-- Most Popular -->
+    <h2>🔥 Most Popular</h2>
+    <div class="anime-row" id="most-popular-container">
+        <!-- Animes yahan JavaScript se add honge -->
+    </div>
+
+    <!-- View More Button -->
+    <div class="view-more-container">
+        <a href="all-anime.html" class="view-more-btn">View All Animes</a>
+    </div>
 
 
     <!-- Bottom Navigation -->
@@ -586,7 +502,7 @@
 
     <!-- Internal JavaScript -->
     <script>
-        // --- Header Script ---
+        // --- Script from File 1 ---
         const searchIcon = document.getElementById('searchIcon');
         const title = document.getElementById('title');
         const searchBox = document.getElementById('searchBox');
@@ -607,7 +523,6 @@
             }
         });
 
-        // --- Bottom Navigation Script ---
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
@@ -617,7 +532,6 @@
             });
         });
 
-        // --- Slider Script ---
         var swiper = new Swiper('.main-slider', {
             effect: 'fade',
             fadeEffect: {
@@ -648,7 +562,6 @@
             }
         });
 
-        // --- 'My List' Button Animation Script ---
         const myListButtons = document.querySelectorAll('.my-list-button');
         myListButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -663,7 +576,7 @@
             });
         });
 
-        // --- NEWLY ADDED SCRIPT FOR ANIME CONTENT ---
+        // --- Script from File 2 ---
         const allAnimes = [
             { id: 1, title: 'Jujutsu Kaisen', genre: 'Action', rating: 8.7, imageUrl: 'https://m.media-amazon.com/images/M/MV5BNGY4MTg3NzgtMmFkZi00NTg5LWExMmEtMWI3YzI1ODdmMWQ1XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_FMjpg_UX1000_.jpg', episodes: 24, tags: ['new', 'tophit', 'popular'] },
             { id: 2, title: 'Demon Slayer', genre: 'Fantasy', rating: 9.2, imageUrl: 'https://m.media-amazon.com/images/M/MV5BZjZjNzI5MDctY2Y4YS00ZmM4LTg0YzgtYzdhNTA4YmM5OQxXkEyXkFqcGdeQXVyNTM4OTY4ODg@._V1_FMjpg_UX1000_.jpg', episodes: 26, tags: ['tophit', 'popular', 'favourite'] },
@@ -678,23 +591,30 @@
         const mostFavouriteContainer = document.getElementById('most-favourite-container');
         const mostPopularContainer = document.getElementById('most-popular-container');
 
-        window.addEventListener('load', function() {
+        window.onload = function() {
             allAnimes.forEach(anime => {
                 if (anime.tags.includes('new')) {
-                    newReleasesContainer.innerHTML += createNewReleaseCard(anime);
+                    const card = createNewReleaseCard(anime);
+                    newReleasesContainer.innerHTML += card;
                 }
                 if (anime.tags.includes('tophit')) {
-                    topHitsContainer.innerHTML += createAnimeCard(anime);
+                    const card = createAnimeCard(anime);
+                    topHitsContainer.innerHTML += card;
                 }
                 if (anime.tags.includes('favourite')) {
-                    mostFavouriteContainer.innerHTML += createAnimeCard(anime);
+                    const card = createAnimeCard(anime);
+                    mostFavouriteContainer.innerHTML += card;
                 }
                 if (anime.tags.includes('popular')) {
-                    mostPopularContainer.innerHTML += createAnimeCard(anime);
+                    const card = createAnimeCard(anime);
+                    mostPopularContainer.innerHTML += card;
                 }
             });
-        });
+        };
         
+        // ** NECESSARY JAVASCRIPT FIX **
+        // The original code used a syntax that doesn't work in browsers. 
+        // Changed to use template literals (` `) to create the HTML string.
         function createNewReleaseCard(anime) {
             return `
                 <div class="new-release-card">
@@ -709,8 +629,6 @@
         }
         
         function createAnimeCard(anime) {
-            // Note: The class is "anime-card", which is also used in the slider.
-            // But CSS specificity (.anime-row .anime-card) prevents style conflicts.
             return `
                 <div class="anime-card">
                     <img src="${anime.imageUrl}" alt="${anime.title}">
