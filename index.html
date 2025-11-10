@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full-Fit Slider</title>
+    <title>Full-Fit Slider with Anime Card</title>
     <!-- SwiperJS की CSS फ़ाइल -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <style>
@@ -12,46 +12,47 @@
             margin: 0;
             padding: 0;
             font-family: sans-serif;
-            background-color: #fff; /* पेज का बैकग्राउंड सफ़ेद */
+            background-color: #fff;
         }
 
         /* स्लाइडर का मुख्य कंटेनर */
         .swiper-container {
-            width: 100%; /* पूरी चौड़ाई */
-            height: 50vh; /* स्क्रीन की आधी ऊंचाई, आप इसे बदल सकते हैं */
+            width: 100%;
+            height: 50vh; /* आप इसे अपनी ज़रूरत के हिसाब से बदल सकते हैं */
         }
 
         /* हर एक स्लाइड */
         .swiper-slide {
-            position: relative; /* इसके अंदर के टेक्स्ट को सही जगह रखने के लिए */
-            color: #333; /* टेक्स्ट का रंग डार्क ग्रे किया गया */
+            position: relative;
+            color: #333;
             display: flex;
-            align-items: flex-end; /* कंटेंट को नीचे रखने के लिए */
+            align-items: flex-end;
             justify-content: center;
+            overflow: hidden; /* ज़रूरी है ताकि कार्ड बाहर न दिखे */
         }
 
         /* स्लाइड की बैकग्राउंड इमेज */
-        .swiper-slide img {
+        .swiper-slide > img { /* डायरेक्ट चाइल्ड इमेज को टारगेट किया */
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* इमेज को पूरी स्लाइड में बिना खींचे फिट करने के लिए */
-            z-index: -1; /* इमेज को टेक्स्ट के पीछे रखना */
+            object-fit: cover;
+            z-index: -1;
         }
 
-        /* इमेज के ऊपर का कंटेंट (नाम, बटन, आदि) */
+        /* इमेज के ऊपर का कंटेंट */
         .slide-content {
             width: 100%;
             padding: 20px;
-            box-sizing: border-box; /* पैडिंग को चौड़ाई में शामिल करने के लिए */
-            /* बदला हुआ: नीचे से ऊपर की ओर सफ़ेद ग्रेडिएंट */
+            box-sizing: border-box;
             background: linear-gradient(to top, rgba(255,255,255,0.95) 10%, rgba(255,255,255,0) 100%);
+            z-index: 2; /* कंटेंट को कार्ड के ऊपर रखना */
         }
 
         .slide-title {
-            font-size: 1.5em; /* टाइटल का साइज़ */
+            font-size: 1.5em;
             font-weight: bold;
             margin: 0 0 5px 0;
         }
@@ -59,7 +60,7 @@
         .slide-genres {
             font-size: 0.9em;
             margin: 0 0 15px 0;
-            color: #555; /* बदला हुआ: टेक्स्ट का रंग थोड़ा हल्का ग्रे */
+            color: #555;
         }
 
         .slide-buttons button {
@@ -73,29 +74,26 @@
         }
 
         .play-button {
-            background-color: #E50914; /* लाल रंग */
+            background-color: #E50914;
             color: white;
         }
 
         .my-list-button {
-            /* बदला हुआ: सफ़ेद बैकग्राउंड पर दिखने के लिए स्टाइल */
             background-color: rgba(50, 50, 50, 0.7);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.7);
         }
-        
-        /* स्लाइडर के डॉट्स (Pagination) को स्टाइल करना */
+
         .swiper-pagination-bullet {
-            background: #888; /* डॉट्स का रंग बदला गया */
+            background: #888;
             opacity: 0.5;
         }
         .swiper-pagination-bullet-active {
-            background: #000; /* एक्टिव डॉट का रंग */
+            background: #000;
             opacity: 1;
         }
 
-        /* --- नया एनिमेशन CSS --- */
-        /* एनिमेशन के लिए कीफ़्रेम */
+        /* --- कंटेंट का एनिमेशन --- */
         @keyframes contentFadeInUp {
             from {
                 opacity: 0;
@@ -107,12 +105,10 @@
             }
         }
 
-        /* शुरुआत में कंटेंट को छिपाना */
         .swiper-slide .slide-content > * {
             opacity: 0;
         }
         
-        /* सिर्फ़ एक्टिव स्लाइड के कंटेंट पर एनिमेशन लागू करना */
         .swiper-slide-active .slide-content .slide-title {
             animation: contentFadeInUp 0.6s ease-out 0.3s forwards;
         }
@@ -123,11 +119,76 @@
             animation: contentFadeInUp 0.6s ease-out 0.7s forwards;
         }
 
+        /* --- नया: एनीमे कार्ड स्टाइल (बदलाव के साथ) --- */
+        .anime-card {
+            position: absolute;
+            right: 5%;
+            bottom: 25%;
+            width: 150px;
+            z-index: 1;
+            opacity: 0;
+            transform: translateX(150%);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            border-radius: 8px; /* कंटेनर पर रेडियस */
+            overflow: hidden; /* यह सुनिश्चित करेगा कि अंदर का कंटेंट बाहर न जाए */
+        }
+
+        .anime-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block; /* इमेज के नीचे की अतिरिक्त जगह को हटाता है */
+        }
+        
+        /* टेक्स्ट के लिए कंटेनर */
+        .anime-card-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); /* ग्रेडिएंट */
+        }
+
+        .anime-card-title, .anime-card-episode {
+            margin: 0;
+            color: #fff;
+        }
+
+        .anime-card-title {
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .anime-card-episode {
+            font-size: 0.8em;
+            font-weight: normal;
+            opacity: 0.9;
+        }
+
+
+        /* --- नया: कार्ड के लिए एनिमेशन --- */
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(150%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* सिर्फ़ एक्टिव स्लाइड के कार्ड पर एनिमेशन लागू करना */
+        .swiper-slide-active .anime-card {
+             animation: slideInFromRight 0.8s ease-out 0.6s forwards;
+        }
+
     </style>
 </head>
 <body>
 
-    <!-- यह आपका फुल-फिट स्लाइडर है -->
     <div class="swiper-container main-slider">
         <div class="swiper-wrapper">
             <!-- स्लाइड 1 -->
@@ -139,6 +200,14 @@
                     <div class="slide-buttons">
                         <button class="play-button">► Play</button>
                         <button class="my-list-button">+ My List</button>
+                    </div>
+                </div>
+                <!-- नया: एनीमे कार्ड (बदलाव के साथ) -->
+                <div class="anime-card">
+                    <img src="https://www.crunchyroll.com/imgsrv/display/thumbnail/480x720/catalog/crunchyroll/355037d4f4f33772271a4f0051390352.jpe" alt="Anime Card 1">
+                    <div class="anime-card-info">
+                        <p class="anime-card-title">My Status as an Assassin...</p>
+                        <p class="anime-card-episode">Episode 5</p>
                     </div>
                 </div>
             </div>
@@ -154,6 +223,14 @@
                         <button class="my-list-button">+ My List</button>
                     </div>
                 </div>
+                <!-- नया: एनीमे कार्ड (बदलाव के साथ) -->
+                <div class="anime-card">
+                    <img src="https://cdn.myanimelist.net/images/anime/1171/109222.jpg" alt="Anime Card 2">
+                    <div class="anime-card-info">
+                        <p class="anime-card-title">Jujutsu Kaisen</p>
+                        <p class="anime-card-episode">Episode 24</p>
+                    </div>
+                </div>
             </div>
 
             <!-- स्लाइड 3 -->
@@ -167,34 +244,35 @@
                         <button class="my-list-button">+ My List</button>
                     </div>
                 </div>
+                <!-- नया: एनीमे कार्ड (बदलाव के साथ) -->
+                <div class="anime-card">
+                    <img src="https://cdn.myanimelist.net/images/anime/10/47347.jpg" alt="Anime Card 3">
+                    <div class="anime-card-info">
+                        <p class="anime-card-title">Attack on Titan</p>
+                        <p class="anime-card-episode">Final Season</p>
+                    </div>
+                </div>
             </div>
-            <!-- आप यहाँ और भी स्लाइड जोड़ सकते हैं -->
         </div>
-        <!-- स्लाइड बदलने के लिए डॉट्स (Pagination) -->
         <div class="swiper-pagination"></div>
     </div>
 
-    <!-- SwiperJS की JavaScript फ़ाइल -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-    <!-- स्लाइडर को चालू करने के लिए JavaScript -->
     <script>
         var swiper = new Swiper('.main-slider', {
-            // --- नया बदलाव: एनिमेशन के लिए ---
-            effect: 'fade', // फेड इफ़ेक्ट जोड़ा गया
+            effect: 'fade',
             fadeEffect: {
-                crossFade: true // स्मूथ ट्रांज़िशन के लिए
+                crossFade: true
             },
-            speed: 1000, // ट्रांज़िशन की स्पीड थोड़ी धीमी की गई
-            
-            slidesPerView: 1,      // एक बार में सिर्फ एक स्लाइड दिखेगी
-            loop: true,            // स्लाइडर लगातार घूमता रहेगा
+            speed: 1000,
+            slidesPerView: 1,
+            loop: true,
             autoplay: {
-                delay: 4000,       // 4 सेकंड में अगली स्लाइड
+                delay: 4000,
                 disableOnInteraction: false,
             },
             pagination: {
-                el: '.swiper-pagination', // डॉट्स को दिखाने के लिए
+                el: '.swiper-pagination',
                 clickable: true,
             },
         });
