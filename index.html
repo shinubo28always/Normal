@@ -353,12 +353,9 @@
   </a>
 </div>
 
-<!-- SwiperJS Script -->
-<!-- SwiperJS Script -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<!-- All Scripts Combined -->
 <script>
-  // Script for Header Search
+  // Header Search
   const searchIcon = document.getElementById('searchIcon');
   const title = document.getElementById('title');
   const searchBox = document.getElementById('searchBox');
@@ -367,9 +364,7 @@
   searchIcon.addEventListener('click', () => {
     const isNowActive = searchBox.classList.toggle('active');
     title.classList.toggle('hidden', isNowActive);
-    if (isNowActive) {
-      searchInput.focus();
-    }
+    if (isNowActive) searchInput.focus();
   });
 
   searchInput.addEventListener('blur', () => {
@@ -377,7 +372,7 @@
     title.classList.remove('hidden');
   });
 
-  // Script for Bottom Navigation
+  // Bottom Navigation
   const items = document.querySelectorAll('.nav-item');
   items.forEach(item => {
     item.addEventListener('click', (e) => {
@@ -387,44 +382,43 @@
     });
   });
 
-  // Initialize the Swiper slider
-  var sliderContainer = document.querySelector('.main-slider');
+  // Initialize Swiper
   var swiper = new Swiper('.main-slider', {
-      effect: 'fade',
-      fadeEffect: { crossFade: true },
-      speed: 1000,
-      slidesPerView: 1,
-      loop: true,
-      autoplay: { delay: 4000, disableOnInteraction: false },
-      on: {
-          init: function() {
-              // Set initial fixed height
-              sliderContainer.style.height = sliderContainer.offsetHeight + 'px';
-          },
-          slideChangeTransitionStart: function() {
-              // Lock slider height during transition
-              sliderContainer.style.height = sliderContainer.offsetHeight + 'px';
-          },
-          slideChangeTransitionEnd: function() {
-              // Maintain height to prevent jumps
-              sliderContainer.style.height = sliderContainer.offsetHeight + 'px';
-          },
+    effect: 'fade',
+    fadeEffect: { crossFade: true },
+    speed: 1000,
+    slidesPerView: 1,
+    loop: true,
+    autoplay: { delay: 4000, disableOnInteraction: false },
+    on: {
+      init: function () {
+        // slider container height lock kore rakha
+        const container = this.el;
+        const firstSlide = this.slides[this.activeIndex];
+        container.style.height = firstSlide.offsetHeight + 'px';
       },
+      slideChangeTransitionStart: function () {
+        // height maintain rakha
+        const container = this.el;
+        const activeSlide = this.slides[this.activeIndex];
+        container.style.height = activeSlide.offsetHeight + 'px';
+      }
+    }
   });
 
-  // 'My List' Button Animation Logic
+  // My List Button Logic
   const myListButtons = document.querySelectorAll('.my-list-button');
   myListButtons.forEach(button => {
-      button.addEventListener('click', () => {
-          const textSpan = button.querySelector('.text');
-          if (button.classList.contains('added')) {
-              button.classList.remove('added');
-              textSpan.textContent = '+ My List';
-          } else {
-              button.classList.add('added');
-              textSpan.textContent = 'Added';
-          }
-      });
+    button.addEventListener('click', () => {
+      const textSpan = button.querySelector('.text');
+      if (button.classList.contains('added')) {
+        button.classList.remove('added');
+        textSpan.textContent = '+ My List';
+      } else {
+        button.classList.add('added');
+        textSpan.textContent = 'Added';
+      }
+    });
   });
 </script>
 
