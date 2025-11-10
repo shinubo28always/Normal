@@ -114,11 +114,11 @@
             border-color: #e50914;
         }
 
-        /* --- Slider Styles --- */
+        /* --- Slider Styles (MODIFIED) --- */
         .swiper-container {
             width: 100%;
-            height: 50vh;
-            margin-top: 70px; /* To be below the header */
+            height: 450px; /* Fixed height for consistency */
+            margin-top: 70px; 
         }
 
         .swiper-slide {
@@ -136,7 +136,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* MODIFIED: Changed to 'cover' to fill and crop the image */
             z-index: -1;
         }
 
@@ -144,8 +144,9 @@
             width: 100%;
             padding: 20px;
             box-sizing: border-box;
-            background: linear-gradient(to top, rgba(255, 255, 255, 0.95) 10%, rgba(255, 255, 255, 0) 100%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0) 100%); /* Modified for better text visibility on cropped images */
             z-index: 2;
+            color: #fff; /* Modified for better text visibility */
         }
 
         .slide-title {
@@ -157,7 +158,7 @@
         .slide-genres {
             font-size: 0.9em;
             margin: 0 0 15px 0;
-            color: #555;
+            color: #eee; /* Modified for better text visibility */
         }
         
         .swiper-pagination-bullet {
@@ -458,7 +459,7 @@
             },
             speed: 1000,
             slidesPerView: 1,
-            loop: false, // Loop ko false kar diya gaya hai taki jump na ho
+            loop: false, 
             autoplay: {
                 delay: 4000,
                 disableOnInteraction: false,
@@ -467,16 +468,15 @@
                 el: '.swiper-pagination',
                 clickable: true,
             },
-            // Yeh naya code slider ko aage-peeche (ping-pong) chalane ke liye hai
             on: {
                 reachEnd: function () {
                   this.autoplay.stop();
-                  this.params.autoplay.reverseDirection = true; // Direction ko ulta set karein
+                  this.params.autoplay.reverseDirection = true; 
                   this.autoplay.start();
                 },
                 reachBeginning: function () {
                   this.autoplay.stop();
-                  this.params.autoplay.reverseDirection = false; // Direction ko seedha set karein
+                  this.params.autoplay.reverseDirection = false; 
                   this.autoplay.start();
                 },
             }
