@@ -10,17 +10,22 @@
     <style>
       /* --- General Styles --- */
       body {
-        margin: 0;
+        margin: 0 auto; /* Center the content */
+        max-width: 480px; /* Max width for mobile view */
         font-family: sans-serif;
         background: url('https://images.unsplash.com/photo-1554141311-6a4a279339e5?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
-        height: 100vh;
+        min-height: 100vh;
         padding-bottom: 90px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Optional: to give it a device-like feel */
+        position: relative;
       }
 
       /* --- Header Styles --- */
       header {
-        position: fixed;
+        position: absolute; /* Changed from fixed to work within the body container */
         top: 0;
+        left: 0;
+        right: 0;
         width: 100%;
         height: 70px;
         display: flex;
@@ -45,7 +50,7 @@
 
       .title {
         position: absolute;
-        left: 48%;
+        left: 50%; /* Corrected from 48% for better centering */
         transform: translateX(-50%);
         color: white;
         font-size: 22px;
@@ -111,7 +116,7 @@
       /* --- Slider Styles --- */
       .swiper-container {
         width: 100%;
-        height: 50vh;
+        height: 350px; /* FIXED height to prevent jumping */
         margin-top: 70px; /* To avoid being hidden by the header */
       }
       .swiper-slide {
@@ -330,7 +335,6 @@
             </div>
         </div>
     </div>
-    <!-- The swiper-pagination div that was here has been removed -->
 </div>
 
 <!-- Bottom Navigation -->
@@ -368,8 +372,10 @@
   });
 
   searchInput.addEventListener('blur', () => {
-    searchBox.classList.remove('active');
-    title.classList.remove('hidden');
+    if(searchInput.value === "") { // Only hide if search input is empty
+        searchBox.classList.remove('active');
+        title.classList.remove('hidden');
+    }
   });
 
   // Bottom Navigation
@@ -390,20 +396,7 @@
     slidesPerView: 1,
     loop: true,
     autoplay: { delay: 4000, disableOnInteraction: false },
-    on: {
-      init: function () {
-        // slider container height lock kore rakha
-        const container = this.el;
-        const firstSlide = this.slides[this.activeIndex];
-        container.style.height = firstSlide.offsetHeight + 'px';
-      },
-      slideChangeTransitionStart: function () {
-        // height maintain rakha
-        const container = this.el;
-        const activeSlide = this.slides[this.activeIndex];
-        container.style.height = activeSlide.offsetHeight + 'px';
-      }
-    }
+    // REMOVED the 'on' event that caused the height jump
   });
 
   // My List Button Logic
