@@ -1,209 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Functional Fading Image Slider</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<style>
-  body {
-    margin: 0;
-    font-family: "Poppins", sans-serif;
-    background: #fff;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full-Fit Slider</title>
+    <!-- SwiperJS की CSS फ़ाइल -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <style>
+        /* पूरी बॉडी से डिफ़ॉल्ट मार्जिन और पैडिंग हटाना */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-color: #fff; /* पेज का बैकग्राउंड सफ़ेद */
+        }
 
-  .slider-container {
-    width: 100%;
-    position: relative;
-    aspect-ratio: 9 / 11;
-    overflow: hidden;
-  }
+        /* स्लाइडर का मुख्य कंटेनर */
+        .swiper-container {
+            width: 100%; /* पूरी चौड़ाई */
+            height: 50vh; /* स्क्रीन की आधी ऊंचाई, आप इसे बदल सकते हैं */
+        }
 
-  /* सफ़ेद फेड - इमेज के ऊपर, कंटेंट के नीचे */
-  .slider-container::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 150px;
-    background: linear-gradient(to top, rgba(255,255,255,1) 60%, rgba(255,255,255,0));
-    z-index: 2;
-    pointer-events: none;
-  }
+        /* हर एक स्लाइड */
+        .swiper-slide {
+            position: relative; /* इसके अंदर के टेक्स्ट को सही जगह रखने के लिए */
+            color: #333; /* टेक्स्ट का रंग डार्क ग्रे किया गया */
+            display: flex;
+            align-items: flex-end; /* कंटेंट को नीचे रखने के लिए */
+            justify-content: center;
+        }
 
-  .slide {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    transition: opacity 0.8s ease-in-out;
-    z-index: 0;
-  }
+        /* स्लाइड की बैकग्राउंड इमेज */
+        .swiper-slide img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* इमेज को पूरी स्लाइड में बिना खींचे फिट करने के लिए */
+            z-index: -1; /* इमेज को टेक्स्ट के पीछे रखना */
+        }
 
-  .slide.active {
-    opacity: 1;
-    z-index: 1;
-  }
+        /* इमेज के ऊपर का कंटेंट (नाम, बटन, आदि) */
+        .slide-content {
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box; /* पैडिंग को चौड़ाई में शामिल करने के लिए */
+            /* बदला हुआ: नीचे से ऊपर की ओर सफ़ेद ग्रेडिएंट */
+            background: linear-gradient(to top, rgba(255,255,255,0.95) 10%, rgba(255,255,255,0) 100%);
+        }
 
-  .slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+        .slide-title {
+            font-size: 1.5em; /* टाइटल का साइज़ */
+            font-weight: bold;
+            margin: 0 0 5px 0;
+        }
 
-  .slide-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    /* पैडिंग कम कर दी है ताकि बटन्स ऊपर आ जाएं */
-    padding: 20px 20px 30px; /* बदलाव यहाँ किया गया है */
-    color: white;
-    z-index: 3;
-  }
+        .slide-genres {
+            font-size: 0.9em;
+            margin: 0 0 15px 0;
+            color: #555; /* बदला हुआ: टेक्स्ट का रंग थोड़ा हल्का ग्रे */
+        }
 
-  .slide-content h2 {
-    margin: 0 0 8px 0;
-    font-size: 26px;
-    font-weight: 700;
-    border-left: 4px solid white;
-    padding-left: 10px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.7);
-  }
+        .slide-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            margin-right: 10px;
+        }
 
-  .slide-content p {
-    /* नीचे का मार्जिन कम कर दिया है */
-    margin: 5px 0 15px 14px; /* बदलाव यहाँ किया गया है */
-    font-size: 14px;
-    opacity: 0.9;
-  }
+        .play-button {
+            background-color: #E50914; /* लाल रंग */
+            color: white;
+        }
 
-  .slide-buttons {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-left: 14px;
-  }
+        .my-list-button {
+            /* बदला हुआ: सफ़ेद बैकग्राउंड पर दिखने के लिए स्टाइल */
+            background-color: rgba(50, 50, 50, 0.7);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+        
+        /* स्लाइडर के डॉट्स (Pagination) को स्टाइल करना */
+        .swiper-pagination-bullet {
+            background: #888; /* डॉट्स का रंग बदला गया */
+            opacity: 0.5;
+        }
+        .swiper-pagination-bullet-active {
+            background: #000; /* एक्टिव डॉट का रंग */
+            opacity: 1;
+        }
 
-  .play-button, .list-button {
-    padding: 10px 22px;
-    border: none;
-    border-radius: 20px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-  }
+        /* --- नया एनिमेशन CSS --- */
+        /* एनिमेशन के लिए कीफ़्रेम */
+        @keyframes contentFadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-  .play-button {
-    background: rgba(255,255,255,0.25);
-    color: #fff;
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.3);
-  }
+        /* शुरुआत में कंटेंट को छिपाना */
+        .swiper-slide .slide-content > * {
+            opacity: 0;
+        }
+        
+        /* सिर्फ़ एक्टिव स्लाइड के कंटेंट पर एनिमेशन लागू करना */
+        .swiper-slide-active .slide-content .slide-title {
+            animation: contentFadeInUp 0.6s ease-out 0.3s forwards;
+        }
+        .swiper-slide-active .slide-content .slide-genres {
+            animation: contentFadeInUp 0.6s ease-out 0.5s forwards;
+        }
+        .swiper-slide-active .slide-content .slide-buttons {
+            animation: contentFadeInUp 0.6s ease-out 0.7s forwards;
+        }
 
-  .list-button {
-    background: rgba(255,255,255,0.15);
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.25);
-    backdrop-filter: blur(6px);
-  }
-
-  .play-button:hover, .list-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(255,255,255,0.2);
-  }
-  </style>
+    </style>
 </head>
 <body>
 
-<div class="slider-container">
+    <!-- यह आपका फुल-फिट स्लाइडर है -->
+    <div class="swiper-container main-slider">
+        <div class="swiper-wrapper">
+            <!-- स्लाइड 1 -->
+            <div class="swiper-slide">
+                <img src="https://i.postimg.cc/1359L8B8/anime-banner-1.jpg" alt="Banner 1">
+                <div class="slide-content">
+                    <h3 class="slide-title">My Status as an Assassin ...</h3>
+                    <p class="slide-genres">Action, Adventure, Fantasy, Isekai</p>
+                    <div class="slide-buttons">
+                        <button class="play-button">► Play</button>
+                        <button class="my-list-button">+ My List</button>
+                    </div>
+                </div>
+            </div>
 
-  <div class="slide active">
-    <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Slide 1">
-    <div class="slide-content">
-      <h2>My Status as an Assassin...</h2>
-      <p>Action, Adventure, Fantasy, Isekai</p>
-      <div class="slide-buttons">
-        <button class="play-button"><i class="fas fa-play"></i> Play</button>
-        <button class="list-button"><i class="fas fa-plus"></i> My List</button>
-      </div>
+            <!-- स्लाइड 2 -->
+            <div class="swiper-slide">
+                <img src="https://i.postimg.cc/1z0gYpQG/anime-banner-2.jpg" alt="Banner 2">
+                <div class="slide-content">
+                    <h3 class="slide-title">Jujutsu Kaisen</h3>
+                    <p class="slide-genres">Action, Demons, Supernatural</p>
+                    <div class="slide-buttons">
+                        <button class="play-button">► Play</button>
+                        <button class="my-list-button">+ My List</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- स्लाइड 3 -->
+            <div class="swiper-slide">
+                <img src="https://i.postimg.cc/2yX8mGgD/anime-banner-3.jpg" alt="Banner 3">
+                <div class="slide-content">
+                    <h3 class="slide-title">Attack on Titan</h3>
+                    <p class="slide-genres">Action, Drama, Fantasy, Mystery</p>
+                    <div class="slide-buttons">
+                        <button class="play-button">► Play</button>
+                        <button class="my-list-button">+ My List</button>
+                    </div>
+                </div>
+            </div>
+            <!-- आप यहाँ और भी स्लाइड जोड़ सकते हैं -->
+        </div>
+        <!-- स्लाइड बदलने के लिए डॉट्स (Pagination) -->
+        <div class="swiper-pagination"></div>
     </div>
-  </div>
 
-  <div class="slide">
-    <img src="https://photo.chelpbot.me/AgACAgUAAxkBXQtq02kCvXb0bOTI9XR77HjUy_d7F8mRAAIIDmsbju7IVzz2_rKVGCNDAQADAgADeQADNgQ/photo.jpg" alt="Slide 2">
-    <div class="slide-content">
-      <h2>Title for Second Slide</h2>
-      <p>Genre, Category, Type</p>
-      <div class="slide-buttons">
-        <button class="play-button"><i class="fas fa-play"></i> Play</button>
-        <button class="list-button"><i class="fas fa-plus"></i> My List</button>
-      </div>
-    </div>
-  </div>
+    <!-- SwiperJS की JavaScript फ़ाइल -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const slides = document.querySelectorAll('.slide');
-  const sliderContainer = document.querySelector('.slider-container');
-  let currentSlide = 0;
-  let touchStartX = 0;
-  let touchEndX = 0;
-  let autoSlideInterval;
-
-  function showSlide(index) {
-    slides.forEach(s => s.classList.remove('active'));
-    slides[index].classList.add('active');
-  }
-
-  function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    showSlide(currentSlide);
-  }
-
-  function prevSlide() {
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    showSlide(currentSlide);
-  }
-
-  function startAutoSlider() {
-    clearInterval(autoSlideInterval);
-    autoSlideInterval = setInterval(nextSlide, 5000);
-  }
-
-  sliderContainer.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-  }, { passive: true });
-
-  sliderContainer.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-  }, false);
-
-  function handleSwipe() {
-    const swipeThreshold = 50;
-    if (touchStartX - touchEndX > swipeThreshold) {
-      nextSlide();
-      startAutoSlider();
-    }
-    if (touchEndX - touchStartX > swipeThreshold) {
-      prevSlide();
-      startAutoSlider();
-    }
-  }
-
-  startAutoSlider();
-});
-</script>
+    <!-- स्लाइडर को चालू करने के लिए JavaScript -->
+    <script>
+        var swiper = new Swiper('.main-slider', {
+            // --- नया बदलाव: एनिमेशन के लिए ---
+            effect: 'fade', // फेड इफ़ेक्ट जोड़ा गया
+            fadeEffect: {
+                crossFade: true // स्मूथ ट्रांज़िशन के लिए
+            },
+            speed: 1000, // ट्रांज़िशन की स्पीड थोड़ी धीमी की गई
+            
+            slidesPerView: 1,      // एक बार में सिर्फ एक स्लाइड दिखेगी
+            loop: true,            // स्लाइडर लगातार घूमता रहेगा
+            autoplay: {
+                delay: 4000,       // 4 सेकंड में अगली स्लाइड
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination', // डॉट्स को दिखाने के लिए
+                clickable: true,
+            },
+        });
+    </script>
 
 </body>
 </html>
