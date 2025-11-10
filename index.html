@@ -4,35 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Functional Fading Image Slider</title>
-<!-- Font Awesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-  /* --- Basic Styles --- */
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: #ffffff;
+    font-family: "Poppins", sans-serif;
+    background: #fff;
   }
 
-  /* --- Slider Styles --- */
   .slider-container {
     width: 100%;
     position: relative;
-    /* Aspect ratio to maintain shape before images load */
-    aspect-ratio: 9 / 11; 
-    overflow: hidden; /* Hide slides that are not active */
-    
-    /* White fade effect at the bottom */
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 120px;
-      background: linear-gradient(to top, #ffffff 50%, rgba(255, 255, 255, 0));
-      z-index: 5; /* This fade is below the content */
-    }
+    aspect-ratio: 9 / 11;
+    overflow: hidden;
+  }
+
+  /* White fade – always bottom layer */
+  .slider-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background: linear-gradient(to top, rgba(255,255,255,1) 60%, rgba(255,255,255,0));
+    z-index: 1; /* bottom */
+    pointer-events: none;
   }
 
   .slide {
@@ -41,59 +38,57 @@
     position: absolute;
     top: 0;
     left: 0;
-    opacity: 0; /* Hide all slides by default */
-    transition: opacity 0.8s ease-in-out; /* Smooth fade transition */
-    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    z-index: 0;
   }
 
-  /* Style for the currently visible slide */
   .slide.active {
     opacity: 1;
-    z-index: 2; /* Bring the active slide to the front */
+    z-index: 2;
   }
 
   .slide img {
     width: 100%;
     height: 100%;
-    display: block;
     object-fit: cover;
   }
 
-  /* Content over the image */
   .slide-content {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 100px 20px 40px;
-    /* The dark gradient behind the text */
-    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); 
+    padding: 80px 20px 40px;
     color: white;
-    z-index: 6; /* Placed above the white fade effect */
+    z-index: 999;
   }
-  
+
   .slide-content h2 {
-    margin: 0 0 5px 0;
-    font-size: 28px;
+    margin: 0 0 8px 0;
+    font-size: 26px;
     font-weight: 700;
+    border-left: 4px solid white;
+    padding-left: 10px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.7);
   }
-  
+
   .slide-content p {
-    margin: 0 0 15px 0;
+    margin: 5px 0 20px 14px;
     font-size: 14px;
     opacity: 0.9;
-    font-weight: 500;
   }
 
   .slide-buttons {
     display: flex;
     gap: 10px;
     align-items: center;
+    margin-left: 14px;
+    z-index: 1000;
   }
 
-  /* Button styles */
   .play-button, .list-button {
-    padding: 10px 24px;
+    padding: 10px 22px;
     border: none;
     border-radius: 20px;
     font-size: 16px;
@@ -102,125 +97,112 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    transition: all 0.3s ease;
   }
-  
+
   .play-button {
-      background-color: #e50914;
-      color: white;
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.3);
   }
 
   .list-button {
-      background-color: rgba(40, 40, 40, 0.5);
-      color: white;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(5px);
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(6px);
   }
 
-</style>
+  .play-button:hover, .list-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(255,255,255,0.2);
+  }
+  </style>
 </head>
 <body>
 
-<!-- Slider Starts Here -->
 <div class="slider-container">
   
-  <!-- Slide 1 -->
-  <div class="slide active"> <!-- The first slide has the 'active' class to be visible on load -->
-    <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Slide 1 Image">
+  <div class="slide active">
+    <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Slide 1">
     <div class="slide-content">
       <h2>My Status as an Assassin...</h2>
       <p>Action, Adventure, Fantasy, Isekai</p>
       <div class="slide-buttons">
-          <button class="play-button"><i class="fas fa-play"></i> Play</button>
-          <button class="list-button"><i class="fas fa-plus"></i> My List</button>
+        <button class="play-button"><i class="fas fa-play"></i> Play</button>
+        <button class="list-button"><i class="fas fa-plus"></i> My List</button>
       </div>
     </div>
   </div>
 
-  <!-- Slide 2 -->
   <div class="slide">
-    <img src="https://photo.chelpbot.me/AgACAgUAAxkBXQtq02kCvXb0bOTI9XR77HjUy_d7F8mRAAIIDmsbju7IVzz2_rKVGCNDAQADAgADeQADNgQ/photo.jpg" alt="Slide 2 Image">
+    <img src="https://photo.chelpbot.me/AgACAgUAAxkBXQtq02kCvXb0bOTI9XR77HjUy_d7F8mRAAIIDmsbju7IVzz2_rKVGCNDAQADAgADeQADNgQ/photo.jpg" alt="Slide 2">
     <div class="slide-content">
       <h2>Title for Second Slide</h2>
       <p>Genre, Category, Type</p>
       <div class="slide-buttons">
-          <button class="play-button"><i class="fas fa-play"></i> Play</button>
-          <button class="list-button"><i class="fas fa-plus"></i> My List</button>
+        <button class="play-button"><i class="fas fa-play"></i> Play</button>
+        <button class="list-button"><i class="fas fa-plus"></i> My List</button>
       </div>
     </div>
   </div>
-  
-</div>
-<!-- Slider Ends Here -->
 
-
-<!-- Rest of the page content -->
-<div style="padding: 20px;">
-    <h1>Page Content Starts Here</h1>
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const slides = document.querySelectorAll('.slide');
-    const sliderContainer = document.querySelector('.slider-container');
-    let currentSlide = 0;
-    let touchStartX = 0;
-    let touchEndX = 0;
-    let autoSlideInterval; // To store the timer
+document.addEventListener('DOMContentLoaded', function() {
+  const slides = document.querySelectorAll('.slide');
+  const sliderContainer = document.querySelector('.slider-container');
+  let currentSlide = 0;
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let autoSlideInterval;
 
-    function showSlide(index) {
-      slides.forEach(slide => {
-        slide.classList.remove('active');
-      });
-      slides[index].classList.add('active');
+  function showSlide(index) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[index].classList.add('active');
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+  }
+
+  function startAutoSlider() {
+    clearInterval(autoSlideInterval);
+    autoSlideInterval = setInterval(nextSlide, 5000);
+  }
+
+  sliderContainer.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  sliderContainer.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, false);
+
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    if (touchStartX - touchEndX > swipeThreshold) {
+      nextSlide();
+      startAutoSlider();
     }
-
-    function nextSlide() {
-      currentSlide = (currentSlide + 1) % slides.length;
-      showSlide(currentSlide);
+    if (touchEndX - touchStartX > swipeThreshold) {
+      prevSlide();
+      startAutoSlider();
     }
+  }
 
-    function prevSlide() {
-      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-      showSlide(currentSlide);
-    }
-
-    // --- Function to start or reset the auto-slider ---
-    function startAutoSlider() {
-      // Clear any previous timer
-      clearInterval(autoSlideInterval);
-      // Start a new timer
-      autoSlideInterval = setInterval(nextSlide, 5000); // Changes slide every 5 seconds
-    }
-
-    // --- Swipe Functionality ---
-    sliderContainer.addEventListener('touchstart', function(event) {
-        touchStartX = event.changedTouches[0].screenX;
-    }, { passive: true }); // passive: true for better scroll performance
-
-    sliderContainer.addEventListener('touchend', function(event) {
-        touchEndX = event.changedTouches[0].screenX;
-        handleSwipe();
-    }, false);
-
-    function handleSwipe() {
-        const swipeThreshold = 50; // Minimum distance for a swipe
-        // If swiped left
-        if (touchStartX - touchEndX > swipeThreshold) {
-            nextSlide();
-            startAutoSlider(); // Reset timer after manual swipe
-        }
-        
-        // If swiped right
-        if (touchEndX - touchStartX > swipeThreshold) {
-            prevSlide();
-            startAutoSlider(); // Reset timer after manual swipe
-        }
-    }
-
-    // --- Start the auto-slider when the page loads ---
-    startAutoSlider();
-  });
+  startAutoSlider();
+});
 </script>
 
 </body>
-  </html>
+    </html>
