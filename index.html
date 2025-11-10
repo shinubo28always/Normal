@@ -422,6 +422,38 @@
     color: white; /* Color white kora holo */
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Ekhaneo halka chaya deya holo */
         }
+
+        /* --- Search Suggestions Styles --- */
+#searchResultsContainer {
+    display: none; /* Shuru mein isko chupaye rakhein */
+    position: absolute;
+    top: 100%; /* Search box ke theek neeche */
+    left: 0;
+    right: 0;
+    background: rgba(40, 40, 40, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 15px 15px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1001;
+    margin-top: 5px; /* Thoda sa gap */
+}
+
+.suggestion-item {
+    padding: 10px 15px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+        }
         
         /* View More Button Style */
         .view-more-container { text-align: center; margin: 40px 0; }
@@ -451,7 +483,9 @@
         </div>
         <div class="icons">
             <div class="search-box" id="searchBox">
-                <input type="text" placeholder="Search...">
+    <input type="text" placeholder="Search...">
+    <!-- YE NAYA DIV ADD KAREIN -->
+    <div id="searchResultsContainer"></div> 
             </div>
             <i id="searchIcon" class="fas fa-search"></i>
             <i class="fas fa-bell"></i>
