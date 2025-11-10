@@ -3,210 +3,196 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anime New Releases</title>
+<title>Anime App UI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
     body {
-        background-color: #121212;
+        background-color: #ffffff;
         font-family: 'Poppins', sans-serif;
         margin: 0;
         padding: 20px;
-        color: #e0e0e0;
+        color: #000;
     }
 
-    h1, h2 {
-        text-align: center;
+    h2 {
         font-weight: 700;
-        color: #ffffff;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    }
-
-    h1 {
-        font-size: 2.8em;
-        margin-bottom: 30px;
-    }
-    
-    .section-title {
-        text-align: left;
+        margin-bottom: 20px;
         font-size: 1.8em;
-        margin: 40px 0 20px 0;
         border-left: 4px solid #1e90ff;
-        padding-left: 15px;
+        padding-left: 10px;
     }
 
-    .anime-card-container {
+    /* === New Releases === */
+    .new-release-container {
         display: flex;
         gap: 20px;
         overflow-x: auto;
-        padding: 20px 5px;
-        scroll-behavior: smooth;
+        padding: 10px 0;
         scrollbar-width: thin;
-        scrollbar-color: #444 #222;
+        scrollbar-color: #888 #ddd;
     }
 
-    .anime-card-container::-webkit-scrollbar {
+    .new-release-container::-webkit-scrollbar {
         height: 8px;
     }
+    .new-release-container::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+    .new-release-container::-webkit-scrollbar-track { background: #ddd; border-radius: 10px; }
 
-    .anime-card-container::-webkit-scrollbar-thumb {
-        background: #444;
-        border-radius: 10px;
-    }
-
-    .anime-card-container::-webkit-scrollbar-track {
-        background: #222;
-        border-radius: 10px;
-    }
-
-    .anime-card {
+    .new-release-card {
         flex: 0 0 250px;
-        background-color: #1e1e1e;
+        background-color: #f0f0f0;
         border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
         position: relative;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
     }
 
-    .anime-card:hover {
+    .new-release-card:hover {
         transform: scale(1.05);
-        box-shadow: 0 8px 25px rgba(30, 144, 255, 0.3);
+        box-shadow: 0 8px 20px rgba(30,144,255,0.3);
     }
-    
-    .anime-card-image-container {
-        position: relative;
-        width: 100%;
+
+    .new-release-card img {
+        width: 250px;
         height: 140px;
-        overflow: hidden;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
     }
+
+    .new-release-card:hover img { transform: scale(1.1); }
+
+    .new-release-card-content {
+        padding: 10px;
+    }
+
+    .new-release-card-title { font-weight: 600; margin: 0 0 5px 0; }
+    .new-release-card-genres { font-size: 0.85em; color: #555; }
 
     .rating-tag {
         position: absolute;
         top: 8px;
         right: 8px;
-        background-color: rgba(30, 144, 255, 0.9);
+        background-color: #1e90ff;
         color: white;
         padding: 3px 8px;
         border-radius: 5px;
         font-size: 0.8em;
         font-weight: 600;
-        z-index: 2;
     }
 
-    .anime-card img {
+    /* === Top Hits === */
+    .top-hits-container {
+        display: flex;
+        gap: 15px;
+        overflow-x: auto;
+        padding: 10px 0;
+    }
+
+    .top-hits-card {
+        flex: 0 0 180px;
+        height: 270px;
+        border-radius: 12px;
+        overflow: hidden;
+        background-color: #f0f0f0;
+        position: relative;
+        display: block;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+    .top-hits-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(30,144,255,0.3);
+    }
+
+    .top-hits-card img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        display: block;
-        transition: transform 0.4s ease;
-    }
-    
-    .anime-card:hover img {
-        transform: scale(1.1);
-    }
-    
-    .anime-card-content {
-        padding: 15px;
+        transition: transform 0.3s ease;
     }
 
-    .anime-card-title {
-        font-size: 1.2em;
-        font-weight: 600;
-        margin: 0 0 8px 0;
-        color: #ffffff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    .top-hits-card:hover img { transform: scale(1.05); }
+
+    .info-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 8px;
+        background: rgba(255,255,255,0.85);
+        color: black;
     }
 
-    .anime-card-genres {
-        font-size: 0.85em;
-        color: #bbbbbb;
-    }
+    .info-overlay .title { font-weight: 600; font-size: 0.95em; margin: 0; }
+    .info-overlay .episodes { font-size: 0.8em; margin: 2px 0 0 0; }
+
 </style>
 </head>
 <body>
 
-    <!-- New Release Section -->
-    <h2 class="section-title">New Release</h2>
-    <div class="anime-card-container">
-        
-        <div class="anime-card">
-            <div class="anime-card-image-container">
-                <div class="rating-tag">8.5</div>
-                <img src="https://photo.chelpbot.me/AgACAgUAAxkBXQtq02kCvXb0bOTI9XR77HjUy_d7F8mRAAIIDmsbju7IVzz2_rKVGCNDAQADAgADeQADNgQ/photo.jpg" alt="Anime 1">
-            </div>
-            <div class="anime-card-content">
-                <h3 class="anime-card-title">Anime Title 1</h3>
-                <div class="anime-card-genres"><span>Action</span></div>
-            </div>
+<!-- New Releases -->
+<h2>✨ New Releases</h2>
+<div class="new-release-container">
+    <div class="new-release-card">
+        <div class="rating-tag">8.5</div>
+        <img src="https://photo.chelpbot.me/AgACAgUAAxkBXQtq02kCvXb0bOTI9XR77HjUy_d7F8mRAAIIDmsbju7IVzz2_rKVGCNDAQADAgADeQADNgQ/photo.jpg" alt="Anime 1">
+        <div class="new-release-card-content">
+            <h3 class="new-release-card-title">Anime Title 1</h3>
+            <div class="new-release-card-genres"><span>Action</span></div>
         </div>
-
-        <div class="anime-card">
-            <div class="anime-card-image-container">
-                <div class="rating-tag">9.2</div>
-                <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Anime 2">
-            </div>
-            <div class="anime-card-content">
-                <h3 class="anime-card-title">Anime Title 2</h3>
-                <div class="anime-card-genres"><span>Fantasy</span></div>
-            </div>
-        </div>
-
-        <div class="anime-card">
-            <div class="anime-card-image-container">
-                <div class="rating-tag">8.8</div>
-                <img src="https://photo.chelpbot.me/AgACAgUAAxkBVgXzAWiTo2OBfoM53p1R4AowRhGXhtzrAAJtxDEb50FZVxms-Vz1k5nsAQADAgADeQADNgQ/photo.jpg" alt="Anime 3">
-            </div>
-            <div class="anime-card-content">
-                <h3 class="anime-card-title">Anime Title 3</h3>
-                <div class="anime-card-genres"><span>Adventure</span></div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- Top List Section -->
-    <h2 class="section-title">Top List</h2>
-    <div class="anime-card-container">
-        
-        <div class="anime-card">
-            <div class="anime-card-image-container">
-                <div class="rating-tag">9.8</div>
-                <img src="https://photo.chelpbot.me/AgACAgUAAxkBXQtq02kCvXb0bOTI9XR77HjUy_d7F8mRAAIIDmsbju7IVzz2_rKVGCNDAQADAgADeQADNgQ/photo.jpg" alt="Top 1">
-            </div>
-            <div class="anime-card-content">
-                <h3 class="anime-card-title">Top Anime 1</h3>
-                <div class="anime-card-genres"><span>Action</span></div>
-            </div>
+    <div class="new-release-card">
+        <div class="rating-tag">9.2</div>
+        <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Anime 2">
+        <div class="new-release-card-content">
+            <h3 class="new-release-card-title">Anime Title 2</h3>
+            <div class="new-release-card-genres"><span>Fantasy</span></div>
         </div>
-
-        <div class="anime-card">
-            <div class="anime-card-image-container">
-                <div class="rating-tag">9.5</div>
-                <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Top 2">
-            </div>
-            <div class="anime-card-content">
-                <h3 class="anime-card-title">Top Anime 2</h3>
-                <div class="anime-card-genres"><span>Fantasy</span></div>
-            </div>
-        </div>
-
-        <div class="anime-card">
-            <div class="anime-card-image-container">
-                <div class="rating-tag">9.7</div>
-                <img src="https://photo.chelpbot.me/AgACAgUAAxkBVgXzAWiTo2OBfoM53p1R4AowRhGXhtzrAAJtxDEb50FZVxms-Vz1k5nsAQADAgADeQADNgQ/photo.jpg" alt="Top 3">
-            </div>
-            <div class="anime-card-content">
-                <h3 class="anime-card-title">Top Anime 3</h3>
-                <div class="anime-card-genres"><span>Adventure</span></div>
-            </div>
-        </div>
-
     </div>
+
+    <div class="new-release-card">
+        <div class="rating-tag">8.8</div>
+        <img src="https://photo.chelpbot.me/AgACAgUAAxkBVgXzAWiTo2OBfoM53p1R4AowRhGXhtzrAAJtxDEb50FZVxms-Vz1k5nsAQADAgADeQADNgQ/photo.jpg" alt="Anime 3">
+        <div class="new-release-card-content">
+            <h3 class="new-release-card-title">Anime Title 3</h3>
+            <div class="new-release-card-genres"><span>Adventure</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- Top Hits -->
+<h2>🔥 Top Hits Anime</h2>
+<div class="top-hits-container">
+    <div class="top-hits-card">
+        <img src="https://photo.chelpbot.me/AgACAgUAAxkBXQtq02kCvXb0bOTI9XR77HjUy_d7F8mRAAIIDmsbju7IVzz2_rKVGCNDAQADAgADeQADNgQ/photo.jpg" alt="Top 1">
+        <div class="info-overlay">
+            <h3 class="title">Top Anime 1</h3>
+            <p class="episodes">Episodes: --</p>
+        </div>
+    </div>
+
+    <div class="top-hits-card">
+        <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Top 2">
+        <div class="info-overlay">
+            <h3 class="title">Top Anime 2</h3>
+            <p class="episodes">Episodes: --</p>
+        </div>
+    </div>
+
+    <div class="top-hits-card">
+        <img src="https://photo.chelpbot.me/AgACAgUAAxkBVgXzAWiTo2OBfoM53p1R4AowRhGXhtzrAAJtxDEb50FZVxms-Vz1k5nsAQADAgADeQADNgQ/photo.jpg" alt="Top 3">
+        <div class="info-overlay">
+            <h3 class="title">Top Anime 3</h3>
+            <p class="episodes">Episodes: --</p>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
