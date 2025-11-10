@@ -3,253 +3,136 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Header and Bottom Navigation</title>
+<title>Full-Width Fading Slider</title>
+<!-- Buttons me icons ke liye Font Awesome ka link -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-  /* --- Header Styles --- */
+  /* --- Basic Styles --- */
   body {
-    margin: 0;
-    font-family: sans-serif;
-    /* Using a better background image */
-    background: url('https://images.unsplash.com/photo-1554141311-6a4a279339e5?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
-    height: 100vh;
-    padding-bottom: 90px; /* Added padding to prevent content from hiding behind bottom nav */
+    margin: 0; /* Extra space hatane ke liye */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #ffffff; /* Page ka background safed (white) hai */
   }
 
-  header {
-    position: fixed;
-    top: 0;
+  /* --- Slider Styles --- */
+  .slider-container {
+    width: 100%; /* Slider puri screen ki chaudai lega */
+    position: relative; /* Yah '::after' element ko aadhar dene ke liye zaroori hai */
+    
+    /* Yahi code safed (white) shadow/fade effect banata hai */
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 120px; /* Fade ki unchai (height) */
+      /* Niche se upar ki taraf transparent se safed rang ka gradient */
+      background: linear-gradient(to top, #ffffff 50%, rgba(255, 255, 255, 0));
+      z-index: 2; /* Yah image ke upar rahega */
+    }
+  }
+
+  .slide {
+    min-width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    /* Image ka aspect ratio maintain karne ke liye */
+    aspect-ratio: 9 / 11; 
+  }
+
+  .slide img {
     width: 100%;
-    height: 70px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 25px; /* Increased padding slightly */
-    backdrop-filter: blur(15px); /* Increased blur effect slightly */
-    background: rgba(25, 25, 25, 0.4); /* Slightly darker background */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 1000;
-    box-sizing: border-box; /* To include padding in the width */
+    height: 100%;
+    display: block;
+    object-fit: cover; /* Image ko bina khiche fit karega */
   }
 
-  .logo {
-    width: 46px;
-    height: 46px;
-    border-radius: 8px;
-    background-image: url('https://files.catbox.moe/wq38pm.jpg');
-    background-size: cover;
-    background-position: center;
-  }
-
-  .title {
+  /* Image ke upar ka content */
+  .slide-content {
     position: absolute;
-    left: 48%;
-    transform: translateX(-50%);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 100px 20px 40px; /* Niche se content ki doori */
+    /* Text ke piche dark gradient taki text saaf dikhe */
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
     color: white;
-    font-size: 22px;
-    font-weight: bold;
-    transition: opacity 0.3s ease; /* Smooth transition */
-  }
-
-  .title.hidden {
-    opacity: 0;
-  }
-
-  .icons {
-    display: flex;
-    gap: 20px;
-    align-items: center; /* To keep icons and search box centered */
-  }
-
-  .icons i {
-    font-size: 24px;
-    color: white;
-    cursor: pointer;
-    transition: color 0.3s ease; /* Transition for hover effect */
-  }
-
-  .icons i:hover {
-    color: #e50914;
-  }
-
-  .search-box {
-    position: absolute;
-    top: 50%;
-    right: 113px; /* Gap from search icon */
-    transform: translateY(-50%);
-    opacity: 0;
-    visibility: hidden;
-    width: 0;
-    transition: all 0.4s ease;
-    z-index: 1002; /* So it can appear above the logo */
-  }
-
-  .search-box.active {
-    /* Will be visible when active */
-    opacity: 1;
-    visibility: visible;
-    width: 180px; /* Width will increase */
-    margin-right: 15px; /* A little distance from the icon */
-  }
-
-  .search-box input {
-    width: 100%;
-    padding: 7px 15px;
-    border-radius: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    font-size: 15px;
-  }
-
-  .search-box input:focus {
-    outline: none;
-    border-color: #e50914; /* Border color on focus */
+    z-index: 3; /* Yah white fade effect ke bhi upar rahega */
   }
   
-  /* --- Bottom Navigation Styles --- */
-  .bottom-nav {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 420px;
-    height: 70px;
-    /* Glassframe effect starts here */
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px); /* Blur effect */
-    /* Glassframe effect ends here */
-    border-radius: 20px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+  .slide-content h2 {
+    margin: 0 0 5px 0;
+    font-size: 28px;
+    font-weight: 700;
   }
-
-  .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    font-size: 13px;
-    transition: all 0.3s ease;
-  }
-
-  .nav-item i {
-    font-size: 24px;
-    margin-bottom: 4px;
-    color: #aaa;
-    transition: all 0.3s ease; /* animation for scaling/color */
-  }
-
-  .nav-item.active i {
-    color: #ff004c;
-    transform: scale(1.3); /* active icon grow */
-  }
-
-  .nav-item span {
-    color: black;
-    font-weight: 400;
-    transition: all 0.3s ease;
-  }
-
-  .nav-item.active span {
-    color: #fff;
+  
+  .slide-content p {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    opacity: 0.9;
     font-weight: 500;
   }
 
-  .nav-item:hover i,
-  .nav-item:hover span {
-    color: #ff004c;
+  .slide-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
   }
+
+  /* Dono Buttons ki styling */
+  .play-button, .list-button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .play-button {
+      background-color: #e50914; /* Lal (Red) button */
+      color: white;
+  }
+
+  .list-button {
+      background-color: rgba(40, 40, 40, 0.5); /* Thoda transparent button */
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(5px);
+  }
+
 </style>
 </head>
 <body>
 
-<!-- Header -->
-<header>
-  <div class="logo"></div>
-  <div class="title" id="title">
-    <img src="https://files.catbox.moe/7tjjuw.png" 
-         alt="AniReal Logo" 
-         style="height:60px; object-fit:contain;">
-  </div>
-  <div class="icons">
-    <div class="search-box" id="searchBox">
-      <input type="text" placeholder="Search...">
-    </div>
-    <i id="searchIcon" class="fas fa-search"></i>
-    <i class="fas fa-bell"></i>
-  </div>
-</header>
-
-<!-- Main Content Area -->
-<div style="text-align:center; font-size:20px; color: white; padding-top: 100px;">Main Content Area</div>
-
-<!-- Bottom Navigation -->
-<div class="bottom-nav">
-  <a href="#" class="nav-item active">
-    <i class="fas fa-house"></i>
-    <span>Home</span>
-  </a>
-  <a href="#" class="nav-item">
-    <i class="fas fa-calendar-check"></i>
-    <span>Schedule</span>
-  </a>
-  <a href="#" class="nav-item">
-    <i class="fas fa-bookmark"></i>
-    <span>Watchlist</span>
-  </a>
-  <a href="#" class="nav-item">
-    <i class="fas fa-user-circle"></i>
-    <span>You</span>
-  </a>
-</div>
-
-<!-- Script for Header -->
-<script>
-  const searchIcon = document.getElementById('searchIcon');
-  const title = document.getElementById('title');
-  const searchBox = document.getElementById('searchBox');
-  const searchInput = searchBox.querySelector('input');
-
-  // When the search icon is clicked
-  searchIcon.addEventListener('click', () => {
-    // Toggle the 'active' class on searchBox
-    const isNowActive = searchBox.classList.toggle('active');
+<!-- Yahan se Slider shuru hota hai -->
+<div class="slider-container">
+  <div class="slide">
+    <!-- Aap yahan image ka URL badal sakte hain -->
+    <img src="https://i.imgur.com/GzB4k5A.jpeg" alt="My Status as an Assassin">
     
-    // Hide or show the title, depending on whether searchBox is active
-    title.classList.toggle('hidden', isNowActive);
+    <!-- Image ke upar ka content -->
+    <div class="slide-content">
+      <h2>My Status as an Assassin ...</h2>
+      <p>Action, Adventure, Fantasy, Isekai</p>
+      <div class="slide-buttons">
+          <button class="play-button"><i class="fas fa-play"></i> Play</button>
+          <button class="list-button"><i class="fas fa-plus"></i> My List</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Slider yahan khatam hota hai -->
 
-    // If the search box just became active, focus on the input field
-    if (isNowActive) {
-      searchInput.focus();
-    }
-  });
 
-  // When the user clicks outside the search input (blur)
-  searchInput.addEventListener('blur', () => {
-    // Remove the 'active' class from searchBox
-    searchBox.classList.remove('active');
-    // Remove the 'hidden' class from title
-    title.classList.remove('hidden');
-  });
-</script>
-
-<!-- Script for Bottom Navigation -->
-<script>
-  const items = document.querySelectorAll('.nav-item');
-  items.forEach(item => {
-    item.addEventListener('click', (e) => {
-      e.preventDefault(); // Prevent page jump on click
-      items.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-    });
-  });
-</script>
+<!-- Baaki ka page content yahan aayega -->
+<div style="padding: 20px;">
+    <h1>Page Content Starts Here</h1>
+</div>
 
 </body>
 </html>
