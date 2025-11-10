@@ -1,504 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header, Slider, and Bottom Navigation</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anime New Releases</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    body {
+        background-color: #121212; /* Dark background */
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 20px;
+        color: #e0e0e0;
+    }
 
-    <!-- External CSS Files -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    h1, h2 {
+        text-align: center;
+        font-weight: 700;
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
 
-    <style>
-        /* --- General Styles --- */
-        body {
-            margin: 0;
-            font-family: sans-serif;
-            background: url('https://images.unsplash.com/photo-1554141311-6a4a279339e5?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
-            min-height: 100vh;
-            padding-bottom: 90px;
-            box-sizing: border-box;
-        }
+    h1 {
+        font-size: 2.8em;
+        margin-bottom: 30px;
+    }
+    
+    .section-title {
+        text-align: left;
+        font-size: 1.8em;
+        margin: 40px 0 20px 0;
+        border-left: 4px solid #1e90ff; /* Accent color border */
+        padding-left: 15px;
+    }
 
-        /* --- Header Styles --- */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 70px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 25px;
-            backdrop-filter: blur(15px);
-            background: rgba(25, 25, 25, 0.4);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 1000;
-            box-sizing: border-box;
-        }
+    /* Container for horizontal scrollable cards */
+    .anime-card-container {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        padding: 20px 5px;
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+        scrollbar-color: #444 #222;
+    }
 
-        .logo {
-            width: 46px;
-            height: 46px;
-            border-radius: 8px;
-            background-image: url('https://files.catbox.moe/wq38pm.jpg');
-            background-size: cover;
-            background-position: center;
-        }
+    .anime-card-container::-webkit-scrollbar {
+        height: 8px;
+    }
 
-        .title {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: opacity 0.3s ease;
-        }
-        
-        .title img {
-            height: 60px;
-            object-fit: contain;
-        }
+    .anime-card-container::-webkit-scrollbar-thumb {
+        background: #444;
+        border-radius: 10px;
+    }
 
-        .title.hidden {
-            opacity: 0;
-        }
+    .anime-card-container::-webkit-scrollbar-track {
+        background: #222;
+        border-radius: 10px;
+    }
 
-        .icons {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
+    .anime-card {
+        flex: 0 0 250px;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+    }
 
-        .icons i {
-            font-size: 24px;
-            color: white;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
+    .anime-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(30, 144, 255, 0.3);
+    }
+    
+    .anime-card-image-container {
+        position: relative;
+        width: 100%;
+        height: 140px;
+        overflow: hidden;
+    }
 
-        .icons i:hover {
-            color: #e50914;
-        }
+    /* Rating Tag CSS */
+    .rating-tag {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background-color: rgba(30, 144, 255, 0.9);
+        color: white;
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-size: 0.8em;
+        font-weight: 600;
+        z-index: 2;
+    }
 
-        .search-box {
-            position: absolute;
-            top: 50%;
-            right: 113px;
-            transform: translateY(-50%);
-            opacity: 0;
-            visibility: hidden;
-            width: 0;
-            transition: all 0.4s ease;
-            z-index: 1002;
-        }
+    .anime-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.4s ease;
+    }
+    
+    .anime-card:hover img {
+        transform: scale(1.1);
+    }
+    
+    .anime-card-content {
+        padding: 15px;
+    }
 
-        .search-box.active {
-            opacity: 1;
-            visibility: visible;
-            width: 180px;
-            margin-right: 15px;
-        }
+    .anime-card-title {
+        font-size: 1.2em;
+        font-weight: 600;
+        margin: 0 0 8px 0;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-        .search-box input {
-            width: 100%;
-            padding: 7px 15px;
-            border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            font-size: 15px;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: #e50914;
-        }
-
-        /* --- Slider Styles (MODIFIED) --- */
-        .swiper-container {
-    width: 100%;
-    height: 450px; /* adjust koro */
-    margin-top: 0; /* header er niche theke suru hobe na */
-    position: relative;
-    z-index: 0; /* header er niche thakbe automatically */
-}
-
-        .swiper-slide {
-            position: relative;
-            color: #333;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .swiper-slide > img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* MODIFIED: Changed to 'cover' to fill and crop the image */
-            z-index: -1;
-        }
-
-        .slide-content {
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    background: linear-gradient(to top, rgba(255, 255, 255, 0.97) 10%, rgba(255, 255, 255, 0) 100%);
-    z-index: 2;
-    color: #000; /* adjust text color if needed */
-}
-
-        .slide-title {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin: 0 0 5px 0;
-        }
-
-        .slide-genres {
-            font-size: 0.9em;
-            margin: 0 0 15px 0;
-            color: #eee; /* Modified for better text visibility */
-        }
-        
-        .swiper-pagination-bullet {
-            display: none; 
-        }
-
-        @keyframes contentFadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .swiper-slide .slide-content > * { opacity: 0; }
-        .swiper-slide-active .slide-content .slide-title { animation: contentFadeInUp 0.6s ease-out 0.3s forwards; }
-        .swiper-slide-active .slide-content .slide-genres { animation: contentFadeInUp 0.6s ease-out 0.5s forwards; }
-        .swiper-slide-active .slide-content .slide-buttons { animation: contentFadeInUp 0.6s ease-out 0.7s forwards; }
-
-        .anime-card {
-            position: absolute;
-            right: 5%;
-            bottom: 25%;
-            width: 150px;
-            z-index: 1;
-            opacity: 0;
-            transform: translateX(150%);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .anime-card img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .anime-card-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
-        }
-
-        .anime-card-title, .anime-card-episode { margin: 0; color: #fff; }
-        .anime-card-title { font-size: 0.9em; font-weight: bold; }
-        .anime-card-episode { font-size: 0.8em; font-weight: normal; opacity: 0.9; }
-
-        @keyframes slideInFromRight {
-            from { opacity: 0; transform: translateX(150%); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .swiper-slide-active .anime-card { animation: slideInFromRight 0.8s ease-out 0.6s forwards; }
-
-        .slide-buttons button {
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
-            margin-right: 10px;
-            transition: transform 0.2s ease, background-color 0.3s ease;
-            padding: 12px 24px;
-            border-radius: 50px;
-        }
-
-        .slide-buttons button:hover { transform: scale(1.05); }
-        .play-button { background-color: #E50914; color: white; }
-
-        .my-list-button {
-            position: relative;
-            background-color: rgba(50, 50, 50, 0.7);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            width: 130px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            overflow: hidden;
-        }
-
-        .my-list-button .icon {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: transform 0.5s ease, opacity 0.5s ease;
-        }
-
-        .my-list-button .text { transition: opacity 0.3s ease; }
-        .my-list-button.added { background-color: #28a745; border-color: #28a745; }
-        .my-list-button.added .icon { opacity: 1; animation: moveIcon 0.5s forwards; }
-
-        @keyframes moveIcon {
-            to { left: 15px; transform: translateX(0); }
-        }
-
-        .my-list-button.added .text { animation: fadeInText 0.5s 0.2s forwards; opacity: 0; }
-
-        @keyframes fadeInText { to { opacity: 1; } }
-
-        /* --- Bottom Navigation Styles --- */
-        .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 420px;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-size: 13px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item i {
-            font-size: 24px;
-            margin-bottom: 4px;
-            color: #aaa;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item.active i { color: #ff004c; transform: scale(1.3); }
-        .nav-item span { color: black; font-weight: 400; transition: all 0.3s ease; }
-        .nav-item.active span { color: #fff; font-weight: 500; }
-        .nav-item:hover i, .nav-item:hover span { color: #ff004c; }
-    </style>
+    .anime-card-genres {
+        font-size: 0.85em;
+        color: #bbbbbb;
+    }
+    
+</style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <div class="logo"></div>
-        <div class="title" id="title">
-            <img src="https://files.catbox.moe/7tjjuw.png" alt="AniReal Logo">
-        </div>
-        <div class="icons">
-            <div class="search-box" id="searchBox">
-                <input type="text" placeholder="Search...">
+    <!-- New Release Section -->
+    <h2 class="section-title">New Release</h2>
+    <div class="anime-card-container">
+        
+        <div class="anime-card">
+            <div class="anime-card-image-container">
+                <div class="rating-tag">8.5</div>
+                <img src="https://via.placeholder.com/250x140.png?text=Anime+1" alt="Anime 1">
             </div>
-            <i id="searchIcon" class="fas fa-search"></i>
-            <i class="fas fa-bell"></i>
+            <div class="anime-card-content">
+                <h3 class="anime-card-title">Anime Title 1</h3>
+                <div class="anime-card-genres">
+                    <span>Action</span>
+                </div>
+            </div>
         </div>
-    </header>
 
-    <!-- Slider -->
-    <div class="swiper-container main-slider">
-        <div class="swiper-wrapper">
-            <!-- Slide 1 -->
-            <div class="swiper-slide">
-             <img src="https://m.media-amazon.com/images/S/pv-target-images/b2a28df9be0a12a98f505430b5362cf0e475de05c48aeced626adcbc53f77792.jpg" alt="Banner 1">
-                <div class="slide-content">
-                    <h3 class="slide-title">Gachiakuta</h3>
-                    <p class="slide-genres">Action, Adventure, Fantasy</p>
-                    <div class="slide-buttons">
-                        <button class="play-button">► Play</button>
-                        <button class="my-list-button">
-                            <span class="icon">✔</span>
-                            <span class="text">+ My List</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="anime-card">
-                    <img src="https://m.media-amazon.com/images/M/MV5BZDU5ZmEzODYtMDU2OS00NTZiLTk4MWYtYWUyZWUzNGU2ODdjXkEyXkFqcGc@._V1_.jpg" alt="Gachiakuta">
-                    <div class="anime-card-info">
-                        <p class="anime-card-title">Gachiakuta</p>
-                        <p class="anime-card-episode">Episodes 24</p>
-                    </div>
-                </div>
+        <div class="anime-card">
+            <div class="anime-card-image-container">
+                <div class="rating-tag">9.2</div>
+                <img src="https://via.placeholder.com/250x140.png?text=Anime+2" alt="Anime 2">
             </div>
-            <!-- Slide 2 -->
-            <div class="swiper-slide">
-                <img src="https://photo.chelpbot.me/AgACAgUAAxkBXQtq02kCvXb0bOTI9XR77HjUy_d7F8mRAAIIDmsbju7IVzz2_rKVGCNDAQADAgADeQADNgQ/photo.jpg" alt="Banner 2">
-                <div class="slide-content">
-                    <h3 class="slide-title">Jujutsu Kaisen</h3>
-                    <p class="slide-genres">Action, Demons, Supernatural</p>
-                    <div class="slide-buttons">
-                        <button class="play-button">► Play</button>
-                        <button class="my-list-button">
-                            <span class="icon">✔</span>
-                            <span class="text">+ My List</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="anime-card">
-                    <img src="https://cdn.myanimelist.net/images/anime/1171/109222.jpg" alt="Anime Card 2">
-                    <div class="anime-card-info">
-                        <p class="anime-card-title">Jujutsu Kaisen</p>
-                        <p class="anime-card-episode">Episode 24</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Slide 3 -->
-            <div class="swiper-slide">
-                <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Banner 3">
-                <div class="slide-content">
-                    <h3 class="slide-title">Attack on Titan</h3>
-                    <p class="slide-genres">Action, Drama, Fantasy, Mystery</p>
-                    <div class="slide-buttons">
-                        <button class="play-button">► Play</button>
-                        <button class="my-list-button">
-                            <span class="icon">✔</span>
-                            <span class="text">+ My List</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="anime-card">
-                    <img src="https://cdn.myanimelist.net/images/anime/10/47t347.jpg" alt="Anime Card 3">
-                    <div class="anime-card-info">
-                        <p class="anime-card-title">Attack on Titan</p>
-                        <p class="anime-card-episode">Final Season</p>
-                    </div>
+            <div class="anime-card-content">
+                <h3 class="anime-card-title">Anime Title 2</h3>
+                <div class="anime-card-genres">
+                    <span>Fantasy</span>
                 </div>
             </div>
         </div>
-        <div class="swiper-pagination"></div>
+
+        <div class="anime-card">
+            <div class="anime-card-image-container">
+                <div class="rating-tag">8.8</div>
+                <img src="https://via.placeholder.com/250x140.png?text=Anime+3" alt="Anime 3">
+            </div>
+            <div class="anime-card-content">
+                <h3 class="anime-card-title">A Very Long Anime Title That Will Not Fit</h3>
+                <div class="anime-card-genres">
+                    <span>Romance</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="anime-card">
+            <div class="anime-card-image-container">
+                <div class="rating-tag">9.0</div>
+                <img src="https://via.placeholder.com/250x140.png?text=Anime+4" alt="Anime 4">
+            </div>
+            <div class="anime-card-content">
+                <h3 class="anime-card-title">Anime Title 4</h3>
+                <div class="anime-card-genres">
+                    <span>Sci-Fi</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="anime-card">
+            <div class="anime-card-image-container">
+                <div class="rating-tag">8.1</div>
+                <img src="https://via.placeholder.com/250x140.png?text=Anime+5" alt="Anime 5">
+            </div>
+            <div class="anime-card-content">
+                <h3 class="anime-card-title">Anime Title 5</h3>
+                <div class="anime-card-genres">
+                    <span>Slice of Life</span>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <a href="#" class="nav-item active">
-            <i class="fas fa-house"></i>
-            <span>Home</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-calendar-check"></i>
-            <span>Schedule</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-bookmark"></i>
-            <span>Watchlist</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-user-circle"></i>
-            <span>You</span>
-        </a>
+    <!-- Top List Section -->
+    <h2 class="section-title">Top List</h2>
+    <div class="anime-card-container">
+        
+        <div class="anime-card">
+            <div class="anime-card-image-container">
+                <div class="rating-tag">9.8</div>
+                <img src="https://via.placeholder.com/250x140.png?text=Top+1" alt="Top 1">
+            </div>
+            <div class="anime-card-content">
+                <h3 class="anime-card-title">Top Anime 1</h3>
+                <div class="anime-card-genres">
+                    <span>Adventure</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="anime-card">
+            <div class="anime-card-image-container">
+                <div class="rating-tag">9.5</div>
+                <img src="https://via.placeholder.com/250x140.png?text=Top+2" alt="Top 2">
+            </div>
+            <div class="anime-card-content">
+                <h3 class="anime-card-title">Top Anime 2</h3>
+                <div class="anime-card-genres">
+                    <span>Shounen</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="anime-card">
+            <div class="anime-card-image-container">
+                <div class="rating-tag">9.7</div>
+                <img src="https://via.placeholder.com/250x140.png?text=Top+3" alt="Top 3">
+            </div>
+            <div class="anime-card-content">
+                <h3 class="anime-card-title">Top Anime 3</h3>
+                <div class="anime-card-genres">
+                    <span>Action</span>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-    <!-- External JavaScript File -->
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-    <!-- Internal JavaScript -->
-    <script>
-        // --- Header Script ---
-        const searchIcon = document.getElementById('searchIcon');
-        const title = document.getElementById('title');
-        const searchBox = document.getElementById('searchBox');
-        const searchInput = searchBox.querySelector('input');
-
-        searchIcon.addEventListener('click', () => {
-            const isNowActive = searchBox.classList.toggle('active');
-            title.classList.toggle('hidden', isNowActive);
-            if (isNowActive) {
-                searchInput.focus();
-            }
-        });
-
-        searchInput.addEventListener('blur', () => {
-            if (searchInput.value === '') {
-                searchBox.classList.remove('active');
-                title.classList.remove('hidden');
-            }
-        });
-
-        // --- Bottom Navigation Script ---
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                navItems.forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-            });
-        });
-
-        // --- Slider Script ---
-        var swiper = new Swiper('.main-slider', {
-            effect: 'fade',
-            fadeEffect: {
-                crossFade: true
-            },
-            speed: 1000,
-            slidesPerView: 1,
-            loop: false, 
-            autoplay: {
-                delay: 4000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            on: {
-                reachEnd: function () {
-                  this.autoplay.stop();
-                  this.params.autoplay.reverseDirection = true; 
-                  this.autoplay.start();
-                },
-                reachBeginning: function () {
-                  this.autoplay.stop();
-                  this.params.autoplay.reverseDirection = false; 
-                  this.autoplay.start();
-                },
-            }
-        });
-
-        // --- 'My List' Button Animation Script ---
-        const myListButtons = document.querySelectorAll('.my-list-button');
-        myListButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const textSpan = button.querySelector('.text');
-                if (button.classList.contains('added')) {
-                    button.classList.remove('added');
-                    textSpan.textContent = '+ My List';
-                } else {
-                    button.classList.add('added');
-                    textSpan.textContent = 'Added';
-                }
-            });
-        });
-    </script>
 
 </body>
 </html>
