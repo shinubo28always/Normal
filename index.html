@@ -52,7 +52,7 @@
             background-position: center;
         }
 
-        .title {
+       header .title {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
@@ -400,18 +400,21 @@
     bottom: 0; 
     left: 0; 
     right: 0; 
-    padding: 8px; 
-    /* Eikhane background change kora hoyeche */
+    padding: 12px 8px; /* <-- Padding ektu barano holo */
     background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-    color: white; /* Default text color white kore dilam */
-    }
+    color: white;
+        }
         .info-overlay .title { 
-    font-weight: 700; /* 'bold' er jonno 700 ba 'bold' likhte paren */
+    font-weight: 700;
     font-size: 0.95em; 
     margin: 0;
-    color: #FFD700; /* Eita ekta sundor yellow color */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Lekhar niche halka kalo chaya */
-        }
+    color: #FFD700;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    /* Ei 3ti line add korun */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    }
         
         .info-overlay .episodes { 
     font-size: 0.8em; 
