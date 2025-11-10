@@ -15,7 +15,7 @@
             margin: 0;
             font-family: sans-serif;
             background: url('https://images.unsplash.com/photo-1554141311-6a4a279339e5?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
-            min-height: 100vh; /* UPDATED: Changed height to min-height to fix the loop issue */
+            min-height: 100vh;
             padding-bottom: 90px;
             box-sizing: border-box;
         }
@@ -160,7 +160,6 @@
             color: #555;
         }
         
-        /* This rule removes the pagination dots */
         .swiper-pagination-bullet {
             display: none; 
         }
@@ -392,7 +391,6 @@
                 </div>
             </div>
         </div>
-        <!-- Pagination element is kept for SwiperJS functionality but dots are hidden via CSS -->
         <div class="swiper-pagination"></div>
     </div>
 
@@ -460,15 +458,28 @@
             },
             speed: 1000,
             slidesPerView: 1,
-            loop: true, // This enables the infinite loop
+            loop: false, // Loop ko false kar diya gaya hai taki jump na ho
             autoplay: {
                 delay: 4000,
                 disableOnInteraction: false,
             },
             pagination: {
-                el: '.swiper-pagination', // Linked to the hidden pagination
+                el: '.swiper-pagination',
                 clickable: true,
             },
+            // Yeh naya code slider ko aage-peeche (ping-pong) chalane ke liye hai
+            on: {
+                reachEnd: function () {
+                  this.autoplay.stop();
+                  this.params.autoplay.reverseDirection = true; // Direction ko ulta set karein
+                  this.autoplay.start();
+                },
+                reachBeginning: function () {
+                  this.autoplay.stop();
+                  this.params.autoplay.reverseDirection = false; // Direction ko seedha set karein
+                  this.autoplay.start();
+                },
+            }
         });
 
         // --- 'My List' Button Animation Script ---
