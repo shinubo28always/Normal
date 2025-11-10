@@ -15,7 +15,7 @@
             margin: 0;
             font-family: sans-serif;
             background: url('https://images.unsplash.com/photo-1554141311-6a4a279339e5?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
-            height: 100vh;
+            min-height: 100vh; /* UPDATED: Changed height to min-height to fix the loop issue */
             padding-bottom: 90px;
             box-sizing: border-box;
         }
@@ -436,8 +436,10 @@
         });
 
         searchInput.addEventListener('blur', () => {
-            searchBox.classList.remove('active');
-            title.classList.remove('hidden');
+            if (searchInput.value === '') {
+                searchBox.classList.remove('active');
+                title.classList.remove('hidden');
+            }
         });
 
         // --- Bottom Navigation Script ---
