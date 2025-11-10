@@ -354,6 +354,7 @@
 </div>
 
 <!-- SwiperJS Script -->
+<!-- SwiperJS Script -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <!-- All Scripts Combined -->
 <script>
@@ -386,7 +387,8 @@
     });
   });
 
-// Initialize the Swiper slider
+  // Initialize the Swiper slider
+  var sliderContainer = document.querySelector('.main-slider');
   var swiper = new Swiper('.main-slider', {
       effect: 'fade',
       fadeEffect: { crossFade: true },
@@ -394,10 +396,18 @@
       slidesPerView: 1,
       loop: true,
       autoplay: { delay: 4000, disableOnInteraction: false },
-      // The pagination line that was here has been removed
       on: {
-          slideChangeTransitionEnd: function () {
-              this.slides.css('transform', ''); // Reset any transform properties
+          init: function() {
+              // Set initial fixed height
+              sliderContainer.style.height = sliderContainer.offsetHeight + 'px';
+          },
+          slideChangeTransitionStart: function() {
+              // Lock slider height during transition
+              sliderContainer.style.height = sliderContainer.offsetHeight + 'px';
+          },
+          slideChangeTransitionEnd: function() {
+              // Maintain height to prevent jumps
+              sliderContainer.style.height = sliderContainer.offsetHeight + 'px';
           },
       },
   });
