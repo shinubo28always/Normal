@@ -24,7 +24,7 @@
         padding-left: 10px;
     }
 
-    /* === New Releases === */
+    /* === New Releases Style 1 === */
     .new-release-container {
         display: flex;
         gap: 20px;
@@ -84,15 +84,18 @@
         font-weight: 600;
     }
 
-    /* === Top Hits === */
-    .top-hits-container {
+    /* === Top Hits / Most Favourite / Most Popular Style 2 === */
+    .anime-row {
         display: flex;
         gap: 15px;
         overflow-x: auto;
         padding: 10px 0;
+        scroll-behavior: smooth;
     }
 
-    .top-hits-card {
+    .anime-row::-webkit-scrollbar { display: none; }
+
+    .anime-card {
         flex: 0 0 180px;
         height: 270px;
         border-radius: 12px;
@@ -104,19 +107,19 @@
         cursor: pointer;
     }
 
-    .top-hits-card:hover {
+    .anime-card:hover {
         transform: scale(1.05);
         box-shadow: 0 8px 20px rgba(30,144,255,0.3);
     }
 
-    .top-hits-card img {
+    .anime-card img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         transition: transform 0.3s ease;
     }
 
-    .top-hits-card:hover img { transform: scale(1.05); }
+    .anime-card:hover img { transform: scale(1.05); }
 
     .info-overlay {
         position: absolute;
@@ -168,8 +171,8 @@
 
 <!-- Top Hits -->
 <h2>🔥 Top Hits Anime</h2>
-<div class="top-hits-container">
-    <div class="top-hits-card">
+<div class="anime-row">
+    <div class="anime-card">
         <img src="https://photo.chelpbot.me/AgACAgUAAxkBXQtq02kCvXb0bOTI9XR77HjUy_d7F8mRAAIIDmsbju7IVzz2_rKVGCNDAQADAgADeQADNgQ/photo.jpg" alt="Top 1">
         <div class="info-overlay">
             <h3 class="title">Top Anime 1</h3>
@@ -177,19 +180,51 @@
         </div>
     </div>
 
-    <div class="top-hits-card">
+    <div class="anime-card">
         <img src="https://photo.chelpbot.me/AgACAgUAAyEFAASPnmJjAAIBVGiQ3JktNnIJ1s9a-FQp-QStQG7sAAKzvDEb33phVc1RiY8XLre3AQADAgADeQADNgQ/photo.jpg" alt="Top 2">
         <div class="info-overlay">
             <h3 class="title">Top Anime 2</h3>
             <p class="episodes">Episodes: --</p>
         </div>
     </div>
+</div>
 
-    <div class="top-hits-card">
-        <img src="https://photo.chelpbot.me/AgACAgUAAxkBVgXzAWiTo2OBfoM53p1R4AowRhGXhtzrAAJtxDEb50FZVxms-Vz1k5nsAQADAgADeQADNgQ/photo.jpg" alt="Top 3">
+<!-- Most Favourite -->
+<h2>💖 Most Favourite</h2>
+<div class="anime-row">
+    <div class="anime-card">
+        <img src="https://i.imgur.com/8YlQk6l.jpg" alt="Fav 1">
         <div class="info-overlay">
-            <h3 class="title">Top Anime 3</h3>
-            <p class="episodes">Episodes: --</p>
+            <h3 class="title">Fav Anime 1</h3>
+            <p class="episodes">Episodes: 12</p>
+        </div>
+    </div>
+
+    <div class="anime-card">
+        <img src="https://i.imgur.com/p1s4pD4.jpg" alt="Fav 2">
+        <div class="info-overlay">
+            <h3 class="title">Fav Anime 2</h3>
+            <p class="episodes">Episodes: 8</p>
+        </div>
+    </div>
+</div>
+
+<!-- Most Popular -->
+<h2>🔥 Most Popular</h2>
+<div class="anime-row">
+    <div class="anime-card">
+        <img src="https://i.imgur.com/YwN9qC5.jpg" alt="Pop 1">
+        <div class="info-overlay">
+            <h3 class="title">Popular Anime 1</h3>
+            <p class="episodes">Episodes: 13</p>
+        </div>
+    </div>
+
+    <div class="anime-card">
+        <img src="https://i.imgur.com/mOQyHqg.jpg" alt="Pop 2">
+        <div class="info-overlay">
+            <h3 class="title">Popular Anime 2</h3>
+            <p class="episodes">Episodes: 10</p>
         </div>
     </div>
 </div>
