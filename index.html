@@ -386,7 +386,7 @@
     });
   });
 
-  // Initialize the Swiper slider
+// Initialize the Swiper slider
   var swiper = new Swiper('.main-slider', {
       effect: 'fade',
       fadeEffect: { crossFade: true },
@@ -395,6 +395,11 @@
       loop: true,
       autoplay: { delay: 4000, disableOnInteraction: false },
       // The pagination line that was here has been removed
+      on: {
+          slideChangeTransitionEnd: function () {
+              this.slides.css('transform', ''); // Reset any transform properties
+          },
+      },
   });
 
   // 'My List' Button Animation Logic
