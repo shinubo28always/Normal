@@ -143,18 +143,19 @@
         }
 
         .slide-content {
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-            background: linear-gradient(
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    /* Soft top fade to hard bottom white */
+    background: linear-gradient(
         to top,
         rgba(255, 255, 255, 0) 0%,      /* completely transparent top */
         rgba(255, 255, 255, 0.2) 30%,   /* soft fade */
         rgba(255, 255, 255, 1) 100%      /* hard white bottom */
     );
-            z-index: 2;
-            color: #fff; /* Modified for better text visibility */
-        }
+    z-index: 2;
+    color: #000; /* adjust text color if needed */
+}
 
         .slide-title {
             font-size: 1.5em;
