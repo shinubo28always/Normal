@@ -24,11 +24,11 @@ const db = getFirestore(app);
 
 
 // =================================================================
-// SECTION 1: TOP SLIDER FUNCTIONS (No changes needed here, it was good)
+// SECTION 1: TOP SLIDER FUNCTIONS (Slider initialization updated as requested)
 // =================================================================
 
 async function loadSlidesFromFirestore() {
-    const swiperWrapper = document.querySelector('.swiper-wrapper');
+    const swiperWrapper = document.querySelector('.main-slider .swiper-wrapper');
     if (!swiperWrapper) return;
 
     const slidesCollection = collection(db, 'slides');
@@ -60,17 +60,22 @@ async function loadSlidesFromFirestore() {
             </div>`;
     });
     swiperWrapper.innerHTML = slidesHTML;
+
+    // Initialize Swiper AFTER slides are loaded
     initializeSwiper();
+
+    // Setup buttons for the newly loaded slides
     setupMyListButtons();
 }
 
+// ** UPDATED SWIPER INITIALIZATION FUNCTION **
 function initializeSwiper() {
     new Swiper('.main-slider', {
         effect: 'fade',
         fadeEffect: { crossFade: true },
         speed: 1000,
         slidesPerView: 1,
-        loop: true,
+        loop: false, // Changed as per your new code
         autoplay: {
             delay: 4000,
             disableOnInteraction: false,
@@ -78,20 +83,34 @@ function initializeSwiper() {
         pagination: {
             el: '.swiper-pagination',
             clickable: true,
-        }
+        },
+        // This 'on' event handler makes the slider go back and forth
+        on: {
+            reachEnd: function () {
+                this.autoplay.stop();
+                this.params.autoplay.reverseDirection = true;
+                this.autoplay.start();
+            },
+            reachBeginning: function () {
+                this.autoplay.stop();
+                this.params.autoplay.reverseDirection = false;
+                this.autoplay.start();
+            },
+        },
     });
 }
 
 
 // =================================================================
-// SECTION 2: ANIME CARD SECTIONS FUNCTIONS (FULLY UPDATED AND OPTIMIZED)
+// SECTION 2: ANIME CARD SECTIONS FUNCTIONS (No changes needed here)
 // =================================================================
 
 // Function to create HTML for a 'New Release' style card
 function createNewReleaseCard(anime) {
+    // Note: The original code used 'anime.imageUrl', but your Firestore data might be different. Adjust if needed.
     return `
         <div class="new-release-card">
-            <div class="rating-tag">${anime.rating}</div>
+            <div class="rating-tag">${anime.rating || 'N/A'}</div>
             <img src="${anime.imageUrl}" alt="${anime.title}">
             <div class="new-release-card-content">
                 <h3 class="new-release-card-title">${anime.title}</h3>
@@ -100,10 +119,11 @@ function createNewReleaseCard(anime) {
         </div>`;
 }
 
-// Function to create HTML for a standard anime card
+// Function to create HTML for a standard anime card (This needs a class name adjustment to avoid conflicts)
 function createAnimeCard(anime) {
+     // Using 'standard-anime-card' class from your CSS to avoid conflicts with slider's '.anime-card'
     return `
-        <div class="anime-card">
+        <div class="standard-anime-card">
             <img src="${anime.imageUrl}" alt="${anime.title}">
             <div class="info-overlay">
                 <h3 class="title">${anime.title}</h3>
@@ -112,28 +132,29 @@ function createAnimeCard(anime) {
         </div>`;
 }
 
-// ** NEW EFFICIENT FUNCTION TO LOAD EACH CATEGORY SEPARATELY **
+// ** EFFICIENT FUNCTION TO LOAD EACH CATEGORY SEPARATELY **
 async function loadCategory(tag, containerId, cardCreatorFunction) {
     const container = document.getElementById(containerId);
-    if (!container) return;
+    const section = document.getElementById(containerId.replace('-container', '-section')); // Find the parent section
+    if (!container || !section) return;
 
     // Show loading spinner
     container.innerHTML = `<div class="spinner-container"><div class="spinner"></div></div>`;
+    section.style.display = 'block'; // Show section with spinner
 
     try {
-        // Create a specific query to fetch only the anime with the required tag
         const animesRef = collection(db, 'animes');
         const q = query(animesRef, where("tags", "array-contains", tag));
         const querySnapshot = await getDocs(q);
 
-        let cardsHTML = '';
-        querySnapshot.forEach(doc => {
-            cardsHTML += cardCreatorFunction(doc.data());
-        });
-
         if (querySnapshot.empty) {
-            container.innerHTML = `<p style="padding-left: 10px;">No anime found in this category yet.</p>`;
+            // If no anime found, hide the entire section
+            section.style.display = 'none';
         } else {
+            let cardsHTML = '';
+            querySnapshot.forEach(doc => {
+                cardsHTML += cardCreatorFunction(doc.data());
+            });
             container.innerHTML = cardsHTML;
         }
     } catch (error) {
@@ -180,6 +201,7 @@ function setupGeneralEventListeners() {
     });
 }
 
+// This function correctly handles the 'My List' buttons inside the slider
 function setupMyListButtons() {
     const myListButtons = document.querySelectorAll('.my-list-button');
     myListButtons.forEach(button => {
@@ -198,7 +220,7 @@ function setupMyListButtons() {
 
 
 // =================================================================
-// PAGE LOAD EVENT: Sab kuch yahin se shuru hota hai (UPDATED)
+// PAGE LOAD EVENT: Sab kuch yahin se shuru hota hai
 // =================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -208,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load data from Firestore
     loadSlidesFromFirestore();
     
-    // ** LOAD EACH ANIME CATEGORY EFFICIENTLY **
+    // LOAD EACH ANIME CATEGORY EFFICIENTLY
     loadCategory('new', 'new-releases-container', createNewReleaseCard);
     loadCategory('tophit', 'top-hits-container', createAnimeCard);
     loadCategory('favourite', 'most-favourite-container', createAnimeCard);
