@@ -1,4 +1,8 @@
-// Step 1: Import zaroori functions Firebase se
+// =================================================================
+// ANI-REAL WEBSITE SCRIPT - UPDATED VERSION
+// =================================================================
+
+// Step 1: Zaroori functions Firebase se import karein
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
@@ -8,7 +12,7 @@ const firebaseConfig = {
     authDomain: "anireal-web-68c69.firebaseapp.com",
     databaseURL: "https://anireal-web-68c69-default-rtdb.firebaseio.com",
     projectId: "anireal-web-68c69",
-    storageBucket: "anireal-web-68c69.appspot.com", // Correction: .firebasestorage.app se .appspot.com
+    storageBucket: "anireal-web-68c69.appspot.com",
     messagingSenderId: "1065490338135",
     appId: "1:1065490338135:web:eaf17782c03343f3a3ae12",
     measurementId: "G-ZJV5K1X7XF"
@@ -18,16 +22,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app); // Firestore database ka reference
 
-// Function to fetch slides from Firestore and render them
+
+// =================================================================
+// SECTION 1: TOP SLIDER FUNCTIONS
+// =================================================================
+
+// Function: Firestore se slider ka data laane ke liye
 async function loadSlidesFromFirestore() {
     const swiperWrapper = document.querySelector('.swiper-wrapper');
-    const slidesCollection = collection(db, 'slides'); // 'slides' aapke collection ka naam hai
+    if (!swiperWrapper) return; // Agar slider page par na ho toh function rok dein
+
+    const slidesCollection = collection(db, 'slides');
     const querySnapshot = await getDocs(slidesCollection);
 
-    let slidesHTML = ''; // Empty string to hold all slide HTML
+    let slidesHTML = '';
     querySnapshot.forEach((doc) => {
         const slideData = doc.data();
-        // Har document ke data se ek slide ka HTML banayein
         slidesHTML += `
             <div class="swiper-slide">
                 <img src="${slideData.bannerImage}" alt="Banner">
@@ -53,23 +63,22 @@ async function loadSlidesFromFirestore() {
         `;
     });
 
-    swiperWrapper.innerHTML = slidesHTML; // Saare slides ko wrapper mein daal dein
+    swiperWrapper.innerHTML = slidesHTML;
 
-    // Data load hone ke baad hi Swiper aur baki event listeners ko initialize karein
+    // Data load hone ke baad hi Swiper ko chalu karein
     initializeSwiper();
-    setupEventListeners();
+    // Aur "My List" button ke liye event listeners setup karein
+    setupMyListButtons();
 }
 
-// Function to initialize Swiper
+// Function: Swiper library ko initialize karne ke liye
 function initializeSwiper() {
-    var swiper = new Swiper('.main-slider', {
+    new Swiper('.main-slider', {
         effect: 'fade',
-        fadeEffect: {
-            crossFade: true
-        },
+        fadeEffect: { crossFade: true },
         speed: 1000,
         slidesPerView: 1,
-        loop: true, // Loop ko true kar sakte hain ab
+        loop: true,
         autoplay: {
             delay: 4000,
             disableOnInteraction: false,
@@ -81,9 +90,75 @@ function initializeSwiper() {
     });
 }
 
-// Function to setup all other event listeners
-function setupEventListeners() {
-    // --- Header Script ---
+
+// =================================================================
+// SECTION 2: ANIME CARD SECTIONS FUNCTIONS
+// =================================================================
+
+// Function: 'New Release' style ka card banane ke liye
+function createNewReleaseCard(anime) {
+    return `
+        <div class="new-release-card">
+            <div class="rating-tag">${anime.rating}</div>
+            <img src="${anime.imageUrl}" alt="${anime.title}">
+            <div class="new-release-card-content">
+                <h3 class="new-release-card-title">${anime.title}</h3>
+                <div class="new-release-card-genres"><span>${anime.genre}</span></div>
+            </div>
+        </div>
+    `;
+}
+
+// Function: Baaki sabhi sections ('Top Hits' etc.) ka card banane ke liye
+function createAnimeCard(anime) {
+    return `
+        <div class="anime-card">
+            <img src="${anime.imageUrl}" alt="${anime.title}">
+            <div class="info-overlay">
+                <h3 class="title">${anime.title}</h3>
+                <p class="episodes">Episodes: ${anime.episodes}</p>
+            </div>
+        </div>
+    `;
+}
+
+// Main Function: Firestore se saara anime data laakar sections mein daalne ke liye
+async function loadAllAnimeSections() {
+    const newReleasesContainer = document.getElementById('new-releases-container');
+    const topHitsContainer = document.getElementById('top-hits-container');
+    const mostFavouriteContainer = document.getElementById('most-favourite-container');
+    const mostPopularContainer = document.getElementById('most-popular-container');
+
+    const animesCollection = collection(db, 'animes');
+    const querySnapshot = await getDocs(animesCollection);
+
+    querySnapshot.forEach(doc => {
+        const animeData = doc.data();
+
+        // Tags ke basis par check karna ki anime kis category mein jayega
+        if (animeData.tags && animeData.tags.includes('new')) {
+            newReleasesContainer.innerHTML += createNewReleaseCard(animeData);
+        }
+        if (animeData.tags && animeData.tags.includes('tophit')) {
+            topHitsContainer.innerHTML += createAnimeCard(animeData);
+        }
+        if (animeData.tags && animeData.tags.includes('favourite')) {
+            mostFavouriteContainer.innerHTML += createAnimeCard(animeData);
+        }
+        if (animeData.tags && animeData.tags.includes('popular')) {
+            mostPopularContainer.innerHTML += createAnimeCard(animeData);
+        }
+    });
+}
+
+
+// =================================================================
+// SECTION 3: GENERAL UI EVENT LISTENERS
+// =================================================================
+
+// Function: Header, Search, Bottom Nav ke liye event listeners
+function setupGeneralEventListeners() {
+    // --- Header Search Script ---
     const searchIcon = document.getElementById('searchIcon');
     const title = document.getElementById('title');
     const searchBox = document.getElementById('searchBox');
@@ -113,9 +188,10 @@ function setupEventListeners() {
             item.classList.add('active');
         });
     });
-    
-    // --- 'My List' Button Animation Script ---
-    // Yeh ab dynamically created buttons par bhi kaam karega
+}
+
+// Function: 'My List' button ke liye (yeh alag hai kyunki slider ke load hone ke baad chalta hai)
+function setupMyListButtons() {
     const myListButtons = document.querySelectorAll('.my-list-button');
     myListButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -132,5 +208,17 @@ function setupEventListeners() {
 }
 
 
-// Jab page load ho, toh Firestore se data fetch karo
-document.addEventListener('DOMContentLoaded', loadSlidesFromFirestore);
+// =================================================================
+// PAGE LOAD EVENT: Sab kuch yahin se shuru hota hai
+// =================================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    // General UI (Header, Nav) ko setup karo
+    setupGeneralEventListeners();
+    
+    // Firestore se Slider ka data load karo
+    loadSlidesFromFirestore();
+    
+    // Firestore se baaki saare Anime Sections ka data load karo
+    loadAllAnimeSections();
+});
