@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AniReal - Admin Panel</title>
+    <style>
+        :root { --primary: #E50914; --secondary: #222; --background: #141414; --text-primary: #fff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--background); color: var(--text-primary); }
+        .view { display: none; padding: 20px; padding-bottom: 100px; }
+        .view.active { display: block; }
+        .container { max-width: 1200px; margin: auto; }
+        button { cursor: pointer; padding: 12px 20px; border: none; border-radius: 4px; font-weight: bold; font-size: 16px; transition: background-color 0.3s; }
+        .btn-primary { background-color: var(--primary); color: var(--text-primary); width: 100%; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        header h1 { font-size: 28px; }
+        .list-section { background-color: var(--secondary); padding: 20px; border-radius: 8px; }
+        .list-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; border-radius: 4px; }
+        .list-item:nth-child(even) { background-color: #2a2a2a; }
+        .list-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60%; }
+        .list-item-actions button { background: none; border: none; color: #aaa; margin-left: 15px; padding: 5px; display: inline-flex; align-items: center; justify-content: center; }
+        .list-item-actions button svg { width: 20px; height: 20px; }
+        .list-item-actions button:hover { color: var(--primary); }
+        #form-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--background); z-index: 1500; overflow-y: auto; display: none; }
+        #form-view .form-container { padding: 20px; padding-bottom: 80px; }
+        #form-view .form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        #form-view h2 { font-size: 24px; }
+        #form-view .btn-close-form { font-size: 28px; background: none; border: none; color: var(--text-primary); }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--secondary); padding: 25px; border-radius: 8px; width: 95%; max-width: 400px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .close-btn { font-size: 28px; background: none; border: none; color: var(--text-primary); }
+        #add-choice-modal .choice-buttons { display: flex; flex-direction: column; gap: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border-radius: 4px; border: 1px solid #444; background-color: #333; color: var(--text-primary); font-size: 16px; }
+        .bottom-action-bar { position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--secondary); display: flex; justify-content: space-around; align-items: center; height: 60px; padding: 0 5px; box-shadow: 0 -2px 10px rgba(0,0,0,0.5); z-index: 500; }
+        .bar-icon { background: none; border: none; color: #aaa; display: flex; flex-direction: column; align-items: center; font-size: 10px; gap: 4px; flex-grow: 1; height: 100%; justify-content: center; padding: 0 2px; text-align: center; }
+        .bar-icon.active { color: var(--primary); }
+        .bar-icon svg { width: 22px; height: 22px; margin-bottom: 2px;}
+        .fab { width: 56px; height: 56px; border-radius: 50%; background-color: var(--primary); color: white; font-size: 28px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.4); position: fixed; bottom: 75px; left: 50%; transform: translateX(-50%); z-index: 501; }
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 3000; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <!-- Pages (Simplified for your project) -->
+    <div id="slides-view" class="view active"><div class="container"><header><h1>Banners</h1></header><div class="list-section"><div id="slides-list"></div></div></div></div>
+    <div id="animes-view" class="view"><div class="container"><header><h1>Anime</h1></header><div class="list-section"><div id="animes-list"></div></div></div></div>
+
+    <!-- Universal Form - Tailored for your project -->
+    <div id="form-view">
+        <div class="form-container container">
+            <div class="form-header">
+                <h2 id="form-title"></h2>
+                <button class="btn-close-form" onclick="closeForm()">×</button>
+            </div>
+            <form id="main-form">
+                <input type="hidden" id="docId">
+                <input type="hidden" id="collectionName">
+                
+                <!-- Common Fields -->
+                <div class="form-group"><label for="title">Title</label><input type="text" id="title"></div>
+                <div class="form-group"><label for="genre">Genre (For Anime Card)</label><input type="text" id="genre" placeholder="e.g., Action, Adventure"></div>
+                <div class="form-group"><label for="genres">Genres (For Banner)</label><input type="text" id="genres" placeholder="e.g., Action, Fantasy, Isekai"></div>
+
+                <!-- Fields for Anime Cards -->
+                <div class="form-group"><label for="imageUrl">Image URL (Poster)</label><input type="url" id="imageUrl"></div>
+                <div class="form-group"><label for="rating">Rating</label><input type="text" id="rating" placeholder="e.g., 8.7"></div>
+                <div class="form-group"><label for="episodes">Episodes</label><input type="text" id="episodes" placeholder="e.g., 24"></div>
+                <div class="form-group">
+                    <label for="tags">Tags (comma-separated)</label>
+                    <input type="text" id="tags" placeholder="new,tophit,favourite,popular">
+                    <small style="color: #999; display: block; margin-top: 5px;">Tags decide where the anime shows up.</small>
+                </div>
+                
+                <!-- Fields for Banners -->
+                <div class="form-group"><label for="bannerImage">Banner Image URL</label><input type="url" id="bannerImage"></div>
+                <div class="form-group"><label for="cardImage">Card Image URL (for banner)</label><input type="url" id="cardImage"></div>
+                <div class="form-group"><label for="episode">Episode Info (for banner)</label><input type="text" id="episode" placeholder="e.g., Episode 5, Final Season"></div>
+
+                <button type="submit" class="btn-primary" style="margin-top: 20px;">Save</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Floating Action Button Menu (Simplified) -->
+    <div id="add-choice-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New</h2>
+                <button class="close-btn" onclick="hideAddChoice()">×</button>
+            </div>
+            <div class="choice-buttons">
+                <button class="btn-primary" onclick="openForm('animes')">Add Anime Card</button>
+                <button class="btn-primary" onclick="openForm('slides')">Add Banner</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar (Simplified) -->
+    <nav class="bottom-action-bar">
+        <button id="nav-slides" class="bar-icon active" onclick="switchView('slides-view')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg><span>Banners</span></button>
+        <button id="nav-animes" class="bar-icon" onclick="switchView('animes-view')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg><span>Anime</span></button>
+    </nav>
+    <button class="fab" onclick="showAddChoice()">+</button>
+    <div id="loader"><div class="spinner"></div></div>
+
+    <!-- Firebase Scripts (v8) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+        // === 1. YOUR FIREBASE CONFIG (UPDATED) ===
+        const firebaseConfig = {
+            apiKey: "AIzaSyADkvP-TKwlV4JfYfY6rlfyhcRKmfc_Cqw",
+            authDomain: "anireal-web-68c69.firebaseapp.com",
+            databaseURL: "https://anireal-web-68c69-default-rtdb.firebaseio.com",
+            projectId: "anireal-web-68c69",
+            storageBucket: "anireal-web-68c69.appspot.com",
+            messagingSenderId: "1065490338135",
+            appId: "1:1065490338135:web:eaf17782c03343f3a3ae12",
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Global variables
+        const mainForm = document.getElementById('main-form');
+        const loader = document.getElementById('loader');
+        
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            
+            document.querySelectorAll('.bar-icon').forEach(i => i.classList.remove('active'));
+            const navIconId = `nav-${viewId.replace('-view', '')}`;
+            if (document.getElementById(navIconId)) {
+                document.getElementById(navIconId).classList.add('active');
+            }
+        }
+
+        // === 2. FORM LOGIC (MODIFIED FOR YOUR COLLECTIONS) ===
+        async function openForm(collection, mode = 'add', docId = null) {
+            hideAddChoice();
+            mainForm.reset();
+            
+            document.getElementById('docId').value = docId;
+            document.getElementById('collectionName').value = collection;
+            
+            // Hide all form groups initially
+            document.querySelectorAll('#main-form .form-group').forEach(group => group.style.display = 'none');
+            
+            let formTitle = '';
+            let fieldsToShow = [];
+
+            // Define fields for each collection
+            if (collection === 'animes') {
+                formTitle = `${mode === 'edit' ? 'Edit' : 'Add New'} Anime`;
+                fieldsToShow = ['title', 'genre', 'rating', 'imageUrl', 'episodes', 'tags'];
+            } else if (collection === 'slides') {
+                 formTitle = `${mode === 'edit' ? 'Edit' : 'Add'} Banner`;
+                 fieldsToShow = ['title', 'genres', 'episode', 'bannerImage', 'cardImage'];
+            }
+
+            // Show only the required fields
+            fieldsToShow.forEach(fieldId => {
+                const parent = document.getElementById(fieldId).parentElement;
+                if (parent) parent.style.display = 'block';
+            });
+            
+            // If in edit mode, fetch and fill the data
+            if (mode === 'edit' && docId) {
+                loader.style.display = 'flex';
+                try {
+                    const doc = await db.collection(collection).doc(docId).get();
+                    if (doc.exists) {
+                        const data = doc.data();
+                        for (const key in data) {
+                            if (document.getElementById(key)) {
+                                // Special handling for tags array to convert it to a string for the input field
+                                if (key === 'tags' && Array.isArray(data[key])) {
+                                    document.getElementById(key).value = data[key].join(', ');
+                                } else {
+                                    document.getElementById(key).value = data[key];
+                                }
+                            }
+                        }
+                    }
+                } catch (err) {
+                    alert('Error fetching data: ' + err.message);
+                } finally {
+                    loader.style.display = 'none';
+                }
+            }
+
+            document.getElementById('form-title').innerText = formTitle;
+            document.getElementById('form-view').style.display = 'block';
+        }
+        
+        // === 3. SAVE LOGIC (MODIFIED FOR TAGS AND NUMBERS) ===
+        mainForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            loader.style.display = 'flex';
+            
+            const collection = document.getElementById('collectionName').value;
+            const docId = document.getElementById('docId').value;
+            
+            const data = {};
+            document.querySelectorAll(`#main-form .form-group`).forEach(group => {
+                if (group.style.display !== 'none') {
+                    const input = group.querySelector('input, textarea');
+                    if (!input || !input.id) return;
+
+                    // Smart data handling
+                    if (input.id === 'tags') {
+                        // Convert comma-separated string to a clean array
+                        data.tags = input.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+                    } else if (input.id === 'rating' || input.id === 'episodes') {
+                        // Convert rating and episodes to numbers
+                        data[input.id] = parseFloat(input.value) || 0;
+                    } else {
+                        data[input.id] = input.value;
+                    }
+                }
+            });
+
+            try {
+                if (docId) { // Edit Mode
+                    await db.collection(collection).doc(docId).set(data, { merge: true });
+                } else { // Add Mode
+                    data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection(collection).add(data);
+                }
+                closeForm();
+                fetchAllData();
+            } catch (err) {
+                alert('Error saving data: ' + err.message);
+            } finally {
+                loader.style.display = 'none';
+            }
+        });
+        
+        async function deleteItem(collectionName, docId) {
+            if (confirm(`Are you sure you want to delete this item?`)) {
+                loader.style.display = 'flex';
+                try {
+                    await db.collection(collectionName).doc(docId).delete();
+                    fetchAllData();
+                } catch (err) {
+                    alert('Error deleting item: ' + err.message);
+                } finally {
+                    loader.style.display = 'none';
+                }
+            }
+        }
+
+        function closeForm() { document.getElementById('form-view').style.display = 'none'; }
+        function showAddChoice() { document.getElementById('add-choice-modal').classList.add('active'); }
+        function hideAddChoice() { document.getElementById('add-choice-modal').classList.remove('active'); }
+        
+        async function fetchCollectionData(collectionName) {
+            const listEl = document.getElementById(`${collectionName}-list`);
+            if (!listEl) return;
+            listEl.innerHTML = `<p>Loading...</p>`;
+            
+            try {
+                const snapshot = await db.collection(collectionName).orderBy("createdAt", "desc").get();
+                listEl.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    listEl.innerHTML = `<p>No items found. Add one using the '+' button.</p>`;
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const item = { id: doc.id, ...doc.data() };
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'list-item';
+                    itemEl.innerHTML = `
+                        <span>${item.title || 'No Title'}</span>
+                        <div class="list-item-actions">
+                            <button class="edit-btn" title="Edit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
+                            <button class="delete-btn" title="Delete"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+                        </div>`;
+                    
+                    itemEl.querySelector('.edit-btn').onclick = () => openForm(collectionName, 'edit', doc.id);
+                    itemEl.querySelector('.delete-btn').onclick = () => deleteItem(collectionName, doc.id);
+
+                    listEl.appendChild(itemEl);
+                });
+            } catch (err) {
+                 listEl.innerHTML = `<p>Error loading data. Check console.</p>`;
+                 console.error(err);
+            }
+        }
+        
+        // === 4. DATA FETCHING (SIMPLIFIED) ===
+        function fetchAllData() {
+            fetchCollectionData('slides');
+            fetchCollectionData('animes');
+        }
+
+        // Initial Load
+        fetchAllData();
+    </script>
+</body>
+</html>
