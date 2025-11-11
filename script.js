@@ -1,10 +1,10 @@
 // =================================================================
-// ANI-REAL WEBSITE SCRIPT - UPDATED VERSION
+// ANI-REAL WEBSITE SCRIPT - FULLY UPDATED & OPTIMIZED VERSION
 // =================================================================
 
 // Step 1: Zaroori functions Firebase se import karein
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
 // Step 2: Aapka Firebase configuration object
 const firebaseConfig = {
@@ -20,21 +20,19 @@ const firebaseConfig = {
 
 // Step 3: Firebase ko initialize karein
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app); // Firestore database ka reference
+const db = getFirestore(app);
 
 
 // =================================================================
-// SECTION 1: TOP SLIDER FUNCTIONS
+// SECTION 1: TOP SLIDER FUNCTIONS (No changes needed here, it was good)
 // =================================================================
 
-// Function: Firestore se slider ka data laane ke liye
 async function loadSlidesFromFirestore() {
     const swiperWrapper = document.querySelector('.swiper-wrapper');
-    if (!swiperWrapper) return; // Agar slider page par na ho toh function rok dein
+    if (!swiperWrapper) return;
 
     const slidesCollection = collection(db, 'slides');
     const querySnapshot = await getDocs(slidesCollection);
-
     let slidesHTML = '';
     querySnapshot.forEach((doc) => {
         const slideData = doc.data();
@@ -59,19 +57,13 @@ async function loadSlidesFromFirestore() {
                         <p class="anime-card-episode">${slideData.episode}</p>
                     </div>
                 </div>
-            </div>
-        `;
+            </div>`;
     });
-
     swiperWrapper.innerHTML = slidesHTML;
-
-    // Data load hone ke baad hi Swiper ko chalu karein
     initializeSwiper();
-    // Aur "My List" button ke liye event listeners setup karein
     setupMyListButtons();
 }
 
-// Function: Swiper library ko initialize karne ke liye
 function initializeSwiper() {
     new Swiper('.main-slider', {
         effect: 'fade',
@@ -92,10 +84,10 @@ function initializeSwiper() {
 
 
 // =================================================================
-// SECTION 2: ANIME CARD SECTIONS FUNCTIONS
+// SECTION 2: ANIME CARD SECTIONS FUNCTIONS (FULLY UPDATED AND OPTIMIZED)
 // =================================================================
 
-// Function: 'New Release' style ka card banane ke liye
+// Function to create HTML for a 'New Release' style card
 function createNewReleaseCard(anime) {
     return `
         <div class="new-release-card">
@@ -105,11 +97,10 @@ function createNewReleaseCard(anime) {
                 <h3 class="new-release-card-title">${anime.title}</h3>
                 <div class="new-release-card-genres"><span>${anime.genre}</span></div>
             </div>
-        </div>
-    `;
+        </div>`;
 }
 
-// Function: Baaki sabhi sections ('Top Hits' etc.) ka card banane ke liye
+// Function to create HTML for a standard anime card
 function createAnimeCard(anime) {
     return `
         <div class="anime-card">
@@ -118,47 +109,46 @@ function createAnimeCard(anime) {
                 <h3 class="title">${anime.title}</h3>
                 <p class="episodes">Episodes: ${anime.episodes}</p>
             </div>
-        </div>
-    `;
+        </div>`;
 }
 
-// Main Function: Firestore se saara anime data laakar sections mein daalne ke liye
-async function loadAllAnimeSections() {
-    const newReleasesContainer = document.getElementById('new-releases-container');
-    const topHitsContainer = document.getElementById('top-hits-container');
-    const mostFavouriteContainer = document.getElementById('most-favourite-container');
-    const mostPopularContainer = document.getElementById('most-popular-container');
+// ** NEW EFFICIENT FUNCTION TO LOAD EACH CATEGORY SEPARATELY **
+async function loadCategory(tag, containerId, cardCreatorFunction) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
 
-    const animesCollection = collection(db, 'animes');
-    const querySnapshot = await getDocs(animesCollection);
+    // Show loading spinner
+    container.innerHTML = `<div class="spinner-container"><div class="spinner"></div></div>`;
 
-    querySnapshot.forEach(doc => {
-        const animeData = doc.data();
+    try {
+        // Create a specific query to fetch only the anime with the required tag
+        const animesRef = collection(db, 'animes');
+        const q = query(animesRef, where("tags", "array-contains", tag));
+        const querySnapshot = await getDocs(q);
 
-        // Tags ke basis par check karna ki anime kis category mein jayega
-        if (animeData.tags && animeData.tags.includes('new')) {
-            newReleasesContainer.innerHTML += createNewReleaseCard(animeData);
+        let cardsHTML = '';
+        querySnapshot.forEach(doc => {
+            cardsHTML += cardCreatorFunction(doc.data());
+        });
+
+        if (querySnapshot.empty) {
+            container.innerHTML = `<p style="padding-left: 10px;">No anime found in this category yet.</p>`;
+        } else {
+            container.innerHTML = cardsHTML;
         }
-        if (animeData.tags && animeData.tags.includes('tophit')) {
-            topHitsContainer.innerHTML += createAnimeCard(animeData);
-        }
-        if (animeData.tags && animeData.tags.includes('favourite')) {
-            mostFavouriteContainer.innerHTML += createAnimeCard(animeData);
-        }
-        if (animeData.tags && animeData.tags.includes('popular')) {
-            mostPopularContainer.innerHTML += createAnimeCard(animeData);
-        }
-    });
+    } catch (error) {
+        console.error("Error loading category:", tag, error);
+        container.innerHTML = `<p style="padding-left: 10px; color: #ff6b6b;">Could not load this section.</p>`;
+    }
 }
 
 
 // =================================================================
-// SECTION 3: GENERAL UI EVENT LISTENERS
+// SECTION 3: GENERAL UI EVENT LISTENERS (No changes needed here)
 // =================================================================
 
-// Function: Header, Search, Bottom Nav ke liye event listeners
 function setupGeneralEventListeners() {
-    // --- Header Search Script ---
+    // Header Search Script
     const searchIcon = document.getElementById('searchIcon');
     const title = document.getElementById('title');
     const searchBox = document.getElementById('searchBox');
@@ -179,7 +169,7 @@ function setupGeneralEventListeners() {
         }
     });
 
-    // --- Bottom Navigation Script ---
+    // Bottom Navigation Script
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
@@ -190,7 +180,6 @@ function setupGeneralEventListeners() {
     });
 }
 
-// Function: 'My List' button ke liye (yeh alag hai kyunki slider ke load hone ke baad chalta hai)
 function setupMyListButtons() {
     const myListButtons = document.querySelectorAll('.my-list-button');
     myListButtons.forEach(button => {
@@ -209,16 +198,19 @@ function setupMyListButtons() {
 
 
 // =================================================================
-// PAGE LOAD EVENT: Sab kuch yahin se shuru hota hai
+// PAGE LOAD EVENT: Sab kuch yahin se shuru hota hai (UPDATED)
 // =================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // General UI (Header, Nav) ko setup karo
+    // Setup General UI (Header, Nav)
     setupGeneralEventListeners();
     
-    // Firestore se Slider ka data load karo
+    // Load data from Firestore
     loadSlidesFromFirestore();
     
-    // Firestore se baaki saare Anime Sections ka data load karo
-    loadAllAnimeSections();
+    // ** LOAD EACH ANIME CATEGORY EFFICIENTLY **
+    loadCategory('new', 'new-releases-container', createNewReleaseCard);
+    loadCategory('tophit', 'top-hits-container', createAnimeCard);
+    loadCategory('favourite', 'most-favourite-container', createAnimeCard);
+    loadCategory('popular', 'most-popular-container', createAnimeCard);
 });
