@@ -1,10 +1,14 @@
-/* --- General Styles --- */
+/* ====================================================== */
+/* === ANI-REAL WEBSITE STYLES - FULLY UPDATED === */
+/* ====================================================== */
+
+/* --- General & Root Styles --- */
 body {
     margin: 0;
-    font-family: sans-serif;
+    font-family: 'Poppins', sans-serif; /* Poppins font ko default banaya gaya */
     background: url('https://images.unsplash.com/photo-1554141311-6a4a279339e5?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
     min-height: 100vh;
-    padding-bottom: 90px;
+    padding-bottom: 90px; /* Bottom nav ke liye jagah */
     box-sizing: border-box;
 }
 
@@ -71,7 +75,7 @@ header {
 .search-box {
     position: absolute;
     top: 50%;
-    right: 113px;
+    right: 113px; /* Adjusted for icon spacing */
     transform: translateY(-50%);
     opacity: 0;
     visibility: hidden;
@@ -102,13 +106,13 @@ header {
     border-color: #e50914;
 }
 
-/* --- Slider Styles (MODIFIED) --- */
+/* --- Top Slider Styles --- */
 .swiper-container {
     width: 100%;
     height: 450px;
-    margin-top: 0;
+    margin-top: 0; /* Changed from 70px to remove gap */
     position: relative;
-    z-index: 0;
+    z-index: 0; /* Header ke niche rahega */
 }
 
 .swiper-slide {
@@ -134,6 +138,7 @@ header {
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
+    /* White gradient */
     background: linear-gradient(to top, rgba(255, 255, 255, 0.97) 10%, rgba(255, 255, 255, 0) 100%);
     z-index: 2;
     color: #000;
@@ -148,13 +153,14 @@ header {
 .slide-genres {
     font-size: 0.9em;
     margin: 0 0 15px 0;
-    color: #555; /* Changed for better visibility */
+    color: #555;
 }
 
 .swiper-pagination-bullet {
-    display: none;
+    display: none; 
 }
 
+/* Slider Content Animation */
 @keyframes contentFadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -165,7 +171,8 @@ header {
 .swiper-slide-active .slide-content .slide-genres { animation: contentFadeInUp 0.6s ease-out 0.5s forwards; }
 .swiper-slide-active .slide-content .slide-buttons { animation: contentFadeInUp 0.6s ease-out 0.7s forwards; }
 
-.anime-card {
+/* Slider's Right-side Anime Card */
+.slider-anime-card { /* Renamed to avoid conflict */
     position: absolute;
     right: 5%;
     bottom: 25%;
@@ -173,19 +180,18 @@ header {
     z-index: 1;
     opacity: 0;
     transform: translateX(150%);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     border-radius: 8px;
     overflow: hidden;
 }
 
-.anime-card img {
+.slider-anime-card img {
     width: 100%;
     height: 220px;
     object-fit: cover;
     display: block;
 }
 
-.anime-card-info {
+.slider-anime-card-info {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -195,16 +201,16 @@ header {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
-.anime-card-title, .anime-card-episode { margin: 0; color: #fff; }
-.anime-card-title { font-size: 0.9em; font-weight: bold; }
-.anime-card-episode { font-size: 0.8em; font-weight: normal; opacity: 0.9; }
+.slider-anime-card-title, .slider-anime-card-episode { margin: 0; color: #fff; }
+.slider-anime-card-title { font-size: 0.9em; font-weight: bold; }
+.slider-anime-card-episode { font-size: 0.8em; font-weight: normal; opacity: 0.9; }
 
 @keyframes slideInFromRight {
     from { opacity: 0; transform: translateX(150%); }
     to { opacity: 1; transform: translateX(0); }
 }
 
-.swiper-slide-active .anime-card { animation: slideInFromRight 0.8s ease-out 0.6s forwards; }
+.swiper-slide-active .slider-anime-card { animation: slideInFromRight 0.8s ease-out 0.6s forwards; }
 
 .slide-buttons button {
     border: none;
@@ -233,34 +239,22 @@ header {
     overflow: hidden;
 }
 
-.my-list-button .icon {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transition: transform 0.5s ease, opacity 0.5s ease;
-}
-
+.my-list-button .icon { position: absolute; left: 50%; transform: translateX(-50%); opacity: 0; transition: transform 0.5s ease, opacity 0.5s ease; }
 .my-list-button .text { transition: opacity 0.3s ease; }
 .my-list-button.added { background-color: #28a745; border-color: #28a745; }
 .my-list-button.added .icon { opacity: 1; animation: moveIcon 0.5s forwards; }
-
-@keyframes moveIcon {
-    to { left: 15px; transform: translateX(0); }
-}
-
+@keyframes moveIcon { to { left: 15px; transform: translateX(0); } }
 .my-list-button.added .text { animation: fadeInText 0.5s 0.2s forwards; opacity: 0; }
-
 @keyframes fadeInText { to { opacity: 1; } }
 
-/* --- New Content Sections Styling --- */
+
+/* --- ANIME CARD SECTIONS --- */
 .main-content {
     padding: 20px 15px;
-    color: white; /* Humne text color white rakha hai dark theme ke liye */
-    font-family: 'Poppins', sans-serif; /* Naya font */
+    color: white;
 }
 
-h2 { 
+.main-content h2 { 
     font-weight: 700; 
     margin-bottom: 20px; 
     font-size: 1.8em; 
@@ -268,21 +262,22 @@ h2 {
     padding-left: 10px; 
 }
 
-/* New Releases Section Styling */
-.new-release-container { 
+/* Horizontal Scrolling Containers */
+.new-release-container, .anime-row { 
     display: flex; 
     gap: 20px; 
     overflow-x: auto; 
-    padding: 10px 0; 
-    scrollbar-width: none; /* Hide scrollbar */
+    padding-bottom: 10px;
+    scrollbar-width: none; /* For Firefox */
 }
-.new-release-container::-webkit-scrollbar { 
-    display: none; /* Hide scrollbar for webkit browsers */
+.new-release-container::-webkit-scrollbar, .anime-row::-webkit-scrollbar { 
+    display: none; /* For Chrome, Safari */
 }
 
+/* Card Style 1: New Releases */
 .new-release-card { 
-    flex: 0 0 250px; 
-    background-color: #333; /* Dark theme ke liye color change */
+    flex: 0 0 250px; /* Card ko shrink hone se rokega */
+    background-color: #333;
     border-radius: 12px; 
     overflow: hidden; 
     position: relative; 
@@ -294,23 +289,14 @@ h2 {
     box-shadow: 0 8px 20px rgba(30,144,255,0.3); 
 }
 .new-release-card img { 
-    width: 250px; 
+    width: 100%; /* Changed from 250px to 100% for responsiveness */
     height: 140px; 
     object-fit: cover; 
     display: block; 
 }
-.new-release-card-content { 
-    padding: 10px; 
-}
-.new-release-card-title { 
-    font-weight: 600; 
-    margin: 0 0 5px 0; 
-    color: #fff;
-}
-.new-release-card-genres { 
-    font-size: 0.85em; 
-    color: #ccc; 
-}
+.new-release-card-content { padding: 10px; }
+.new-release-card-title { font-weight: 600; margin: 0 0 5px 0; color: #fff; }
+.new-release-card-genres { font-size: 0.85em; color: #ccc; }
 .rating-tag { 
     position: absolute; 
     top: 8px; 
@@ -323,34 +309,23 @@ h2 {
     font-weight: 600; 
 }
 
-/* Other Sections Styling (Top Hits etc.) */
-.anime-row { 
-    display: flex; 
-    gap: 15px; 
-    overflow-x: auto; 
-    padding: 10px 0; 
-    scroll-behavior: smooth; 
-}
-.anime-row::-webkit-scrollbar { 
-    display: none; 
-}
-
-.anime-card { 
-    flex: 0 0 180px; 
+/* Card Style 2: Top Hits, Favourite, etc. */
+.standard-anime-card { /* Renamed to avoid conflict */
+    flex: 0 0 180px; /* Card ko shrink hone se rokega */
     height: 270px; 
     border-radius: 12px; 
     overflow: hidden; 
-    background-color: #333; /* Dark theme ke liye color change */
+    background-color: #333;
     position: relative; 
     display: block; 
     transition: transform 0.3s ease, box-shadow 0.3s ease; 
     cursor: pointer; 
 }
-.anime-card:hover { 
+.standard-anime-card:hover { 
     transform: scale(1.05); 
     box-shadow: 0 8px 20px rgba(30,144,255,0.3); 
 }
-.anime-card img { 
+.standard-anime-card img { 
     width: 100%; 
     height: 100%; 
     object-fit: cover; 
@@ -361,20 +336,13 @@ h2 {
     bottom: 0; 
     left: 0; 
     right: 0; 
-    padding: 8px; 
-    background: rgba(0,0,0,0.7); /* Dark theme ke liye color change */
+    padding: 10px; /* Increased padding */
+    background: rgba(0,0,0,0.7);
     backdrop-filter: blur(5px);
     color: white; 
 }
-.info-overlay .title { 
-    font-weight: 600; 
-    font-size: 0.95em; 
-    margin: 0; 
-}
-.info-overlay .episodes { 
-    font-size: 0.8em; 
-    margin: 2px 0 0 0; 
-}
+.info-overlay .title { font-weight: 600; font-size: 0.95em; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.info-overlay .episodes { font-size: 0.8em; margin: 4px 0 0 0; }
 
 /* View More Button Style */
 .view-more-container { 
@@ -396,6 +364,32 @@ h2 {
     transform: scale(1.05);
 }
 
+/* --- Loading Spinner Style --- */
+.cards-container .spinner-container, .anime-row .spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 150px;
+    width: 100%;
+}
+.new-release-container .spinner-container {
+    min-height: 140px; /* Match card height */
+}
+
+.spinner {
+    border: 4px solid #444;
+    border-top: 4px solid #1e90ff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 /* --- Bottom Navigation Styles --- */
 .bottom-nav {
     position: fixed;
@@ -413,6 +407,7 @@ h2 {
     align-items: center;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 1001;
 }
 
 .nav-item {
@@ -433,6 +428,6 @@ h2 {
 }
 
 .nav-item.active i { color: #ff004c; transform: scale(1.3); }
-.nav-item span { color: black; font-weight: 400; transition: all 0.3s ease; }
+.nav-item span { color: #ddd; font-weight: 400; transition: all 0.3s ease; } /* Changed color from black */
 .nav-item.active span { color: #fff; font-weight: 500; }
 .nav-item:hover i, .nav-item:hover span { color: #ff004c; }
