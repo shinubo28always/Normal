@@ -253,6 +253,149 @@ header {
 
 @keyframes fadeInText { to { opacity: 1; } }
 
+/* --- New Content Sections Styling --- */
+.main-content {
+    padding: 20px 15px;
+    color: white; /* Humne text color white rakha hai dark theme ke liye */
+    font-family: 'Poppins', sans-serif; /* Naya font */
+}
+
+h2 { 
+    font-weight: 700; 
+    margin-bottom: 20px; 
+    font-size: 1.8em; 
+    border-left: 4px solid #1e90ff; 
+    padding-left: 10px; 
+}
+
+/* New Releases Section Styling */
+.new-release-container { 
+    display: flex; 
+    gap: 20px; 
+    overflow-x: auto; 
+    padding: 10px 0; 
+    scrollbar-width: none; /* Hide scrollbar */
+}
+.new-release-container::-webkit-scrollbar { 
+    display: none; /* Hide scrollbar for webkit browsers */
+}
+
+.new-release-card { 
+    flex: 0 0 250px; 
+    background-color: #333; /* Dark theme ke liye color change */
+    border-radius: 12px; 
+    overflow: hidden; 
+    position: relative; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    cursor: pointer; 
+}
+.new-release-card:hover { 
+    transform: scale(1.05); 
+    box-shadow: 0 8px 20px rgba(30,144,255,0.3); 
+}
+.new-release-card img { 
+    width: 250px; 
+    height: 140px; 
+    object-fit: cover; 
+    display: block; 
+}
+.new-release-card-content { 
+    padding: 10px; 
+}
+.new-release-card-title { 
+    font-weight: 600; 
+    margin: 0 0 5px 0; 
+    color: #fff;
+}
+.new-release-card-genres { 
+    font-size: 0.85em; 
+    color: #ccc; 
+}
+.rating-tag { 
+    position: absolute; 
+    top: 8px; 
+    right: 8px; 
+    background-color: #1e90ff; 
+    color: white; 
+    padding: 3px 8px; 
+    border-radius: 5px; 
+    font-size: 0.8em; 
+    font-weight: 600; 
+}
+
+/* Other Sections Styling (Top Hits etc.) */
+.anime-row { 
+    display: flex; 
+    gap: 15px; 
+    overflow-x: auto; 
+    padding: 10px 0; 
+    scroll-behavior: smooth; 
+}
+.anime-row::-webkit-scrollbar { 
+    display: none; 
+}
+
+.anime-card { 
+    flex: 0 0 180px; 
+    height: 270px; 
+    border-radius: 12px; 
+    overflow: hidden; 
+    background-color: #333; /* Dark theme ke liye color change */
+    position: relative; 
+    display: block; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    cursor: pointer; 
+}
+.anime-card:hover { 
+    transform: scale(1.05); 
+    box-shadow: 0 8px 20px rgba(30,144,255,0.3); 
+}
+.anime-card img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
+
+.info-overlay { 
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    padding: 8px; 
+    background: rgba(0,0,0,0.7); /* Dark theme ke liye color change */
+    backdrop-filter: blur(5px);
+    color: white; 
+}
+.info-overlay .title { 
+    font-weight: 600; 
+    font-size: 0.95em; 
+    margin: 0; 
+}
+.info-overlay .episodes { 
+    font-size: 0.8em; 
+    margin: 2px 0 0 0; 
+}
+
+/* View More Button Style */
+.view-more-container { 
+    text-align: center; 
+    margin: 40px 0; 
+}
+.view-more-btn {
+    background-color: #1e90ff;
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+.view-more-btn:hover {
+    background-color: #0073e6;
+    transform: scale(1.05);
+}
+
 /* --- Bottom Navigation Styles --- */
 .bottom-nav {
     position: fixed;
