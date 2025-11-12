@@ -52,7 +52,6 @@ header {
 }
 
 .title.hidden { opacity: 0; }
-
 .icons { display: flex; gap: 20px; align-items: center; }
 .icons i { font-size: 24px; color: white; cursor: pointer; transition: color 0.3s ease; }
 .icons i:hover { color: #e50914; }
@@ -70,7 +69,6 @@ header {
 }
 
 .search-box.active { opacity: 1; visibility: visible; width: 180px; margin-right: 15px; }
-
 .search-box input {
     width: 100%;
     padding: 7px 15px;
@@ -82,42 +80,13 @@ header {
 }
 .search-box input:focus { outline: none; border-color: #e50914; }
 
-
 /* ====================================================== */
 /* --- SLIDER STYLES --- */
 /* ====================================================== */
-.swiper-container {
-  width: 100%;
-  height: 450px;
-  position: relative;
-  z-index: 0;
-}
-
-.swiper-slide {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.swiper-slide > img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
-}
-
-.slide-content {
-  width: 100%;
-  padding: 20px;
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.97) 10%, rgba(255, 255, 255, 0) 100%);
-  color: #000;
-}
-
+.swiper-container { width: 100%; height: 450px; position: relative; z-index: 0; }
+.swiper-slide { position: relative; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
+.swiper-slide > img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
+.slide-content { width: 100%; padding: 20px; background: linear-gradient(to top, rgba(255, 255, 255, 0.97) 10%, rgba(255, 255, 255, 0) 100%); color: #000; }
 .slide-title { font-size: 1.5em; font-weight: bold; margin: 0 0 5px 0; }
 .slide-genres { font-size: 0.9em; margin: 0 0 15px 0; color: #555; }
 
@@ -126,61 +95,34 @@ header {
 .swiper-slide-active .slide-content .slide-genres { animation: contentFadeInUp 0.6s ease-out 0.5s forwards; }
 .swiper-slide-active .slide-content .slide-buttons { animation: contentFadeInUp 0.6s ease-out 0.7s forwards; }
 
-@keyframes contentFadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+@keyframes contentFadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-
-/* === SLIDER KE ANDAR WALA CARD (Aapke request ke hisaab se updated) === */
+/* === SLIDER KE ANDAR WALA CARD (BORDER AUR LIGHT EFFECT ADD KIYA GAYA) === */
 .anime-card {
   position: absolute;
   right: 5%;
   bottom: 25%;
   width: 150px;
+  opacity: 0;
   transform: translateX(150%);
   border-radius: 8px;
   overflow: hidden;
-  
   /* === NEW: BORDER & GLOW EFFECT === */
   border: 2px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 0 15px rgba(123, 44, 191, 0.6), 0 0 30px rgba(123, 44, 191, 0.4);
-  animation: glow-animation 4s ease-in-out infinite;
-  /* === NEW STYLES END HERE === */
 }
-
-.anime-card img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-}
-
-.anime-card-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 10px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
-}
-
+.anime-card img { width: 100%; height: 220px; object-fit: cover; }
+.anime-card-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px; background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)); }
 .anime-card-title, .anime-card-episode { margin: 0; color: #fff; }
 
 .swiper-slide-active .anime-card { animation: slideInFromRight 0.8s ease-out 0.6s forwards, glow-animation 4s ease-in-out infinite 0.8s; }
-
-@keyframes slideInFromRight {
-  from { opacity: 0; transform: translateX(150%); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
+@keyframes slideInFromRight { from { opacity: 0; transform: translateX(150%); } to { opacity: 1; transform: translateX(0); } }
 /* === NEW: GLOW ANIMATION KEYFRAMES === */
 @keyframes glow-animation {
     0% { box-shadow: 0 0 15px rgba(123, 44, 191, 0.6), 0 0 30px rgba(123, 44, 191, 0.4); }
     50% { box-shadow: 0 0 25px rgba(123, 44, 191, 0.8), 0 0 50px rgba(123, 44, 191, 0.6); }
     100% { box-shadow: 0 0 15px rgba(123, 44, 191, 0.6), 0 0 30px rgba(123, 44, 191, 0.4); }
 }
-/* === NEW ANIMATION ENDS HERE === */
-
 
 .slide-buttons button { border: none; cursor: pointer; font-size: 1em; font-weight: bold; margin-right: 10px; padding: 12px 24px; border-radius: 50px; transition: transform 0.2s ease, background-color 0.3s ease; }
 .play-button { background-color: #E50914; color: white; }
@@ -191,29 +133,15 @@ header {
 .my-list-button.added .icon { opacity: 1; left: 15px; }
 .my-list-button .text { transition: opacity 0.3s; }
 
-/* ====================================================== */
 /* --- ANIME CARD SECTIONS --- */
-/* ====================================================== */
 .main-content { padding: 20px 15px; color: black; }
 .main-content h2 { font-weight: 700; margin-bottom: 20px; font-size: 1.8em; border-left: 4px solid #1e90ff; padding-left: 10px; }
-
-/* Horizontal Scrolling Containers */
 .new-release-container, .anime-row { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
 .new-release-container::-webkit-scrollbar, .anime-row::-webkit-scrollbar { display: none; }
 
-
-/* === DUAL CARD STYLES START HERE === */
-
-/* --- Card Style 1: SIRF "New Releases" KE LIYE --- */
-.new-release-card { 
-    flex: 0 0 250px;
-    background-color: #333;
-    border-radius: 12px; 
-    overflow: hidden; 
-    position: relative; 
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
-    cursor: pointer; 
-}
+/* === DUAL CARD STYLES (Aapka Original Code) === */
+/* Card Style 1: New Releases */
+.new-release-card { flex: 0 0 250px; background-color: #333; border-radius: 12px; overflow: hidden; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
 .new-release-card:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(30,144,255,0.3); }
 .new-release-card img { width: 100%; height: 140px; object-fit: cover; display: block; }
 .new-release-card-content { padding: 10px; }
@@ -221,51 +149,23 @@ header {
 .new-release-card-genres { font-size: 0.85em; color: #ccc; }
 .rating-tag { position: absolute; top: 8px; right: 8px; background-color: #1e90ff; color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.8em; font-weight: 600; }
 
-/* --- Card Style 2: BAAKI SABHI SECTIONS KE LIYE (Top Hits, Favourite, etc.) --- */
-.standard-anime-card {
-    flex: 0 0 180px;
-    height: 270px; 
-    border-radius: 12px; 
-    overflow: hidden; 
-    background-color: #333;
-    position: relative; 
-    display: block; 
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
-    cursor: pointer; 
-}
+/* Card Style 2: Top Hits, Favourite, etc. */
+.standard-anime-card { flex: 0 0 180px; height: 270px; border-radius: 12px; overflow: hidden; background-color: #333; position: relative; display: block; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
 .standard-anime-card:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(30,144,255,0.3); }
 .standard-anime-card img { width: 100%; height: 100%; object-fit: cover; }
-
-.info-overlay { 
-    position: absolute; 
-    bottom: 0; 
-    left: 0; 
-    right: 0; 
-    padding: 10px;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(5px);
-    color: white; 
-}
+.info-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); color: white; }
 .info-overlay .title { font-weight: 600; font-size: 0.95em; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .info-overlay .episodes { font-size: 0.8em; margin: 4px 0 0 0; }
 
-/* === DUAL CARD STYLES END HERE === */
-
-
-/* --- View More Button, Spinner, Bottom Nav (No changes here) --- */
+/* --- Other Styles --- */
 .view-more-container { text-align: center; margin: 40px 0; }
 .view-more-btn { background-color: #1e90ff; color: white; padding: 12px 30px; text-decoration: none; font-size: 1.1em; font-weight: 600; border-radius: 50px; transition: background-color 0.3s, transform 0.2s; }
 .view-more-btn:hover { background-color: #0073e6; transform: scale(1.05); }
 
 .cards-container .spinner-container, .anime-row .spinner-container { display: flex; justify-content: center; align-items: center; min-height: 150px; width: 100%; }
 .new-release-container .spinner-container { min-height: 140px; }
-
 .spinner { border: 4px solid #444; border-top: 4px solid #1e90ff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 420px; height: 70px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 20px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.15); z-index: 1001; }
 .nav-item { display: flex; flex-direction: column; align-items: center; color: rgba(255, 255, 255, 0.7); text-decoration: none; font-size: 13px; transition: all 0.3s ease; }
