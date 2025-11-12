@@ -119,20 +119,20 @@ function createNewReleaseCard(anime) {
         </div>`;
 }
 
-// Function to create HTML for a standard anime card (This needs a class name adjustment to avoid conflicts)
-// Function to create HTML for a standard anime card (This needs a class name adjustment to avoid conflicts)
+// Function to create HTML for a standard anime card
 function createAnimeCard(anime) {
-     // Using 'standard-anime-card' class from your CSS to avoid conflicts with slider's '.anime-card'
     return `
         <div class="standard-anime-card">
             <div class="image-container">
                 <img src="${anime.imageUrl}" alt="${anime.title}">
                 <div class="rating-badge">${anime.rating || 'N/A'}</div>
             </div>
-            <h3 class="title">${anime.title}</h3>
-            <p class="genre">${anime.genre || ''}</p>
+            <div class="card-details">
+                <h3 class="title">${anime.title}</h3>
+                <p class="episodes">${anime.genre || ''}</p>
+            </div>
         </div>`;
-}
+            }
 
 // ** EFFICIENT FUNCTION TO LOAD EACH CATEGORY SEPARATELY **
 async function loadCategory(tag, containerId, cardCreatorFunction) {
