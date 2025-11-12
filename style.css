@@ -167,33 +167,80 @@ header {
 .rating-tag { position: absolute; top: 8px; right: 8px; background-color: #1e90ff; color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.8em; font-weight: 600; }
 
 /* Card Style 2: Top Hits, Favourite, etc. */
+/* Card Style 2: Top Hits, Favourite, etc. (NOTUN DESIGN) */
 .standard-anime-card {
-    flex: 0 0 180px;
-    height: 270px; 
-    border-radius: 12px; 
-    overflow: hidden; 
-    background-color: #333;
-    position: relative; 
-    display: block; 
-    transition: box-shadow 0.3s ease;
+    /* Main container-er flex properties thakbe */
+    flex: 0 0 160px; /* Card-er choura hobe 160px */
+    width: 160px;
+    
+    /* Onnanno properties shoriye dewa holo */
+    background-color: transparent;
+    border-radius: 0; 
+    height: auto; 
     cursor: pointer; 
 }
-.standard-anime-card:hover { 
-    box-shadow: 0 8px 20px rgba(30,144,255,0.3); 
+
+/* Notun image container */
+.standard-anime-card .image-container {
+    width: 100%;
+    height: 230px; /* Card-er image lomba hobe */
+    border-radius: 16px; /* Beshi gol hobe */
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 12px; /* Image ar text er majhe gap */
+    transition: box-shadow 0.3s ease;
 }
-.standard-anime-card img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
+
+.standard-anime-card:hover .image-container {
+    box-shadow: 0 8px 20px rgba(30,144,255,0.3);
+}
+
+.standard-anime-card .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     transition: transform 0.3s ease;
 }
-.standard-anime-card:hover img {
-    transform: scale(1.1);
-}
-.info-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); color: white; }
-.info-overlay .title { font-weight: 600; font-size: 0.95em; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.info-overlay .episodes { font-size: 0.8em; margin: 4px 0 0 0; }
 
+.standard-anime-card:hover .image-container img {
+    transform: scale(1.1); /* Image zoom effect thakbe */
+}
+
+/* Notun Rating Badge */
+.standard-anime-card .rating-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+/* Card er Nicher Title */
+.standard-anime-card .title {
+    font-size: 1em;
+    font-weight: 600;
+    color: white; /* Text er color shada */
+    margin: 0 0 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Card er Nicher Genre */
+.standard-anime-card .genre {
+    font-size: 0.85em;
+    color: #ccc; /* Text er color halka shada */
+    margin: 0;
+}
+
+/* Purano info-overlay ke hide kora holo jodi thake */
+.info-overlay { 
+    display: none;
+}
 /* --- Other Styles --- */
 .view-more-container { text-align: center; margin: 40px 0; }
 .view-more-btn { background-color: #1e90ff; color: white; padding: 12px 30px; text-decoration: none; font-size: 1.1em; font-weight: 600; border-radius: 50px; transition: background-color 0.3s, transform 0.2s; }
