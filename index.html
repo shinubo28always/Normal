@@ -4,18 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AniReal - Your Anime Hub</title>
-
-    <!-- External CSS Files -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    
-    <!-- Aapki apni CSS file -->
     <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
-
-    <!-- Header -->
     <header>
         <div class="logo"></div>
         <div class="title" id="title">
@@ -30,80 +23,55 @@
         </div>
     </header>
 
-    <!-- Main Slider -->
     <div class="swiper-container main-slider">
         <div class="swiper-wrapper">
-            <!-- Slides will be dynamically added here from your admin panel / JavaScript -->
+            <!-- Slides dynamically added here -->
         </div>
         <div class="swiper-pagination"></div>
     </div>
 
-    <!-- Main Content Area for Anime Sections -->
     <main class="main-content">
-    
-        <!-- New Releases Section (Yahan aapka purana/simple card style aayega) -->
         <section class="anime-section" id="new-releases-section" style="display: none;">
             <h2>✨ New Releases</h2>
             <div class="new-release-container" id="new-releases-container">
-                <!-- JavaScript yahan "simple-anime-card" naam ke cards banayega -->
+                <!-- Animes yahan JavaScript se add honge -->
             </div>
         </section>
 
-        <!-- Top Hits Section (Yahan naya/modern card style aayega) -->
         <section class="anime-section" id="top-hits-section" style="display: none;">
             <h2>🔥 Top Hits Anime</h2>
             <div class="anime-row" id="top-hits-container">
-                <!-- JavaScript yahan "modern-anime-card" naam ke cards banayega -->
+                <!-- Animes yahan JavaScript se add honge -->
             </div>
         </section>
 
-        <!-- Most Favourite Section (Yahan bhi naya/modern card style aayega) -->
         <section class="anime-section" id="most-favourite-section" style="display: none;">
             <h2>💖 Most Favourite</h2>
             <div class="anime-row" id="most-favourite-container">
-                <!-- JavaScript yahan "modern-anime-card" naam ke cards banayega -->
+                <!-- Animes yahan JavaScript se add honge -->
             </div>
         </section>
 
-        <!-- Most Popular Section (Yahan bhi naya/modern card style aayega) -->
         <section class="anime-section" id="most-popular-section" style="display: none;">
-            <h2>🏆 Most Popular</h2>
+            <h2>🔥 Most Popular</h2>
             <div class="anime-row" id="most-popular-container">
-                <!-- JavaScript yahan "modern-anime-card" naam ke cards banayega -->
+                <!-- Animes yahan JavaScript se add honge -->
             </div>
         </section>
 
-        <!-- View More Button (Optional) -->
         <div class="view-more-container">
             <a href="#" class="view-more-btn">View All Animes</a>
         </div>
     </main>
         
-    <!-- Bottom Navigation -->
     <div class="bottom-nav">
-        <a href="#" class="nav-item active">
-            <i class="fas fa-house"></i>
-            <span>Home</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-calendar-check"></i>
-            <span>Schedule</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-bookmark"></i>
-            <span>Watchlist</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-user-circle"></i>
-            <span>You</span>
-        </a>
+        <a href="#" class="nav-item active"><i class="fas fa-house"></i><span>Home</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-calendar-check"></i><span>Schedule</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-bookmark"></i><span>Watchlist</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-user-circle"></i><span>You</span></a>
     </div>
 
-    <!-- External JavaScript File -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    
-    <!-- Aapki apni JS file (type="module" lagana zaroori hai Firebase ke liye) -->
     <script type="module" src="script.js"></script>
-
 </body>
 </html>
