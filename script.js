@@ -1,5 +1,5 @@
 // =================================================================
-// ANI-REAL WEBSITE SCRIPT - FINAL VERSION
+// ANI-REAL WEBSITE SCRIPT - FULLY UPDATED & OPTIMIZED VERSION
 // =================================================================
 
 // Step 1: Zaroori functions Firebase se import karein
@@ -24,7 +24,7 @@ const db = getFirestore(app);
 
 
 // =================================================================
-// SECTION 1: TOP SLIDER FUNCTIONS
+// SECTION 1: TOP SLIDER FUNCTIONS (Slider initialization updated as requested)
 // =================================================================
 
 async function loadSlidesFromFirestore() {
@@ -63,15 +63,19 @@ async function loadSlidesFromFirestore() {
 
     // Initialize Swiper AFTER slides are loaded
     initializeSwiper();
+
+    // Setup buttons for the newly loaded slides
     setupMyListButtons();
 }
 
+// ** UPDATED SWIPER INITIALIZATION FUNCTION **
 function initializeSwiper() {
     new Swiper('.main-slider', {
         effect: 'fade',
         fadeEffect: { crossFade: true },
         speed: 1000,
-        loop: true, // Loop ko true rakhna behtar rehta hai
+        slidesPerView: 1,
+        loop: false, // Changed as per your new code
         autoplay: {
             delay: 4000,
             disableOnInteraction: false,
@@ -80,48 +84,63 @@ function initializeSwiper() {
             el: '.swiper-pagination',
             clickable: true,
         },
+        // This 'on' event handler makes the slider go back and forth
+        on: {
+            reachEnd: function () {
+                this.autoplay.stop();
+                this.params.autoplay.reverseDirection = true;
+                this.autoplay.start();
+            },
+            reachBeginning: function () {
+                this.autoplay.stop();
+                this.params.autoplay.reverseDirection = false;
+                this.autoplay.start();
+            },
+        },
     });
 }
 
 
 // =================================================================
-// SECTION 2: DUAL CARD CREATION & LOADING FUNCTIONS
+// SECTION 2: ANIME CARD SECTIONS FUNCTIONS (No changes needed here)
 // =================================================================
 
-// Function 1: Sirf "New Releases" ke liye card banata hai
+// Function to create HTML for a 'New Release' style card
 function createNewReleaseCard(anime) {
+    // Note: The original code used 'anime.imageUrl', but your Firestore data might be different. Adjust if needed.
     return `
         <div class="new-release-card">
             <div class="rating-tag">${anime.rating || 'N/A'}</div>
             <img src="${anime.imageUrl}" alt="${anime.title}">
             <div class="new-release-card-content">
                 <h3 class="new-release-card-title">${anime.title}</h3>
-                <p class="new-release-card-genres">${anime.genre}</p>
+                <div class="new-release-card-genres"><span>${anime.genre}</span></div>
             </div>
         </div>`;
 }
 
-// Function 2: Baaki sabhi sections ke liye card banata hai
-function createStandardAnimeCard(anime) {
+// Function to create HTML for a standard anime card (This needs a class name adjustment to avoid conflicts)
+function createAnimeCard(anime) {
+     // Using 'standard-anime-card' class from your CSS to avoid conflicts with slider's '.anime-card'
     return `
         <div class="standard-anime-card">
             <img src="${anime.imageUrl}" alt="${anime.title}">
             <div class="info-overlay">
                 <h3 class="title">${anime.title}</h3>
-                <p class="episodes">Ep: ${anime.episodes || 'TBA'}</p>
+                <p class="episodes">Episodes: ${anime.episodes}</p>
             </div>
         </div>`;
 }
 
-// Yeh function Firebase se data laata hai aur sahi card function use karta hai
+// ** EFFICIENT FUNCTION TO LOAD EACH CATEGORY SEPARATELY **
 async function loadCategory(tag, containerId, cardCreatorFunction) {
     const container = document.getElementById(containerId);
-    const section = document.getElementById(containerId.replace('-container', '-section'));
+    const section = document.getElementById(containerId.replace('-container', '-section')); // Find the parent section
     if (!container || !section) return;
 
-    // Loading spinner dikhayein
+    // Show loading spinner
     container.innerHTML = `<div class="spinner-container"><div class="spinner"></div></div>`;
-    section.style.display = 'block';
+    section.style.display = 'block'; // Show section with spinner
 
     try {
         const animesRef = collection(db, 'animes');
@@ -129,7 +148,8 @@ async function loadCategory(tag, containerId, cardCreatorFunction) {
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
-            section.style.display = 'none'; // Agar data nahi hai toh section hide kar dein
+            // If no anime found, hide the entire section
+            section.style.display = 'none';
         } else {
             let cardsHTML = '';
             querySnapshot.forEach(doc => {
@@ -139,13 +159,13 @@ async function loadCategory(tag, containerId, cardCreatorFunction) {
         }
     } catch (error) {
         console.error("Error loading category:", tag, error);
-        container.innerHTML = `<p style="color: #ff6b6b;">Could not load this section.</p>`;
+        container.innerHTML = `<p style="padding-left: 10px; color: #ff6b6b;">Could not load this section.</p>`;
     }
 }
 
 
 // =================================================================
-// SECTION 3: GENERAL UI EVENT LISTENERS
+// SECTION 3: GENERAL UI EVENT LISTENERS (No changes needed here)
 // =================================================================
 
 function setupGeneralEventListeners() {
@@ -158,7 +178,9 @@ function setupGeneralEventListeners() {
     searchIcon.addEventListener('click', () => {
         const isNowActive = searchBox.classList.toggle('active');
         title.classList.toggle('hidden', isNowActive);
-        if (isNowActive) searchInput.focus();
+        if (isNowActive) {
+            searchInput.focus();
+        }
     });
 
     searchInput.addEventListener('blur', () => {
@@ -179,6 +201,7 @@ function setupGeneralEventListeners() {
     });
 }
 
+// This function correctly handles the 'My List' buttons inside the slider
 function setupMyListButtons() {
     const myListButtons = document.querySelectorAll('.my-list-button');
     myListButtons.forEach(button => {
@@ -201,19 +224,15 @@ function setupMyListButtons() {
 // =================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // General UI (Header, Nav) ko setup karein
+    // Setup General UI (Header, Nav)
     setupGeneralEventListeners();
     
-    // Slider ke liye data load karein
+    // Load data from Firestore
     loadSlidesFromFirestore();
     
-    // Sabhi Anime sections ko DUAL CARD STYLES ke saath load karein
-    
-    // "New Releases" ke liye alag card style use hoga
-    loadCategory('new', 'new-releases-container', createNewReleaseCard); 
-    
-    // Baaki sabhi ke liye standard card style use hoga
-    loadCategory('tophit', 'top-hits-container', createStandardAnimeCard);
-    loadCategory('favourite', 'most-favourite-container', createStandardAnimeCard);
-    loadCategory('popular', 'most-popular-container', createStandardAnimeCard);
+    // LOAD EACH ANIME CATEGORY EFFICIENTLY
+    loadCategory('new', 'new-releases-container', createNewReleaseCard);
+    loadCategory('tophit', 'top-hits-container', createAnimeCard);
+    loadCategory('favourite', 'most-favourite-container', createAnimeCard);
+    loadCategory('popular', 'most-popular-container', createAnimeCard);
 });
