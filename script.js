@@ -116,10 +116,8 @@ function createNewReleaseCard(anime) {
         </div>`;
 }
 
-// Function to create HTML for a standard anime card (FINAL AND CORRECT VERSION)
-function createAnimeCard(anime) {
-    // YEH LINE BADAL GAYI HAI
-    // Yeh ab check karega ki episode hai ya nahi. Agar nahi hai, to "N/A" dikhayega.
+// Function to create HTML for a standard anime card (FINAL AND GUARANTEED CORRECT VERSION)
+function createAnime-card(anime) {
     const episodeText = anime.episode ? `Ep: ${anime.episode}` : 'Ep: N/A';
 
     return `
@@ -127,8 +125,11 @@ function createAnimeCard(anime) {
             <img class="card-poster" src="${anime.imageUrl}" alt="${anime.title}">
             
             <div class="card-overlay">
-                <h3 class="title">${anime.title}</h3>
-                <p class="episodes">${episodeText}</p>
+                <!-- YEH NAYA WRAPPER SAB KUCH THEEK KAR DEGA -->
+                <div class="card-info"> 
+                    <h3 class="title">${anime.title}</h3>
+                    <p class="episodes">${episodeText}</p>
+                </div>
             </div>
 
             ${anime.rating ? `<div class="rating-badge">${anime.rating}</div>` : ''}
