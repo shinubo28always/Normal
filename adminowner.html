@@ -30,6 +30,7 @@
         .btn-group { display: flex; gap: 10px; }
         button { cursor: pointer; border: none; border-radius: 5px; padding: 8px 12px; font-weight: 600; transition: 0.2s; }
         .btn-edit { background: #444; color: white; }
+        .btn-copy { background: #28a745; color: white; }
         .btn-delete { background: #ff4444; color: white; }
         .btn-primary { background: var(--primary); color: white; width: 100%; padding: 12px; font-size: 16px; margin-top: 10px; }
 
@@ -49,8 +50,9 @@
         
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; color: #ccc; font-size: 14px; }
-        .form-group input, .form-group select { width: 100%; padding: 12px; background: #222; border: 1px solid #444; color: white; border-radius: 5px; outline: none; }
-        .form-group input:focus { border-color: var(--primary); }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; background: #222; border: 1px solid #444; color: white; border-radius: 5px; outline: none; }
+        .form-group textarea { height: 100px; resize: vertical; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
         .hint { font-size: 11px; color: #888; margin-top: 4px; display: block; }
 
         /* Add Choice Modal */
@@ -71,8 +73,16 @@
         <h1>AniReal Admin</h1>
     </header>
 
+    <!-- VIEW: DETAILS PAGES -->
+    <div id="view-details" class="view active">
+        <div class="container">
+            <h2 style="margin-bottom: 15px; border-left: 3px solid var(--primary); padding-left: 10px;">Details Pages</h2>
+            <div id="details-list"></div>
+        </div>
+    </div>
+
     <!-- VIEW: BANNERS -->
-    <div id="view-slides" class="view active">
+    <div id="view-slides" class="view">
         <div class="container">
             <h2 style="margin-bottom: 15px; border-left: 3px solid var(--primary); padding-left: 10px;">Home Banners</h2>
             <div id="slides-list"></div>
@@ -93,7 +103,8 @@
     <!-- CHOICE MODAL -->
     <div id="choice-modal" class="choice-modal" onclick="closeChoiceModal(event)">
         <div class="choice-content">
-            <h3 style="text-align:center;">What to add?</h3>
+            <h3 style="text-align:center;">Create New</h3>
+            <button class="btn-primary" style="background:#8a2be2;" onclick="openForm('anime_details')">Create Details Page</button>
             <button class="btn-primary" onclick="openForm('animes')">Add Anime Card</button>
             <button class="btn-primary" style="background:#444;" onclick="openForm('slides')">Add Home Banner</button>
         </div>
@@ -109,20 +120,55 @@
             <input type="hidden" id="docId">
             <input type="hidden" id="collectionName">
 
-            <!-- COMMON FIELDS -->
+            <!-- COMMON TITLE -->
             <div class="form-group field-common">
-                <label>Title</label>
+                <label>Title (Required)</label>
                 <input type="text" id="title" required placeholder="Anime Name">
+                <span class="hint">For Details Page: ID will be generated from this (e.g. One Piece -> one-piece)</span>
             </div>
 
-            <!-- NEW: LINK FIELD FOR BOTH -->
-            <div class="form-group field-common">
-                <label>Watch/Click Link</label>
-                <input type="text" id="link" placeholder="e.g. details.html or https://...">
-                <span class="hint">Where should the user go when clicked?</span>
+            <!-- === DETAILS PAGE FIELDS === -->
+            <div class="form-group field-details">
+                <label>Description</label>
+                <textarea id="description" placeholder="Write synopsis..."></textarea>
+            </div>
+            <div class="form-group field-details">
+                <label>Watch Link (Button URL)</label>
+                <input type="text" id="watchLink" placeholder="https://video-link...">
+            </div>
+            <div class="form-group field-details">
+                <label>Banner Image</label>
+                <input type="url" id="detBanner" placeholder="https://...">
+            </div>
+            <div class="form-group field-details">
+                <label>Poster Image</label>
+                <input type="url" id="detPoster" placeholder="https://...">
+            </div>
+            <div class="form-group field-details">
+                <label>Year</label>
+                <input type="text" id="year" placeholder="2024">
+            </div>
+            <div class="form-group field-details">
+                <label>Genres (comma separated)</label>
+                <input type="text" id="detGenres" placeholder="Action, Fantasy">
+            </div>
+            <div class="form-group field-details">
+                <label>Total Episodes</label>
+                <input type="text" id="detEpisodes" placeholder="12">
+            </div>
+            <div class="form-group field-details">
+                <label>Rating</label>
+                <input type="text" id="detRating" placeholder="8.5">
             </div>
 
-            <!-- BANNER FIELDS -->
+            <!-- === CARD/BANNER LINK FIELD === -->
+            <div class="form-group field-link">
+                <label>Link (Where click goes)</label>
+                <input type="text" id="link" placeholder="Paste Details Link Here">
+                <span class="hint">Paste the generated link from Details Page section</span>
+            </div>
+
+            <!-- === BANNER FIELDS === -->
             <div class="form-group field-slides">
                 <label>Banner Image URL (Big)</label>
                 <input type="url" id="bannerImage" placeholder="https://...">
@@ -140,12 +186,11 @@
                 <input type="text" id="episode" placeholder="Ep: 12">
             </div>
 
-            <!-- ANIME CARD FIELDS -->
+            <!-- === ANIME CARD FIELDS === -->
             <div class="form-group field-animes">
                 <label>Poster Image URL</label>
                 <input type="url" id="imageUrl" placeholder="https://...">
             </div>
-            
             <div class="form-group field-animes">
                 <label>Rating</label>
                 <input type="number" step="0.1" id="rating" placeholder="e.g. 9.5">
@@ -153,7 +198,7 @@
 
             <!-- MAIN LOGIC FIELDS -->
             <div class="form-group field-animes">
-                <label style="color: var(--primary);">Category Tag (Important)</label>
+                <label style="color: var(--primary);">Category Tag</label>
                 <select id="tags_select" onchange="toggleFields()">
                     <option value="new">New Release (Uses Genre)</option>
                     <option value="tophit">Top Hit (Uses Episodes)</option>
@@ -163,17 +208,13 @@
                 <input type="hidden" id="tags"> 
             </div>
 
-            <!-- DYNAMIC FIELDS -->
             <div class="form-group field-animes" id="genre-group">
                 <label>Genre</label>
                 <input type="text" id="genre" placeholder="e.g. Action">
-                <span class="hint">Shows only in 'New Releases'</span>
             </div>
-
             <div class="form-group field-animes" id="episodes-group">
                 <label>Episodes</label>
                 <input type="text" id="episodes" placeholder="e.g. 24">
-                <span class="hint">Shows in Popular, Top Hits, etc.</span>
             </div>
 
             <button type="submit" class="btn-primary">Save Data</button>
@@ -182,7 +223,11 @@
 
     <!-- BOTTOM NAV -->
     <div class="bottom-nav">
-        <button class="nav-btn active" onclick="switchView('slides')">
+        <button class="nav-btn active" onclick="switchView('details')">
+            <i class="fas fa-file-alt"></i>
+            <span>Details</span>
+        </button>
+        <button class="nav-btn" onclick="switchView('slides')">
             <i class="fas fa-images"></i>
             <span>Banners</span>
         </button>
@@ -218,15 +263,25 @@
         const loader = document.getElementById('loader');
         const mainForm = document.getElementById('main-form');
 
+        // --- HELPER: Slugify (Title -> ID) ---
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           
+                .replace(/[^\w\-]+/g, '')       
+                .replace(/\-\-+/g, '-')         
+                .replace(/^-+/, '')             
+                .replace(/-+$/, '');            
+        }
+
         // --- NAVIGATION ---
         function switchView(viewName) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById('view-' + viewName).classList.add('active');
             
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            // Simple active toggle logic based on order
-            if(viewName === 'slides') document.querySelectorAll('.nav-btn')[0].classList.add('active');
-            else document.querySelectorAll('.nav-btn')[1].classList.add('active');
+            if(viewName === 'details') document.querySelectorAll('.nav-btn')[0].classList.add('active');
+            else if(viewName === 'slides') document.querySelectorAll('.nav-btn')[1].classList.add('active');
+            else document.querySelectorAll('.nav-btn')[2].classList.add('active');
         }
 
         // --- MODALS ---
@@ -242,18 +297,19 @@
             document.getElementById('docId').value = id || '';
             document.getElementById('form-title').textContent = mode === 'edit' ? 'Edit Item' : 'Add New Item';
 
-            // Hide all first
-            document.querySelectorAll('.field-slides, .field-animes').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.field-slides, .field-animes, .field-details, .field-link').forEach(el => el.style.display = 'none');
 
-            // Show based on collection
-            if (collection === 'slides') {
+            if (collection === 'anime_details') {
+                document.querySelectorAll('.field-details').forEach(el => el.style.display = 'block');
+            } else if (collection === 'slides') {
                 document.querySelectorAll('.field-slides').forEach(el => el.style.display = 'block');
+                document.querySelector('.field-link').style.display = 'block'; 
             } else {
                 document.querySelectorAll('.field-animes').forEach(el => el.style.display = 'block');
-                toggleFields(); // Run logic to show genre vs episode
+                document.querySelector('.field-link').style.display = 'block'; 
+                toggleFields(); 
             }
 
-            // If Edit, Fetch Data
             if (mode === 'edit' && id) {
                 loadDataForEdit(collection, id);
             }
@@ -276,6 +332,37 @@
             }
         }
 
+        // --- 100% WORKING COPY FUNCTION (FIXED) ---
+        function copyLink(slug) {
+            // Format requested: AniReal-Web-Test/details.html?id=slug
+            const textToCopy = `AniReal-Web-Test/details.html?id=${slug}`;
+
+            // Create temporary text area to force copy
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            
+            // Make it strictly invisible but part of DOM
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            textArea.style.opacity = "0";
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            textArea.setSelectionRange(0, 99999); // For Mobile
+
+            try {
+                const successful = document.execCommand('copy');
+                if(successful) alert("Link Copied: " + textToCopy);
+                else prompt("Copy link manually:", textToCopy);
+            } catch (err) {
+                prompt("Copy link manually:", textToCopy);
+            }
+
+            document.body.removeChild(textArea);
+        }
+
         // --- CRUD OPERATIONS ---
         
         // 1. SAVE
@@ -284,43 +371,57 @@
             loader.style.display = 'flex';
 
             const collection = document.getElementById('collectionName').value;
-            const id = document.getElementById('docId').value;
-            const data = {};
+            let id = document.getElementById('docId').value;
+            const title = document.getElementById('title').value;
+            const data = { title: title };
 
-            // Common Data
-            data.title = document.getElementById('title').value;
-            data.link = document.getElementById('link').value; // Saving the link
-
-            if (collection === 'slides') {
+            // IF DETAILS PAGE: Generate ID from Title (Slug)
+            if (collection === 'anime_details') {
+                if (!id) id = slugify(title); 
+                
+                data.description = document.getElementById('description').value;
+                data.watchLink = document.getElementById('watchLink').value;
+                data.bannerImage = document.getElementById('detBanner').value;
+                data.imageUrl = document.getElementById('detPoster').value;
+                data.year = document.getElementById('year').value;
+                data.genres = document.getElementById('detGenres').value;
+                data.episodes = document.getElementById('detEpisodes').value;
+                data.rating = document.getElementById('detRating').value;
+            } 
+            // IF BANNER
+            else if (collection === 'slides') {
                 data.bannerImage = document.getElementById('bannerImage').value;
                 data.cardImage = document.getElementById('cardImage').value;
                 data.genres = document.getElementById('genres').value;
                 data.episode = document.getElementById('episode').value;
-            } else {
-                // Animes Logic
+                data.link = document.getElementById('link').value;
+            } 
+            // IF ANIME CARD
+            else {
                 data.imageUrl = document.getElementById('imageUrl').value;
                 data.rating = document.getElementById('rating').value;
+                data.link = document.getElementById('link').value;
                 
-                // Tag Logic
                 const selectedTag = document.getElementById('tags_select').value;
-                data.tags = [selectedTag]; // Save as array for query
+                data.tags = [selectedTag];
 
                 if (selectedTag === 'new') {
                     data.genre = document.getElementById('genre').value;
-                    data.episode = null; // Reset ep
+                    data.episode = null;
                 } else {
                     data.episode = document.getElementById('episodes').value;
-                    data.genre = null; // Reset genre
+                    data.genre = null;
                 }
             }
 
             data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
 
             try {
-                if (id) {
-                    await db.collection(collection).doc(id).update(data);
+                if (collection === 'anime_details') {
+                    await db.collection(collection).doc(id).set(data, { merge: true });
                 } else {
-                    await db.collection(collection).add(data);
+                    if (id) await db.collection(collection).doc(id).update(data);
+                    else await db.collection(collection).add(data);
                 }
                 closeForm();
                 fetchList(collection);
@@ -332,7 +433,12 @@
 
         // 2. FETCH LIST
         async function fetchList(collectionName) {
-            const container = document.getElementById(collectionName + '-list');
+            let targetListId = '';
+            if(collectionName === 'anime_details') targetListId = 'details-list';
+            else if(collectionName === 'slides') targetListId = 'slides-list';
+            else targetListId = 'animes-list';
+
+            const container = document.getElementById(targetListId);
             container.innerHTML = '<p style="text-align:center; color:#777;">Loading...</p>';
 
             try {
@@ -350,15 +456,24 @@
                     div.className = 'list-item';
                     
                     let subtitle = '';
-                    if(collectionName === 'slides') subtitle = item.genres;
-                    else subtitle = item.tags ? item.tags[0].toUpperCase() : 'NO TAG';
+                    if(collectionName === 'slides') subtitle = 'BANNER';
+                    else if(collectionName === 'anime_details') subtitle = 'DETAILS PAGE';
+                    else subtitle = item.tags ? item.tags[0].toUpperCase() : 'CARD';
+
+                    // Generate Link Button for Details Pages
+                    let copyBtn = '';
+                    if (collectionName === 'anime_details') {
+                        // Pass only ID to the copy function
+                        copyBtn = `<button class="btn-copy" onclick="copyLink('${doc.id}')" title="Copy Link"><i class="fas fa-link"></i></button>`;
+                    }
 
                     div.innerHTML = `
                         <div class="list-info">
                             <h3>${item.title}</h3>
-                            <p><span class="tag-badge">${collectionName === 'animes' ? subtitle : 'BANNER'}</span></p>
+                            <p><span class="tag-badge">${subtitle}</span></p>
                         </div>
                         <div class="btn-group">
+                            ${copyBtn}
                             <button class="btn-edit" onclick="openForm('${collectionName}', 'edit', '${doc.id}')"><i class="fas fa-edit"></i></button>
                             <button class="btn-delete" onclick="deleteItem('${collectionName}', '${doc.id}')"><i class="fas fa-trash"></i></button>
                         </div>
@@ -377,25 +492,31 @@
             const data = doc.data();
 
             document.getElementById('title').value = data.title;
-            document.getElementById('link').value = data.link || ''; // Load Link
-
-            if (collection === 'slides') {
-                document.getElementById('bannerImage').value = data.bannerImage;
-                document.getElementById('cardImage').value = data.cardImage;
-                document.getElementById('genres').value = data.genres;
-                document.getElementById('episode').value = data.episode;
+            
+            if (collection === 'anime_details') {
+                document.getElementById('description').value = data.description;
+                document.getElementById('watchLink').value = data.watchLink;
+                document.getElementById('detBanner').value = data.bannerImage;
+                document.getElementById('detPoster').value = data.imageUrl;
+                document.getElementById('year').value = data.year;
+                document.getElementById('detGenres').value = data.genres;
+                document.getElementById('detEpisodes').value = data.episodes;
+                document.getElementById('detRating').value = data.rating;
             } else {
-                document.getElementById('imageUrl').value = data.imageUrl;
-                document.getElementById('rating').value = data.rating;
-                
-                // Set Tag Select
-                if(data.tags && data.tags.length > 0) {
-                    document.getElementById('tags_select').value = data.tags[0];
+                document.getElementById('link').value = data.link || '';
+                if (collection === 'slides') {
+                    document.getElementById('bannerImage').value = data.bannerImage;
+                    document.getElementById('cardImage').value = data.cardImage;
+                    document.getElementById('genres').value = data.genres;
+                    document.getElementById('episode').value = data.episode;
+                } else {
+                    document.getElementById('imageUrl').value = data.imageUrl;
+                    document.getElementById('rating').value = data.rating;
+                    if(data.tags && data.tags.length > 0) document.getElementById('tags_select').value = data.tags[0];
+                    toggleFields();
+                    if (data.genre) document.getElementById('genre').value = data.genre;
+                    if (data.episode) document.getElementById('episodes').value = data.episode;
                 }
-                toggleFields(); // Update UI based on tag
-
-                if (data.genre) document.getElementById('genre').value = data.genre;
-                if (data.episode) document.getElementById('episodes').value = data.episode;
             }
             loader.style.display = 'none';
         }
@@ -410,6 +531,7 @@
         }
 
         // INITIAL LOAD
+        fetchList('anime_details');
         fetchList('slides');
         fetchList('animes');
 
