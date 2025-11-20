@@ -131,14 +131,12 @@ header {
 
 /* --- ANIME CARD SECTIONS --- */
 .main-content { padding: 20px 15px; color: black; }
-.main-content h2 { font-weight: 700; margin-bottom: 20px; font-size: 1.8em; border-left: 4px solid #1e90ff; padding-left: 10px; }
+.main-content h2 { font-weight: 700; margin-bottom: 20px; font-size: 1.8em; border-left: 4px solid #1e90ff; padding-left: 10px; color: white; } /* Text Color Changed */
 .new-release-container, .anime-row { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
 .new-release-container::-webkit-scrollbar, .anime-row::-webkit-scrollbar { display: none; }
 
 
-/* === DUAL CARD STYLES (UPDATED FOR IMAGE ZOOM) === */
-
-/* Card Style 1: New Releases */
+/* Card Style 1: New Releases (KOI BADLAV NAHI) */
 .new-release-card { 
     flex: 0 0 250px; 
     background-color: #333;
@@ -166,44 +164,73 @@ header {
 .new-release-card-genres { font-size: 0.85em; color: #ccc; }
 .rating-tag { position: absolute; top: 8px; right: 8px; background-color: #1e90ff; color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.8em; font-weight: 600; }
 
-/* Card Style 2: Top Hits, Favourite, etc. (FINAL CORRECTED DESIGN) */
+
+/* =================================================================== */
+/* === EDITED SECTION: Standard Anime Cards (Top Hits, etc.) START === */
+/* =================================================================== */
+
 .standard-anime-card {
-    flex: 0 0 160px; /* Card-er width */
+    flex: 0 0 160px; /* Card ka fixed width */
     width: 160px;
+    aspect-ratio: 2 / 3; /* Poster jaisa ratio maintain karne ke liye */
+    border-radius: 12px; /* Gol kone */
+    overflow: hidden; /* Taki image kone se bahar na nikle */
+    position: relative; /* YEH BAHUT ZAROORI HAI */
     cursor: pointer;
-    /* Purono properties jemon height, background-color shoriye dewa hoyeche */
-    /* Jate text hide na hoy */
+    display: block;
+    text-decoration: none;
+    transition: transform 0.3s ease-in-out;
 }
 
-.standard-anime-card .image-container {
-    height: 230px; /* Image-er height */
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative; /* Rating badge ke thik jaygay rakhar jonno */
-    margin-bottom: 10px; /* Image ar text-er majhe gap */
-    transition: box-shadow 0.3s ease;
-}
-
-.standard-anime-card:hover .image-container {
+.standard-anime-card:hover {
+    transform: scale(1.05); /* Hover par halka sa bada effect */
     box-shadow: 0 8px 20px rgba(30,144,255,0.3);
 }
 
-.standard-anime-card img {
+/* Poster Image ka Style */
+.standard-anime-card .card-poster {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+    object-fit: cover; /* Taki image poore card mein fit ho jaye, stretch na ho */
 }
 
-.standard-anime-card:hover img {
-    transform: scale(1.1); /* Image zoom hobe */
+/* Poster ke upar aane wala overlay (gradient aur text ke liye) */
+.standard-anime-card .card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70%; /* Overlay ki height, gradient effect ke liye */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 20%, rgba(0, 0, 0, 0) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Text ko neeche set karna */
+    padding: 12px;
+    box-sizing: border-box;
 }
 
-/* Rating Badge-er THIK Position */
+/* Anime ka Title */
+.standard-anime-card .title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #FFD700; /* Sunehra/Peela Rang */
+    margin: 0;
+    line-height: 1.2;
+    white-space: normal;
+}
+
+/* Anime ka Episode Count */
+.standard-anime-card .episodes {
+    font-size: 13px;
+    color: #f0f0f0; /* Halka safed */
+    margin: 4px 0 0 0;
+}
+
+/* Rating Badge (Optional) */
 .standard-anime-card .rating-badge {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 8px;
+    right: 8px;
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 3px 8px;
@@ -212,31 +239,11 @@ header {
     font-weight: 600;
 }
 
-/* Text gulo thik bhabe dekhanor jonno */
-.standard-anime-card .card-details {
-    padding: 0 5px; /* Dike halka padding */
-}
+/* ================================================================= */
+/* === EDITED SECTION: Standard Anime Cards (Top Hits, etc.) END === */
+/* ================================================================= */
 
-.standard-anime-card .title {
-    font-size: 15px;
-    font-weight: 600;
-    color: white; /* Text color shada */
-    margin: 0 0 4px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
 
-.standard-anime-card .episodes { /* Etai genre hishebe kaaj korbe */
-    font-size: 13px;
-    color: #ccc;
-    margin: 0;
-}
-
-/* Purono info-overlay ke hide kora holo jodi thake */
-.info-overlay { 
-    display: none !important;
-}
 /* --- Other Styles --- */
 .view-more-container { text-align: center; margin: 40px 0; }
 .view-more-btn { background-color: #1e90ff; color: white; padding: 12px 30px; text-decoration: none; font-size: 1.1em; font-weight: 600; border-radius: 50px; transition: background-color 0.3s, transform 0.2s; }
