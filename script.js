@@ -68,14 +68,13 @@ async function loadSlidesFromFirestore() {
     setupMyListButtons();
 }
 
-// ** UPDATED SWIPER INITIALIZATION FUNCTION **
 function initializeSwiper() {
     new Swiper('.main-slider', {
         effect: 'fade',
         fadeEffect: { crossFade: true },
         speed: 1000,
         slidesPerView: 1,
-        loop: false, // Changed as per your new code
+        loop: false, 
         autoplay: {
             delay: 4000,
             disableOnInteraction: false,
@@ -84,7 +83,6 @@ function initializeSwiper() {
             el: '.swiper-pagination',
             clickable: true,
         },
-        // This 'on' event handler makes the slider go back and forth
         on: {
             reachEnd: function () {
                 this.autoplay.stop();
@@ -102,12 +100,11 @@ function initializeSwiper() {
 
 
 // =================================================================
-// SECTION 2: ANIME CARD SECTIONS FUNCTIONS (No changes needed here)
+// SECTION 2: ANIME CARD SECTIONS FUNCTIONS
 // =================================================================
 
-// Function to create HTML for a 'New Release' style card
+// Function to create HTML for a 'New Release' style card (KOI BADLAV NAHI)
 function createNewReleaseCard(anime) {
-    // Note: The original code used 'anime.imageUrl', but your Firestore data might be different. Adjust if needed.
     return `
         <div class="new-release-card">
             <div class="rating-tag">${anime.rating || 'N/A'}</div>
@@ -119,30 +116,34 @@ function createNewReleaseCard(anime) {
         </div>`;
 }
 
-// Function to create HTML for a standard anime card
+// === EDITED FUNCTION START ===
+// Function to create HTML for a standard anime card (NAYA DESIGN)
 function createAnimeCard(anime) {
-    return `
-        <div class="standard-anime-card">
-            <div class="image-container">
-                <img src="${anime.imageUrl}" alt="${anime.title}">
-                <div class="rating-badge">${anime.rating || 'N/A'}</div>
-            </div>
-            <div class="card-details">
-                <h3 class="title">${anime.title}</h3>
-                <p class="episodes">${anime.genre || ''}</p>
-            </div>
-        </div>`;
-            }
+    // Firebase se 'episode' field check karein, agar nahi hai to 'genre' dikhayein
+    const episodeText = anime.episode ? `Episodes: ${anime.episode}` : (anime.genre || '');
 
-// ** EFFICIENT FUNCTION TO LOAD EACH CATEGORY SEPARATELY **
+    return `
+        <a href="#" class="standard-anime-card">
+            <img class="card-poster" src="${anime.imageUrl}" alt="${anime.title}">
+            <div class="card-overlay">
+                <h3 class="title">${anime.title}</h3>
+                <p class="episodes">${episodeText}</p>
+            </div>
+            ${anime.rating ? `<div class="rating-badge">${anime.rating}</div>` : ''}
+        </a>
+    `;
+}
+// === EDITED FUNCTION END ===
+
+
 async function loadCategory(tag, containerId, cardCreatorFunction) {
     const container = document.getElementById(containerId);
-    const section = document.getElementById(containerId.replace('-container', '-section')); // Find the parent section
+    const section = document.getElementById(containerId.replace('-container', '-section')); 
     if (!container || !section) return;
 
     // Show loading spinner
     container.innerHTML = `<div class="spinner-container"><div class="spinner"></div></div>`;
-    section.style.display = 'block'; // Show section with spinner
+    section.style.display = 'block'; 
 
     try {
         const animesRef = collection(db, 'animes');
@@ -150,7 +151,6 @@ async function loadCategory(tag, containerId, cardCreatorFunction) {
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
-            // If no anime found, hide the entire section
             section.style.display = 'none';
         } else {
             let cardsHTML = '';
@@ -167,11 +167,10 @@ async function loadCategory(tag, containerId, cardCreatorFunction) {
 
 
 // =================================================================
-// SECTION 3: GENERAL UI EVENT LISTENERS (No changes needed here)
+// SECTION 3: GENERAL UI EVENT LISTENERS (KOI BADLAV NAHI)
 // =================================================================
 
 function setupGeneralEventListeners() {
-    // Header Search Script
     const searchIcon = document.getElementById('searchIcon');
     const title = document.getElementById('title');
     const searchBox = document.getElementById('searchBox');
@@ -192,7 +191,6 @@ function setupGeneralEventListeners() {
         }
     });
 
-    // Bottom Navigation Script
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
@@ -203,7 +201,6 @@ function setupGeneralEventListeners() {
     });
 }
 
-// This function correctly handles the 'My List' buttons inside the slider
 function setupMyListButtons() {
     const myListButtons = document.querySelectorAll('.my-list-button');
     myListButtons.forEach(button => {
