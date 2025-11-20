@@ -116,24 +116,24 @@ function createNewReleaseCard(anime) {
         </div>`;
 }
 
-// === EDITED FUNCTION START ===
-// Function to create HTML for a standard anime card (NAYA DESIGN)
+// Function to create HTML for a standard anime card (NAYA AUR SAHI DESIGN)
 function createAnimeCard(anime) {
     // Firebase se 'episode' field check karein, agar nahi hai to 'genre' dikhayein
-    const episodeText = anime.episode ? `Episodes: ${anime.episode}` : (anime.genre || '');
+    const episodeText = anime.episode ? `Episodes: ${anime.episode}` : (anime.genre || 'Info not available');
 
     return `
         <a href="#" class="standard-anime-card">
             <img class="card-poster" src="${anime.imageUrl}" alt="${anime.title}">
+            
             <div class="card-overlay">
                 <h3 class="title">${anime.title}</h3>
                 <p class="episodes">${episodeText}</p>
             </div>
+
             ${anime.rating ? `<div class="rating-badge">${anime.rating}</div>` : ''}
         </a>
     `;
 }
-// === EDITED FUNCTION END ===
 
 
 async function loadCategory(tag, containerId, cardCreatorFunction) {
