@@ -131,7 +131,7 @@ header {
 
 /* --- ANIME CARD SECTIONS --- */
 .main-content { padding: 20px 15px; color: black; }
-.main-content h2 { font-weight: 700; margin-bottom: 20px; font-size: 1.8em; border-left: 4px solid #1e90ff; padding-left: 10px; color: black; } /* Text Color Changed */
+.main-content h2 { font-weight: 700; margin-bottom: 20px; font-size: 1.8em; border-left: 4px solid #1e90ff; padding-left: 10px; color: black; }
 .new-release-container, .anime-row { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
 .new-release-container::-webkit-scrollbar, .anime-row::-webkit-scrollbar { display: none; }
 
@@ -162,74 +162,73 @@ header {
 .new-release-card-content { padding: 10px; }
 .new-release-card-title { font-weight: 600; margin: 0 0 5px 0; color: #fff; }
 .new-release-card-genres { font-size: 0.85em; color: #ccc; }
-.rating-tag { position: absolute; top: 8px; right: 8px; background-color: #1e90ff; color: black; padding: 3px 8px; border-radius: 5px; font-size: 0.8em; font-weight: 600; }
+.rating-tag { position: absolute; top: 8px; right: 8px; background-color: #1e90ff; color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.8em; font-weight: 600; }
 
 
 /* =================================================================== */
-/* === EDITED SECTION: Standard Anime Cards (Top Hits, etc.) START === */
+/* === EDITED SECTION: Standard Anime Cards (FINAL VERSION) START === */
 /* =================================================================== */
 
 .standard-anime-card {
-    flex: 0 0 160px; /* Card ka fixed width */
+    flex: 0 0 160px;
     width: 160px;
-    aspect-ratio: 2 / 3; /* Poster jaisa ratio maintain karne ke liye */
-    border-radius: 12px; /* Gol kone */
-    overflow: hidden; /* Taki image kone se bahar na nikle */
-    position: relative; /* YEH BAHUT ZAROORI HAI */
+    aspect-ratio: 2 / 3;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
     cursor: pointer;
     display: block;
     text-decoration: none;
     transition: transform 0.3s ease-in-out;
+    background-color: #222;
 }
 
 .standard-anime-card:hover {
-    transform: scale(1.05); /* Hover par halka sa bada effect */
+    transform: scale(1.05);
     box-shadow: 0 8px 20px rgba(30,144,255,0.3);
 }
 
-/* Poster Image ka Style */
 .standard-anime-card .card-poster {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Taki image poore card mein fit ho jaye, stretch na ho */
+    object-fit: cover;
 }
 
-/* Poster ke upar aane wala overlay (gradient aur text ke liye) */
+/* Overlay sirf gradient aur position ke liye hai */
 .standard-anime-card .card-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 70%; /* Overlay ki height, gradient effect ke liye */
+    height: 70%;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 20%, rgba(0, 0, 0, 0) 100%);
+    /* Text ko neeche push karne ke liye */
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* Text ko neeche set karna */
-    align-items: flex-start;
+    align-items: flex-end; /* YEH LINE TEXT KO NEECHE RAKHEGI */
     padding: 12px;
     box-sizing: border-box;
 }
 
-/* Anime ka Title */
+/* Naya container jo text ko LEFT mein rakhega */
+.standard-anime-card .card-info {
+    width: 100%;
+    text-align: left;
+}
+
 .standard-anime-card .title {
     font-size: 16px;
     font-weight: bold;
-    color: #FFD700; /* Sunehra/Peela Rang */
-    text-align: left;
+    color: #FFD700;
     margin: 0;
     line-height: 1.2;
-    white-space: normal;
 }
 
-/* Anime ka Episode Count */
 .standard-anime-card .episodes {
     font-size: 13px;
-    color: #f0f0f0; /* Halka safed */
-    text-align: left;
+    color: #f0f0f0;
     margin: 4px 0 0 0;
 }
 
-/* Rating Badge (Optional) */
 .standard-anime-card .rating-badge {
     position: absolute;
     top: 8px;
@@ -241,9 +240,8 @@ header {
     font-size: 13px;
     font-weight: 600;
 }
-
 /* ================================================================= */
-/* === EDITED SECTION: Standard Anime Cards (Top Hits, etc.) END === */
+/* === EDITED SECTION: Standard Anime Cards (FINAL VERSION) END === */
 /* ================================================================= */
 
 
