@@ -116,10 +116,11 @@ function createNewReleaseCard(anime) {
         </div>`;
 }
 
-// Function to create HTML for a standard anime card (NAYA AUR SAHI DESIGN)
+// Function to create HTML for a standard anime card (FINAL AND CORRECT VERSION)
 function createAnimeCard(anime) {
-    // Firebase se 'episode' field check karein, agar nahi hai to 'genre' dikhayein
-    const episodeText = anime.episode ? `Episodes: ${anime.episode}` : (anime.genre || 'Info not available');
+    // YEH LINE BADAL GAYI HAI
+    // Yeh ab check karega ki episode hai ya nahi. Agar nahi hai, to "N/A" dikhayega.
+    const episodeText = anime.episode ? `Ep: ${anime.episode}` : 'Ep: N/A';
 
     return `
         <a href="#" class="standard-anime-card">
@@ -134,7 +135,6 @@ function createAnimeCard(anime) {
         </a>
     `;
 }
-
 
 async function loadCategory(tag, containerId, cardCreatorFunction) {
     const container = document.getElementById(containerId);
