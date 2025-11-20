@@ -125,7 +125,6 @@ function createAnime-card(anime) {
             <img class="card-poster" src="${anime.imageUrl}" alt="${anime.title}">
             
             <div class="card-overlay">
-                <!-- YEH NAYA WRAPPER SAB KUCH THEEK KAR DEGA -->
                 <div class="card-info"> 
                     <h3 class="title">${anime.title}</h3>
                     <p class="episodes">${episodeText}</p>
