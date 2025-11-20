@@ -131,7 +131,7 @@ header {
 
 /* --- ANIME CARD SECTIONS --- */
 .main-content { padding: 20px 15px; color: black; }
-.main-content h2 { font-weight: 700; margin-bottom: 20px; font-size: 1.8em; border-left: 4px solid #1e90ff; padding-left: 10px; color: white; } /* Text Color Changed */
+.main-content h2 { font-weight: 700; margin-bottom: 20px; font-size: 1.8em; border-left: 4px solid #1e90ff; padding-left: 10px; color: black; } /* Text Color Changed */
 .new-release-container, .anime-row { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
 .new-release-container::-webkit-scrollbar, .anime-row::-webkit-scrollbar { display: none; }
 
@@ -162,7 +162,7 @@ header {
 .new-release-card-content { padding: 10px; }
 .new-release-card-title { font-weight: 600; margin: 0 0 5px 0; color: #fff; }
 .new-release-card-genres { font-size: 0.85em; color: #ccc; }
-.rating-tag { position: absolute; top: 8px; right: 8px; background-color: #1e90ff; color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.8em; font-weight: 600; }
+.rating-tag { position: absolute; top: 8px; right: 8px; background-color: #1e90ff; color: black; padding: 3px 8px; border-radius: 5px; font-size: 0.8em; font-weight: 600; }
 
 
 /* =================================================================== */
