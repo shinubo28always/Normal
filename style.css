@@ -215,6 +215,7 @@ header {
     font-size: 16px;
     font-weight: bold;
     color: #FFD700; /* Sunehra/Peela Rang */
+    text-align: left;
     margin: 0;
     line-height: 1.2;
     white-space: normal;
@@ -224,6 +225,7 @@ header {
 .standard-anime-card .episodes {
     font-size: 13px;
     color: #f0f0f0; /* Halka safed */
+    text-align: left;
     margin: 4px 0 0 0;
 }
 
