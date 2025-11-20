@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AniReal - Your Anime Hub</title>
+    <!-- External Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <!-- Your Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Header Section -->
     <header>
         <div class="logo"></div>
         <div class="title" id="title">
@@ -23,47 +27,57 @@
         </div>
     </header>
 
+    <!-- Main Slider / Hero Section -->
     <div class="swiper-container main-slider">
         <div class="swiper-wrapper">
-            <!-- Slides dynamically added here -->
+            <!-- Slides Firebase se yahan add honge -->
         </div>
         <div class="swiper-pagination"></div>
     </div>
 
+    <!-- Main Content Area -->
     <main class="main-content">
-        <section class="anime-section" id="new-releases-section" style="display: none;">
+
+        <!-- Section for New Releases (Alag Design) -->
+        <section class="anime-section" id="new-releases-section">
             <h2>✨ New Releases</h2>
             <div class="new-release-container" id="new-releases-container">
-                <!-- Animes yahan JavaScript se add honge -->
+                <!-- New Release cards yahan JavaScript se add honge -->
             </div>
         </section>
 
-        <section class="anime-section" id="top-hits-section" style="display: none;">
+        <!-- Section for Top Hits Anime (Naya Design) -->
+        <section class="anime-section" id="top-hits-section">
             <h2>🔥 Top Hits Anime</h2>
             <div class="anime-row" id="top-hits-container">
-                <!-- Animes yahan JavaScript se add honge -->
+                <!-- Top Hits cards yahan JavaScript se add honge -->
             </div>
         </section>
 
-        <section class="anime-section" id="most-favourite-section" style="display: none;">
+        <!-- Section for Most Favourite (Naya Design) -->
+        <section class="anime-section" id="most-favourite-section">
             <h2>💖 Most Favourite</h2>
             <div class="anime-row" id="most-favourite-container">
-                <!-- Animes yahan JavaScript se add honge -->
+                <!-- Most Favourite cards yahan JavaScript se add honge -->
             </div>
         </section>
 
-        <section class="anime-section" id="most-popular-section" style="display: none;">
+        <!-- Section for Most Popular (Naya Design) -->
+        <section class="anime-section" id="most-popular-section">
             <h2>🔥 Most Popular</h2>
             <div class="anime-row" id="most-popular-container">
-                <!-- Animes yahan JavaScript se add honge -->
+                <!-- Most Popular cards yahan JavaScript se add honge -->
             </div>
         </section>
 
+        <!-- "View All" Button -->
         <div class="view-more-container">
             <a href="#" class="view-more-btn">View All Animes</a>
         </div>
+
     </main>
         
+    <!-- Bottom Navigation Bar -->
     <div class="bottom-nav">
         <a href="#" class="nav-item active"><i class="fas fa-house"></i><span>Home</span></a>
         <a href="#" class="nav-item"><i class="fas fa-calendar-check"></i><span>Schedule</span></a>
@@ -71,7 +85,10 @@
         <a href="#" class="nav-item"><i class="fas fa-user-circle"></i><span>You</span></a>
     </div>
 
+    <!-- External Scripts -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <!-- Your Main Script (jahan Firebase ka code hai) -->
     <script type="module" src="script.js"></script>
+
 </body>
-</html>
+    </html>
