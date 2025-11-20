@@ -115,6 +115,13 @@
                 <input type="text" id="title" required placeholder="Anime Name">
             </div>
 
+            <!-- NEW: LINK FIELD FOR BOTH -->
+            <div class="form-group field-common">
+                <label>Watch/Click Link</label>
+                <input type="text" id="link" placeholder="e.g. details.html or https://...">
+                <span class="hint">Where should the user go when clicked?</span>
+            </div>
+
             <!-- BANNER FIELDS -->
             <div class="form-group field-slides">
                 <label>Banner Image URL (Big)</label>
@@ -153,7 +160,7 @@
                     <option value="popular">Most Popular (Uses Episodes)</option>
                     <option value="favourite">Most Favourite (Uses Episodes)</option>
                 </select>
-                <input type="hidden" id="tags"> <!-- Hidden input to store array -->
+                <input type="hidden" id="tags"> 
             </div>
 
             <!-- DYNAMIC FIELDS -->
@@ -280,8 +287,9 @@
             const id = document.getElementById('docId').value;
             const data = {};
 
-            // Get Title
+            // Common Data
             data.title = document.getElementById('title').value;
+            data.link = document.getElementById('link').value; // Saving the link
 
             if (collection === 'slides') {
                 data.bannerImage = document.getElementById('bannerImage').value;
@@ -369,6 +377,7 @@
             const data = doc.data();
 
             document.getElementById('title').value = data.title;
+            document.getElementById('link').value = data.link || ''; // Load Link
 
             if (collection === 'slides') {
                 document.getElementById('bannerImage').value = data.bannerImage;
